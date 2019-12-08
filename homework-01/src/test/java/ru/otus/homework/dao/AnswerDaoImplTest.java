@@ -1,13 +1,10 @@
 package ru.otus.homework.dao;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import ru.otus.homework.service.AnswerServiceImpl;
-import ru.otus.homework.service.QuestionServiceImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
