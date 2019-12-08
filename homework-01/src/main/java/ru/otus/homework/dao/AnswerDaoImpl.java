@@ -8,8 +8,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 public class AnswerDaoImpl implements AnswerDao {
 
@@ -26,7 +24,7 @@ public class AnswerDaoImpl implements AnswerDao {
         List<Answer> answers = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(this.answerFilePath.getFile()))) {
             while ((nextLine = br.readLine()) != null) {
-                answers.add(this.getAnswerBean(nextLine));
+                answers.add(this.getAnswer(nextLine));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -40,7 +38,7 @@ public class AnswerDaoImpl implements AnswerDao {
         List<Answer> answers = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(this.answerFilePath.getFile()))) {
             while ((nextLine = br.readLine()) != null) {
-                Answer answerBean = this.getAnswerBean(nextLine);
+                Answer answerBean = this.getAnswer(nextLine);
                 if (answerBean.getQuestionUid() == questionUid)
                     answers.add(answerBean);
             }
@@ -61,7 +59,7 @@ public class AnswerDaoImpl implements AnswerDao {
                 .orElse(false);
     }
 
-    private Answer getAnswerBean(String line) {
+    private Answer getAnswer(String line) {
         String[] array = line.split(SEPARATOR);
         Answer answer = new Answer();
         if (array.length == 5) {

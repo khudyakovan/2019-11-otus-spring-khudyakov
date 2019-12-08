@@ -14,6 +14,9 @@ class QuestionDaoImplTest {
     private static Resource questionFilePath;
     private static AnswerDaoImpl answerDao;
     private static Resource answerFilePath;
+    final int ALL_QUESTIONS_COUNT = 5;
+    final int TESTING_QUESTION_UID = 2;
+    final int EXPECTED_ANSWERS_COUNT = 3;
 
     @BeforeAll
     static void setup() {
@@ -35,16 +38,16 @@ class QuestionDaoImplTest {
     void shouldGetAllQuestions() {
         assertAll(
                 ()->assertTrue(questionDao.getAllQuestions().size()>0),
-                ()->assertEquals(5, questionDao.getAllQuestions().size())
+                ()->assertEquals(ALL_QUESTIONS_COUNT, questionDao.getAllQuestions().size())
         );
     }
 
-    @DisplayName("Выборка второго вопроса и связанных ответов")
+    @DisplayName("Выборка вопроса и связанных ответов")
     @Test
     void shouldGetQuestionByUid() {
         assertAll(
                 ()->assertNotNull(questionDao.getQuestionByUid(2)),
-                ()->assertEquals(3, questionDao.getQuestionByUid(2).getAnswers().size())
+                ()->assertEquals(EXPECTED_ANSWERS_COUNT, questionDao.getQuestionByUid(TESTING_QUESTION_UID).getAnswers().size())
         );
     }
 }

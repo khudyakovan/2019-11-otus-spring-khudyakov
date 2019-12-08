@@ -27,7 +27,7 @@ public class QuestionDaoImpl implements QuestionDao{
         List<Question> questions = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(this.questionFilePath.getFile()))) {
             while ((nextLine = br.readLine()) != null) {
-                questions.add(this.getQuestionBean(nextLine));
+                questions.add(this.getQuestion(nextLine));
             }
 
         } catch (IOException e) {
@@ -42,7 +42,7 @@ public class QuestionDaoImpl implements QuestionDao{
         Question question = new Question();
         try (BufferedReader br = new BufferedReader(new FileReader(this.questionFilePath.getFile()))) {
             while ((nextLine = br.readLine()) != null) {
-                question = this.getQuestionBean(nextLine);
+                question = this.getQuestion(nextLine);
                 if(question.getUid() == uid) break;
             }
 
@@ -52,7 +52,7 @@ public class QuestionDaoImpl implements QuestionDao{
         return question;
     }
 
-    private Question getQuestionBean(String line){
+    private Question getQuestion(String line){
         String[] array = line.split(SEPARATOR);
         Question question = new Question();
         if (array.length == 2) {
