@@ -1,71 +1,103 @@
 package ru.otus.homework;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.*;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import ru.otus.homework.service.QuestionService;
 
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@PropertySource("classpath:application.properties")
+@Configuration
 @ComponentScan
 public class Main {
+
+    private static Locale currentLocale;
+    private static String anonymousUserName;
+
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context =
                 new AnnotationConfigApplicationContext(Main.class);
         QuestionService questionService = context.getBean(QuestionService.class);
+        MessageSource messageSource = context.getBean(MessageSource.class);
 
         //Тестирование
-        testing(new Scanner(System.in), questionService, new AtomicInteger(0));
+        testing(new Scanner(System.in),
+                questionService,
+                messageSource);
     }
 
-    private static String greeting(Scanner scanner) {
-        System.out.println("Пожалуйста, введите Ваше имя и фамилию:");
+    private static String greeting(Scanner scanner, MessageSource messageSource) {
+        System.out.println(messageSource.getMessage("greeting.getUser",
+                new String[]{},
+                currentLocale));
         String userName = scanner.nextLine();
         if (userName.isBlank()) {
-            userName = "Anonymous";
-            System.out.println("Тестирование будет под именем Anonymous");
+            userName = anonymousUserName;
+            System.out.println(messageSource.getMessage("greeting.anonymousInfo",
+                    new String[]{anonymousUserName},
+                    currentLocale));
         }
         return userName;
     }
 
-    private static void testing(Scanner scanner, QuestionService questionService, AtomicInteger correctAnswersCount) {
+    private static void testing(Scanner scanner, QuestionService questionService, MessageSource messageSource) {
         //Приветствие
-        String userName = greeting(scanner);
+        String userName = greeting(scanner, messageSource);
         //Вывод вопросов
-        questionService.getAllQuestions().forEach(q -> {
+        AtomicInteger correctAnswersCount = new AtomicInteger(0);
+        questionService.getAllQuestions().forEach(question -> {
             AtomicInteger correctAnswerNumber = new AtomicInteger(0);
-            System.out.println(q.getQuestion());
+            System.out.println(question.getQuestion());
             //Вывод вариантов ответов
-            q.getAnswers().forEach(a -> {
-                if (a.isCorrect())
+            question.getAnswers().forEach(a -> {
+                if (a.isCorrect()) {
                     correctAnswerNumber.set(a.getAnswerNumber());
-                System.out.println("   "
-                        + a.getAnswerNumber()
-                        + ". " + a
-                        .getAnswer() + ". ");
+                }
+                System.out.printf("   %s. %s.\n",a.getAnswerNumber(), a.getAnswer());
             });
 
-            gettingAnswers(scanner, correctAnswerNumber, correctAnswersCount);
+            gettingAnswers(scanner, correctAnswerNumber, correctAnswersCount, messageSource);
         });
         //Статистика прохождения тестирования
-        sayGoodbye(userName, correctAnswersCount);
+        sayGoodbye(userName, correctAnswersCount, messageSource);
     }
 
-    private static AtomicInteger gettingAnswers(Scanner scanner, AtomicInteger correctAnswerNumber, AtomicInteger correctAnswersCount) {
-        System.out.println("Пожалуйста, введите номер ответа:");
+    private static void gettingAnswers(Scanner scanner, AtomicInteger correctAnswerNumber, AtomicInteger correctAnswersCount, MessageSource messageSource) {
+        System.out.println(messageSource.getMessage("gettingAnswers.getUserAnswer",
+                new String[]{},
+                currentLocale));
         while (!scanner.hasNextInt()) {
-            System.out.println("Это не число. Введите номер ответа");
+            System.out.println(messageSource.getMessage("gettingAnswers.wrongAnswer",
+                    new String[]{},
+                    currentLocale));
             scanner.next();
         }
         if (correctAnswerNumber.get() == scanner.nextInt())
             correctAnswersCount.getAndIncrement();
-        return correctAnswersCount;
     }
 
-    private static void sayGoodbye(String userName, AtomicInteger correctAnswersCount) {
-        System.out.println("Спасибо за прохождение теста, " + userName);
-        System.out.println("Правильных ответов: " + correctAnswersCount);
+    private static void sayGoodbye(String userName, AtomicInteger correctAnswersCount, MessageSource messageSource) {
+        System.out.println(messageSource.getMessage("sayGoodbye.thankYou",
+                new String[]{userName},
+                currentLocale));
+        System.out.println(messageSource.getMessage("sayGoodbye.result",
+                new String[]{correctAnswersCount.toString()},
+                currentLocale));
+    }
+
+    @Value("${application.anonymousUserName}")
+    private void setAnonymousUserName(String name) {
+        anonymousUserName = name;
+    }
+
+    @Autowired
+    private void setLocale(@Value("${application.language}") String language, @Value("${application.country}") String country) {
+        currentLocale = new Locale(language, country);
     }
 
 }
