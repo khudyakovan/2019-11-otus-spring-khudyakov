@@ -14,15 +14,16 @@ class QuestionDaoImplTest {
     private static Resource questionFilePath;
     private static AnswerDaoImpl answerDao;
     private static Resource answerFilePath;
-    final int ALL_QUESTIONS_COUNT = 5;
-    final int TESTING_QUESTION_UID = 2;
-    final int EXPECTED_ANSWERS_COUNT = 3;
+    private final int ALL_QUESTIONS_COUNT = 5;
+    private final int TESTING_QUESTION_UID = 2;
+    private final int EXPECTED_ANSWERS_COUNT = 3;
+    private static final String LANGUAGE_POSTFIX = "en";
 
     @BeforeAll
     static void setup() {
-        answerFilePath = new ClassPathResource("answers.csv");
+        answerFilePath = new ClassPathResource("answers_" + LANGUAGE_POSTFIX + ".csv");
         answerDao = new AnswerDaoImpl(answerFilePath);
-        questionFilePath = new ClassPathResource("questions.csv");
+        questionFilePath = new ClassPathResource("questions_" + LANGUAGE_POSTFIX + ".csv");
         questionDao = new QuestionDaoImpl(questionFilePath, answerDao);
     }
 
@@ -37,8 +38,8 @@ class QuestionDaoImplTest {
     @Test
     void shouldGetAllQuestions() {
         assertAll(
-                ()->assertTrue(questionDao.getAllQuestions().size()>0),
-                ()->assertEquals(ALL_QUESTIONS_COUNT, questionDao.getAllQuestions().size())
+                () -> assertTrue(questionDao.getAllQuestions().size() > 0),
+                () -> assertEquals(ALL_QUESTIONS_COUNT, questionDao.getAllQuestions().size())
         );
     }
 
@@ -46,8 +47,8 @@ class QuestionDaoImplTest {
     @Test
     void shouldGetQuestionByUid() {
         assertAll(
-                ()->assertNotNull(questionDao.getQuestionByUid(2)),
-                ()->assertEquals(EXPECTED_ANSWERS_COUNT, questionDao.getQuestionByUid(TESTING_QUESTION_UID).getAnswers().size())
+                () -> assertNotNull(questionDao.getQuestionByUid(2)),
+                () -> assertEquals(EXPECTED_ANSWERS_COUNT, questionDao.getQuestionByUid(TESTING_QUESTION_UID).getAnswers().size())
         );
     }
 }

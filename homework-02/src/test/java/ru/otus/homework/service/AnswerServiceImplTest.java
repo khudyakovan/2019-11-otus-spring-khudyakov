@@ -14,10 +14,11 @@ class AnswerServiceImplTest {
     private static AnswerServiceImpl answerService;
     private static AnswerDaoImpl answerDao;
     private static Resource answerFilePath;
+    private static final String LANGUAGE_POSTFIX = "ru";
 
     @BeforeAll
     static void setUp() {
-        answerFilePath = new ClassPathResource("answers.csv");
+        answerFilePath = new ClassPathResource("answers_" + LANGUAGE_POSTFIX + ".csv");
         answerDao = new AnswerDaoImpl(answerFilePath);
         answerService = new AnswerServiceImpl(answerDao);
     }

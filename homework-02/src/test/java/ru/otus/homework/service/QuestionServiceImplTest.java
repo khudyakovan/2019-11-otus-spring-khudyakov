@@ -18,12 +18,13 @@ class QuestionServiceImplTest {
     private static Resource answerFilePath;
     private static QuestionDaoImpl questionDao;
     private static Resource questionFilePath;
+    private static final String LANGUAGE_POSTFIX = "ru";
 
     @BeforeAll
     static void setUp() {
-        answerFilePath = new ClassPathResource("answers.csv");
+        answerFilePath = new ClassPathResource("answers_" + LANGUAGE_POSTFIX + ".csv");
         answerDao = new AnswerDaoImpl(answerFilePath);
-        questionFilePath = new ClassPathResource("questions.csv");
+        questionFilePath = new ClassPathResource("questions_" + LANGUAGE_POSTFIX + ".csv");
         questionDao = new QuestionDaoImpl(questionFilePath, answerDao);
 
         questionService = new QuestionServiceImpl(questionDao);

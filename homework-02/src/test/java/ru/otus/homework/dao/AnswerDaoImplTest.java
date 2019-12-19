@@ -16,10 +16,11 @@ class AnswerDaoImplTest {
     final int TESTING_QUESTION_UID = 1;
     final int EXPECTED_ANSWERS_COUNT = 4;
     final int CORRECT_ANSWER = 3;
+    private static final String LANGUAGE_POSTFIX = "en";
 
     @BeforeAll
     static void setup(){
-        answerFilePath = new ClassPathResource("answers.csv");
+        answerFilePath = new ClassPathResource("answers_" + LANGUAGE_POSTFIX + ".csv");
         answerDao = new AnswerDaoImpl(answerFilePath);
     }
 
