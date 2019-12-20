@@ -9,50 +9,48 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionDaoImpl implements QuestionDao{
+public class QuestionDaoImpl implements QuestionDao {
 
     private final Resource questionFilePath;
     private final AnswerDao answerDao;
     private static final String SEPARATOR = ";";
+    private List<Question> questions;
 
     public QuestionDaoImpl(Resource questionFilePath, AnswerDao answerDao) {
         this.questionFilePath = questionFilePath;
         this.answerDao = answerDao;
+        this.setQuestionsList();
     }
 
     @Override
     public List<Question> getAllQuestions() {
-
-        String nextLine;
-        List<Question> questions = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(this.questionFilePath.getFile()))) {
-            while ((nextLine = br.readLine()) != null) {
-                questions.add(this.getQuestion(nextLine));
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return questions;
+        return this.questions;
     }
 
     @Override
     public Question getQuestionByUid(int uid) {
+        return this
+                .questions
+                .stream()
+                .filter(q -> uid == q.getUid())
+                .findAny()
+                .orElse(null);
+
+    }
+
+    private void setQuestionsList() {
         String nextLine;
-        Question question = new Question();
+        this.questions = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(this.questionFilePath.getFile()))) {
             while ((nextLine = br.readLine()) != null) {
-                question = this.getQuestion(nextLine);
-                if(question.getUid() == uid) break;
+                questions.add(this.getQuestion(nextLine));
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return question;
     }
 
-    private Question getQuestion(String line){
+    private Question getQuestion(String line) {
         String[] array = line.split(SEPARATOR);
         Question question = new Question();
         if (array.length == 2) {

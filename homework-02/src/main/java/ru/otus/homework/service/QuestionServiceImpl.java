@@ -12,6 +12,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionDao questionDao;
 
+    @Autowired
     public QuestionServiceImpl(QuestionDao questionDao) {
         this.questionDao = questionDao;
     }
