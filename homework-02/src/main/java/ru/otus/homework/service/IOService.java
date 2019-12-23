@@ -1,7 +1,5 @@
 package ru.otus.homework.service;
 
-import java.util.Scanner;
-
 public interface IOService {
     void printLine(String line);
 
@@ -10,6 +8,4 @@ public interface IOService {
     String readLine();
 
     int readInteger();
-
-    Scanner getCurrentScanner();
 }

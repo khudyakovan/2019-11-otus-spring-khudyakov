@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
-
-import java.util.concurrent.atomic.AtomicInteger;
+import ru.otus.homework.domain.Answer;
+import ru.otus.homework.domain.Question;
 
 @PropertySource("classpath:application.properties")
 @Service
@@ -16,13 +16,14 @@ public class TestingServiceImpl implements TestingService {
     private String anonymousUserName;
 
     @Autowired
-    public TestingServiceImpl(IOService ioService, QuestionService questionService) {
+    public TestingServiceImpl(IOService ioService, QuestionService questionService,
+                              @Value("${application.anonymousUserName}") String anonymousUserName) {
         this.ioService = ioService;
         this.questionService = questionService;
+        this.anonymousUserName = anonymousUserName;
     }
 
-    @Override
-    public String greeting(IOService ioService) {
+    private String greeting(IOService ioService) {
         ioService.printLocalizedMessage("greeting.getUser", new String[]{});
         String userName = ioService.readLine();
         if (userName.isBlank()) {
@@ -37,43 +38,36 @@ public class TestingServiceImpl implements TestingService {
         //Print greeting
         String userName = this.greeting(ioService);
         //Print questions
-        AtomicInteger correctAnswersCount = new AtomicInteger(0);
-        questionService.getAllQuestions().forEach(question -> {
-            AtomicInteger correctAnswerNumber = new AtomicInteger(0);
+        int correctAnswersCount = 0;
+        for (Question question : questionService.getAllQuestions()) {
+            int correctAnswerNumber = 0;
             ioService.printLine(question.getQuestion());
             //Print possible answers
-            question.getAnswers().forEach(a -> {
-                if (a.isCorrect()) {
-                    correctAnswerNumber.set(a.getAnswerNumber());
+            for (Answer answer : question.getAnswers()) {
+                if (answer.isCorrect()) {
+                    correctAnswerNumber = answer.getAnswerNumber();
                 }
-                ioService.printLine(String.format("   %s. %s.", a.getAnswerNumber(), a.getAnswer()));
-            });
-            gettingAnswers(ioService, correctAnswerNumber, correctAnswersCount);
-        });
+                ioService.printLine(String.format("   %s. %s.",
+                        answer.getAnswerNumber(),
+                        answer.getAnswer()));
+            }
+            correctAnswersCount = gettingAnswers(ioService, correctAnswerNumber, correctAnswersCount);
+        }
         //Print the testing result
         sayGoodbye(userName, correctAnswersCount);
     }
 
-    @Override
-    public void gettingAnswers(IOService ioService, AtomicInteger correctAnswerNumber, AtomicInteger correctAnswersCount) {
+    private int gettingAnswers(IOService ioService, int correctAnswerNumber, int correctAnswersCount) {
         ioService.printLocalizedMessage("gettingAnswers.getUserAnswer", new String[]{});
-        while (!ioService.getCurrentScanner().hasNextInt()) {
-            ioService.printLocalizedMessage("gettingAnswers.wrongAnswer", new String[]{});
-            ioService.getCurrentScanner().next();
+        if (correctAnswerNumber == ioService.readInteger()) {
+            correctAnswersCount++;
         }
-        if (correctAnswerNumber.get() == ioService.readInteger())
-            correctAnswersCount.getAndIncrement();
+        return correctAnswersCount;
     }
 
-    @Override
-    public void sayGoodbye(String userName, AtomicInteger correctAnswersCount) {
+    private void sayGoodbye(String userName, int correctAnswersCount) {
         ioService.printLocalizedMessage("sayGoodbye.thankYou", new String[]{userName});
-        ioService.printLocalizedMessage("sayGoodbye.result", new String[]{correctAnswersCount.toString()});
+        ioService.printLocalizedMessage("sayGoodbye.result",
+                new String[]{String.valueOf(correctAnswersCount)});
     }
-
-    @Value("${application.anonymousUserName}")
-    private void setAnonymousUserName(String name) {
-        anonymousUserName = name;
-    }
-
 }

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -14,11 +15,12 @@ public class IOServiceImpl implements IOService {
 
     private final Scanner scanner = new Scanner(System.in);
     private final MessageSource messageSource;
-    private Locale currentLocale;
+    private final Locale currentLocale;
 
     @Autowired
-    public IOServiceImpl(MessageSource messageSource) {
+    public IOServiceImpl(MessageSource messageSource, @Value("${application.language}") String language, @Value("${application.country}") String country) {
         this.messageSource = messageSource;
+        currentLocale = new Locale(language, country);
     }
 
     @Override
@@ -40,16 +42,10 @@ public class IOServiceImpl implements IOService {
 
     @Override
     public int readInteger() {
+        while (!scanner.hasNextInt()) {
+            this.printLocalizedMessage("gettingAnswers.wrongAnswer", new String[]{});
+            scanner.next();
+        }
         return scanner.nextInt();
-    }
-
-    @Override
-    public Scanner getCurrentScanner() {
-        return scanner;
-    }
-
-    @Autowired
-    private void setLocale(@Value("${application.language}") String language, @Value("${application.country}") String country) {
-        currentLocale = new Locale(language, country);
     }
 }
