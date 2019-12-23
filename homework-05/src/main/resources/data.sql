@@ -21,7 +21,7 @@
 
 LOCK TABLES `tbl_authors` WRITE;
 /*!40000 ALTER TABLE `tbl_authors` DISABLE KEYS */;
-INSERT INTO `tbl_authors` VALUES (31,'Suzanne Collins',NULL),(32,'Joanne Rowling',NULL),(33,' Mary GrandPré',NULL),(34,'Stephenie Meyer',NULL),(35,'Harper Lee',NULL),(36,'Scott Fitzgerald',NULL),(37,'John Green',NULL),(38,'John Tolkien',NULL),(39,'Jerome Salinger',NULL),(40,'Dan Brown',NULL),(41,'Jane Austen',NULL),(42,'Khaled Hosseini',NULL),(43,'Veronica Roth',NULL),(44,'George Orwell',NULL),(45,' Erich Fromm',NULL),(46,' Celâl Üster',NULL),(48,'Anne Frank',NULL),(49,'Eleanor Roosevelt',NULL),(50,'Barbara Mooyaart-Doubleday',NULL),(51,'Stieg Larsson',NULL),(52,' Reg Keeland',NULL),(55,'Reg Keeland',NULL),(56,'Rufus Beck',NULL);
+INSERT INTO `tbl_authors` VALUES (31,'Suzanne Collins',NULL),(32,'Joanne Rowling',NULL),(33,' Mary GrandPré',NULL),(34,'Stephenie Meyer',NULL),(35,'Harper Lee',NULL),(36,'Scott Fitzgerald',NULL),(37,'John Green',NULL),(38,'John Tolkien',NULL),(39,'Jerome Salinger',NULL),(40,'Dan Brown',NULL),(41,'Jane Austen',NULL),(42,'Khaled Hosseini',NULL),(43,'Veronica Roth',NULL),(44,'George Orwell',NULL),(45,'Erich Fromm',NULL),(46,'Celâl Üster',NULL),(48,'Anne Frank',NULL),(49,'Eleanor Roosevelt',NULL),(50,'Barbara Mooyaart-Doubleday',NULL),(51,'Stieg Larsson',NULL),(55,'Reg Keeland',NULL),(56,'Rufus Beck',NULL);
 /*!40000 ALTER TABLE `tbl_authors` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -63,7 +63,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `tbl_book_author` WRITE;
 /*!40000 ALTER TABLE `tbl_book_author` DISABLE KEYS */;
-INSERT INTO `tbl_book_author` VALUES (5,15,46),(6,15,45),(7,4,33),(8,18,52),(9,17,48),(10,17,50),(11,11,40),(12,17,49),(13,15,44),(14,16,44),(15,6,35),(16,12,41),(17,10,39),(18,4,32),(19,20,32),(20,8,37),(21,9,38),(22,21,38),(23,13,42),(24,20,55),(25,20,56),(26,7,36),(27,5,34),(28,18,51),(29,3,31),(30,19,31),(31,22,31),(32,14,43);
+INSERT INTO `tbl_book_author` VALUES (5,15,46),(6,15,45),(7,4,33),(8,18,55),(9,17,48),(10,17,50),(11,11,40),(12,17,49),(13,15,44),(14,16,44),(15,6,35),(16,12,41),(17,10,39),(18,4,32),(19,20,32),(20,8,37),(21,9,38),(22,21,38),(23,13,42),(24,20,55),(25,20,56),(26,7,36),(27,5,34),(28,18,51),(29,3,31),(30,19,31),(31,22,31),(32,14,43);
 /*!40000 ALTER TABLE `tbl_book_author` ENABLE KEYS */;
 UNLOCK TABLES;
 

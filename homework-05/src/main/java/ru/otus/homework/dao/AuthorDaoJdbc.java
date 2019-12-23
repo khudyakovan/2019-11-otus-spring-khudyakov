@@ -3,6 +3,7 @@ package ru.otus.homework.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.stereotype.Repository;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
 
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class AuthorDaoJdbc implements AuthorDao {
 
     private final NamedParameterJdbcOperations jdbc;

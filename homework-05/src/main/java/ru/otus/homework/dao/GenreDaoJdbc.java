@@ -2,6 +2,7 @@ package ru.otus.homework.dao;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.stereotype.Repository;
 import ru.otus.homework.domain.Genre;
 
 import java.sql.ResultSet;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class GenreDaoJdbc implements GenreDao {
 
     private final NamedParameterJdbcOperations jdbc;

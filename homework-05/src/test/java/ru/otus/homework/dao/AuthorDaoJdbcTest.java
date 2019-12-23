@@ -17,8 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(AuthorDaoJdbc.class)
 class AuthorDaoJdbcTest {
 
-    private static final int EXPECTED_AUTHORS_COUNT = 23;
-    private static final int EXPECTED_AUTHORS_COUNT_AFTER_INSERT = 24;
+    private static final int EXPECTED_AUTHORS_COUNT = 22;
+    private static final int EXPECTED_AUTHORS_COUNT_AFTER_INSERT = 23;
     private static final long TEST_AUTHOR_UID = 39;
     private static final String TEST_AUTHOR_NAME = "Test author full name";
     private static final String EXPECTED_AUTHOR_NAME = "Jerome Salinger";
