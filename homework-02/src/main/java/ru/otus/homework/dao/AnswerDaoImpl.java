@@ -8,44 +8,31 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AnswerDaoImpl implements AnswerDao {
 
     private final Resource answerFilePath;
     private static final String SEPARATOR = ";";
+    private List<Answer> answers;
 
     public AnswerDaoImpl(Resource answerFilePath) {
+
         this.answerFilePath = answerFilePath;
+        this.setAnswerList();
     }
 
     @Override
     public List<Answer> getAllAnswers() {
-        String nextLine;
-        List<Answer> answers = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(this.answerFilePath.getFile()))) {
-            while ((nextLine = br.readLine()) != null) {
-                answers.add(this.getAnswer(nextLine));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return answers;
+        return this.answers;
     }
 
     @Override
     public List<Answer> getAllAnswersByQuestionUid(int questionUid) {
-        String nextLine;
-        List<Answer> answers = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(this.answerFilePath.getFile()))) {
-            while ((nextLine = br.readLine()) != null) {
-                Answer answerBean = this.getAnswer(nextLine);
-                if (answerBean.getQuestionUid() == questionUid)
-                    answers.add(answerBean);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return answers;
+        return this.answers
+                .stream()
+                .filter(a -> questionUid == a.getQuestionUid())
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -57,6 +44,18 @@ public class AnswerDaoImpl implements AnswerDao {
                 .map(Answer::isCorrect)
                 .findAny()
                 .orElse(false);
+    }
+
+    private void setAnswerList() {
+        String nextLine;
+        answers = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(this.answerFilePath.getFile()))) {
+            while ((nextLine = br.readLine()) != null) {
+                answers.add(this.getAnswer(nextLine));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private Answer getAnswer(String line) {
