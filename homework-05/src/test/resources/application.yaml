@@ -4,6 +4,6 @@ spring:
     username: otus
     password: javaclub
     driver-class-name: com.mysql.cj.jdbc.Driver
-    initialization-mode: always
+    initialization-mode: never
     schema: schema.sql
     data: data.sql

@@ -9,8 +9,5 @@ import ru.otus.homework.dao.BookDao;
 public class Main {
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(Main.class);
-        BookDao bookDao = context.getBean(BookDao.class);
-
-        System.out.println(bookDao.count());
     }
 }

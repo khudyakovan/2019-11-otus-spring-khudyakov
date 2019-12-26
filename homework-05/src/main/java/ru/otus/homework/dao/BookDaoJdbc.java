@@ -26,7 +26,7 @@ public class BookDaoJdbc implements BookDao {
         final Map<String, Object> params = new HashMap<>(3);
         params.put("title", book.getTitle());
         params.put("isbn", book.getIsbn());
-        params.put("publication_year", book.getPublication_year());
+        params.put("publication_year", book.getPublicationYear());
         jdbc.update("insert into tbl_books(title, isbn, publication_year) " +
                 "values(:title, :isbn, :publication_year)"
                 ,params);
@@ -37,7 +37,7 @@ public class BookDaoJdbc implements BookDao {
         params.put("uid", book.getUid());
         params.put("title", book.getTitle());
         params.put("isbn", book.getIsbn());
-        params.put("publication_year", book.getPublication_year());
+        params.put("publication_year", book.getPublicationYear());
         jdbc.update("update tbl_books set title = :title, " +
                         "isbn = :isbn, publication_year = :publication_year " +
                         "where uid = :uid"

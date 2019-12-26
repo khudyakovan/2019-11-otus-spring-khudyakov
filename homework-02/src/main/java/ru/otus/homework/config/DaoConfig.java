@@ -20,22 +20,14 @@ public class DaoConfig {
     private final String ANSWERS_NAME = "answers";
 
     @Bean
-    public QuestionDao questionDao() {
-        return new QuestionDaoImpl(new ClassPathResource(this.questionsFileName), answerDao());
+    public QuestionDao questionDao(@Value("${application.language}") String language) {
+        this.questionsFileName = QUESTIONS_NAME + "_" + language + ".csv";
+        return new QuestionDaoImpl(new ClassPathResource(this.questionsFileName), answerDao(language));
     }
 
     @Bean
-    public AnswerDao answerDao() {
-        return new AnswerDaoImpl(new ClassPathResource(this.answersFileName));
-    }
-
-    @Value("${application.language}")
-    public void setQuestionsFileName(String language) {
-        this.questionsFileName = QUESTIONS_NAME + "_" + language + ".csv";
-    }
-
-    @Value("${application.language}")
-    public void setAnswersFileName(String language) {
+    public AnswerDao answerDao(@Value("${application.language}") String language) {
         this.answersFileName = ANSWERS_NAME + "_" + language + ".csv";
+        return new AnswerDaoImpl(new ClassPathResource(this.answersFileName));
     }
 }

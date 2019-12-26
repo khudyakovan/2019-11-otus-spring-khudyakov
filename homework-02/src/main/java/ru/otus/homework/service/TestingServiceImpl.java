@@ -17,26 +17,26 @@ public class TestingServiceImpl implements TestingService {
 
     @Autowired
     public TestingServiceImpl(IOService ioService, QuestionService questionService,
-                              @Value("${application.anonymousUserName}") String anonymousUserName) {
+                              @Value("${application.anonymous.username}") String anonymousUserName) {
         this.ioService = ioService;
         this.questionService = questionService;
         this.anonymousUserName = anonymousUserName;
     }
 
-    private String greeting(IOService ioService) {
-        ioService.printLocalizedMessage("greeting.getUser", new String[]{});
+    private String greeting() {
+        ioService.printLocalizedMessage("greeting.getuser", "");
         String userName = ioService.readLine();
         if (userName.isBlank()) {
             userName = anonymousUserName;
-            ioService.printLocalizedMessage("greeting.anonymousInfo", new String[]{anonymousUserName});
+            ioService.printLocalizedMessage("greeting.anonymousinfo", anonymousUserName);
         }
         return userName;
     }
 
     @Override
-    public void testing(IOService ioService, QuestionService questionService) {
+    public void testing() {
         //Print greeting
-        String userName = this.greeting(ioService);
+        String userName = this.greeting();
         //Print questions
         int correctAnswersCount = 0;
         for (Question question : questionService.getAllQuestions()) {
@@ -51,14 +51,14 @@ public class TestingServiceImpl implements TestingService {
                         answer.getAnswerNumber(),
                         answer.getAnswer()));
             }
-            correctAnswersCount = gettingAnswers(ioService, correctAnswerNumber, correctAnswersCount);
+            correctAnswersCount = gettingAnswers(correctAnswerNumber, correctAnswersCount);
         }
         //Print the testing result
         sayGoodbye(userName, correctAnswersCount);
     }
 
-    private int gettingAnswers(IOService ioService, int correctAnswerNumber, int correctAnswersCount) {
-        ioService.printLocalizedMessage("gettingAnswers.getUserAnswer", new String[]{});
+    private int gettingAnswers(int correctAnswerNumber, int correctAnswersCount) {
+        ioService.printLocalizedMessage("gettingAnswers.getuseranswer", "");
         if (correctAnswerNumber == ioService.readInteger()) {
             correctAnswersCount++;
         }
@@ -66,8 +66,7 @@ public class TestingServiceImpl implements TestingService {
     }
 
     private void sayGoodbye(String userName, int correctAnswersCount) {
-        ioService.printLocalizedMessage("sayGoodbye.thankYou", new String[]{userName});
-        ioService.printLocalizedMessage("sayGoodbye.result",
-                new String[]{String.valueOf(correctAnswersCount)});
+        ioService.printLocalizedMessage("goodbye.thankyou", userName);
+        ioService.printLocalizedMessage("goodbye.result", String.valueOf(correctAnswersCount));
     }
 }

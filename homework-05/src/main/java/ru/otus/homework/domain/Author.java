@@ -6,6 +6,7 @@ public class Author {
     private long uid;
     private String fullName;
     private String penName;
+    private List<Book> books;
 
     public Author(String fullName, String penName) {
         this.fullName = fullName;
@@ -16,6 +17,13 @@ public class Author {
         this.uid = uid;
         this.fullName = fullName;
         this.penName = penName;
+    }
+
+    public Author(long uid, String fullName, String penName, List<Book> books) {
+        this.uid = uid;
+        this.fullName = fullName;
+        this.penName = penName;
+        this.books = books;
     }
 
     public long getUid() {
@@ -40,5 +48,18 @@ public class Author {
 
     public void setPenName(String penName) {
         this.penName = penName;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
+    @Override
+    public String toString() {
+        return fullName;
     }
 }
