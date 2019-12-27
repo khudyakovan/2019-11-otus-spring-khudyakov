@@ -41,16 +41,16 @@ public class AuthorServiceImpl implements AuthorService {
     public Author getByUid(long uid) {
         Author author = authorDao.getByUid(uid);
         List<Book> books = bookAuthorDao.getBooksByAuthorUid(uid);
-        books.stream().forEach(book -> {
-            book.setGenres(bookGenreDao.getGenresByBookUid(book.getUid()));
-        });
+        books.forEach(book -> book.setGenres(bookGenreDao.getGenresByBookUid(book.getUid())));
         author.setBooks(books);
         return author;
     }
 
     @Override
     public List<Author> getAll() {
-        return authorDao.getAll();
+        List<Author> authors = authorDao.getAll();
+        authors.forEach(author -> author.setBooks(bookAuthorDao.getBooksByAuthorUid(author.getUid())));
+        return authors;
     }
 
     @Override

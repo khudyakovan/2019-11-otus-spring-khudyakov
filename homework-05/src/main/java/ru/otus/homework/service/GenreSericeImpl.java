@@ -44,7 +44,9 @@ public class GenreSericeImpl implements GenreService {
 
     @Override
     public List<Genre> getAll() {
-        return genreDao.getAll();
+        List<Genre> genres = genreDao.getAll();
+        genres.forEach(genre -> genre.setBooks(bookGenreDaoDao.getBooksByGenreUid(genre.getUid())));
+        return genres;
     }
 
     @Override

@@ -10,6 +10,10 @@ public class Book {
     private List<Genre> genres;
     private List<Author> authors;
 
+    public Book(){
+
+    }
+
     public Book(String title, long isbn, int publicationYear) {
         this.title = title;
         this.isbn = isbn;
@@ -82,13 +86,6 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
-                "uid=" + uid +
-                ", title='" + title + '\'' +
-                ", isbn=" + isbn +
-                ", publication_year=" + publicationYear +
-                ", genres=" + genres +
-                ", authors=" + authors +
-                '}';
+        return title;
     }
 }

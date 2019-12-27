@@ -7,3 +7,9 @@ spring:
     initialization-mode: always
     schema: schema.sql
     data: data.sql
+shell:
+  out:
+    info: CYAN
+    success: GREEN
+    warning: YELLOW
+    error: RED
