@@ -24,13 +24,45 @@ public class BookAuthorDaoJdbc implements BookAuthorDao {
     }
 
     @Override
+    public void insertAuthorsByBookUid(long bookUid, List<Author> authors) {
+        if (authors == null){
+            return;
+        }
+        authors.forEach(author -> {
+            Map<String, Object> params = new HashMap<>(2);
+            params.put("bookUid", bookUid);
+            params.put("authorUid", author.getUid());
+            jdbc.update("insert into tbl_book_author(book_uid, author_uid) values(:bookUid, :authorUid)", params);
+        });
+    }
+
+    @Override
+    public void editAuthorsByBookUid(long bookUid, List<Author> authors) {
+        final Map<String, Object> params = new HashMap<>(1);
+        params.put("bookUid", bookUid);
+        jdbc.update("delete from tbl_book_author where book_uid = :bookUid", params);
+        this.insertAuthorsByBookUid(bookUid, authors);
+    }
+
+    @Override
+    public void deleteAuthorsByBookUid(long bookUid, List<Author> authors) {
+        authors.forEach(author -> {
+            Map<String, Object> params = new HashMap<>(2);
+            params.put("bookUid", bookUid);
+            params.put("authorUid", author.getUid());
+            jdbc.update("delete from tbl_book_author where book_uid = :bookUid and author_uid = :authorUid", params);
+        });
+    }
+
+    @Override
     public List<Book> getBooksByAuthorUid(long authorUid) {
         final Map<String, Object> params = new HashMap<>(1);
         params.put("authorUid", authorUid);
         return jdbc.query("select b.uid, b.title, b.isbn, b.publication_year from tbl_book_author ba\n" +
                 "join tbl_authors a on ba.author_uid = a.uid\n" +
                 "join tbl_books b on ba.book_uid = b.uid\n" +
-                "where a.uid = :authorUid", params, new BookMapper());    }
+                "where a.uid = :authorUid", params, new BookMapper());
+    }
 
     @Override
     public List<Author> getAuthorsByBookUid(long bookUid) {

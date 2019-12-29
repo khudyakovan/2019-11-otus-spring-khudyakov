@@ -1,11 +1,11 @@
-package ru.otus.homework.dao;
+package ru.otus.homework.service;
 
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Genre;
 
 import java.util.List;
 
-public interface BookGenreDao {
+public interface BookGenreService {
 
     void insertGenresByBookUid(long bookUid, List<Genre> genres);
 

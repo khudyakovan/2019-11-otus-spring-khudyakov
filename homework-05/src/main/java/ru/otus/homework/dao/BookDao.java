@@ -5,7 +5,8 @@ import ru.otus.homework.domain.Book;
 import java.util.List;
 
 public interface BookDao {
-    void insert(Book book);
+
+    Book insert(Book book);
 
     void edit(Book book);
 

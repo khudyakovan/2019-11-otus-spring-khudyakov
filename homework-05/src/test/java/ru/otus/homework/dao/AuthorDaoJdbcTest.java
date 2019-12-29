@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import ru.otus.homework.domain.Author;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Dao для работы со справочником авторов")
@@ -33,6 +32,7 @@ class AuthorDaoJdbcTest {
                 TEST_AUTHOR_NAME,
                 TEST_AUTHOR_NAME);
         jdbc.insert(author);
+        assertThat(author.getUid()).isGreaterThan(0);
         assertThat(jdbc.count()).isEqualTo(EXPECTED_AUTHORS_COUNT_AFTER_INSERT);
     }
 

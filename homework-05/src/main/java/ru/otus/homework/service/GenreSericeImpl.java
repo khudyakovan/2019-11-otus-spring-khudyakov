@@ -21,8 +21,8 @@ public class GenreSericeImpl implements GenreService {
     }
 
     @Override
-    public void insert(Genre genre) {
-        genreDao.insert(genre);
+    public Genre insert(Genre genre) {
+        return genreDao.insert(genre);
     }
 
     @Override

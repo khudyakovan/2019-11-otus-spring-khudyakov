@@ -10,6 +10,7 @@ import org.springframework.shell.table.BorderStyle;
 import org.springframework.shell.table.TableBuilder;
 import org.springframework.shell.table.TableModel;
 
+import javax.validation.constraints.NotNull;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -34,24 +35,11 @@ public class ShellHelper {
         this.terminal = terminal;
     }
 
-    public String getColored(String message, PromptColor color) {
+    public String getColored(String message, @NotNull PromptColor color) {
         return (new AttributedStringBuilder())
                 .append(message, AttributedStyle.DEFAULT.foreground(color.toJlineAttributedStyle()))
                 .toAnsi();
     }
-
-//    public String getInfoMessage(String message) {
-//        return getColored(message, PromptColor.valueOf(infoColor));
-//    }
-//
-//    public String getSuccessMessage(String message) {
-//        return getColored(message, PromptColor.valueOf(successColor));
-//    }
-//
-//    public String getWarningMessage(String message) {
-//        return getColored(message, PromptColor.valueOf(warningColor));
-//    }
-
 
     public void print(String message) {
         print(message, null);

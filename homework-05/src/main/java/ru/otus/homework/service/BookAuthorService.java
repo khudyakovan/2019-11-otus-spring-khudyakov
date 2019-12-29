@@ -1,11 +1,11 @@
-package ru.otus.homework.dao;
+package ru.otus.homework.service;
 
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
 
 import java.util.List;
 
-public interface BookAuthorDao {
+public interface BookAuthorService {
     void insertAuthorsByBookUid(long bookUid, List<Author> authors);
 
     void editAuthorsByBookUid(long bookUid, List<Author> authors);

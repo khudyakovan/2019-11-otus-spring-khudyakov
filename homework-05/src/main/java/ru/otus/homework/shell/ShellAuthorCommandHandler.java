@@ -1,6 +1,7 @@
 package ru.otus.homework.shell;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.BookService;
@@ -8,6 +9,7 @@ import ru.otus.homework.service.GenreService;
 
 import java.util.LinkedHashMap;
 
+@ShellComponent
 public class ShellAuthorCommandHandler {
     private final BookService bookService;
     private final AuthorService authorService;
