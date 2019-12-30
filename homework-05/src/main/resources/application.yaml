@@ -1,14 +1,13 @@
 application:
-  language: en
-  country: EN
-
+  language: ru
+  country: RU
 spring:
   datasource:
     url: jdbc:mysql://localhost/library?serverTimezone=Europe/Moscow
     username: otus
     password: javaclub
     driver-class-name: com.mysql.cj.jdbc.Driver
-    initialization-mode: never
+    initialization-mode: always
     schema: schema.sql
     data: data.sql
 shell:

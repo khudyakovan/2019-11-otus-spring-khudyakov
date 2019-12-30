@@ -9,13 +9,13 @@ import ru.otus.homework.domain.Genre;
 import java.util.List;
 
 @Service
-public class GenreSericeImpl implements GenreService {
+public class GenreServiceImpl implements GenreService {
 
     private final GenreDao genreDao;
     private final BookGenreDao bookGenreDaoDao;
 
     @Autowired
-    public GenreSericeImpl(GenreDao genreDao, BookGenreDao bookDao) {
+    public GenreServiceImpl(GenreDao genreDao, BookGenreDao bookDao) {
         this.genreDao = genreDao;
         this.bookGenreDaoDao = bookDao;
     }

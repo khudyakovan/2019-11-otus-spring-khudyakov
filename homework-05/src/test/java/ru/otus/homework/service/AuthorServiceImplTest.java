@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
 import ru.otus.homework.domain.Author;
@@ -23,7 +22,7 @@ class AuthorServiceImplTest {
     private final int EXPECTED_BOOKS_COUNT = 1;
 
     @Autowired
-    private AuthorService authorService;
+    private AuthorServiceImpl authorService;
 
     @DisplayName("Выборка автора по Uid и его книг")
     @Test

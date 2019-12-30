@@ -5,17 +5,21 @@ import org.jline.utils.AttributedStringBuilder;
 import org.jline.utils.AttributedStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.shell.table.BeanListTableModel;
 import org.springframework.shell.table.BorderStyle;
 import org.springframework.shell.table.TableBuilder;
 import org.springframework.shell.table.TableModel;
+import org.springframework.stereotype.Component;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.service.AuthorService;
+import ru.otus.homework.service.TranslationService;
 
 import javax.validation.constraints.NotNull;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+@Component
 public class ShellHelper {
 
     private final String infoColor;
@@ -24,25 +28,24 @@ public class ShellHelper {
     private final String errorColor;
     private final Terminal terminal;
     private final InputReader inputReader;
-
-    final String PROMPT_CHOOSE_AUTHOR = "Выберите Uid автора книги из справочника выше";
-    final String PROMPT_ADDITIONAL_AUTHOR = "Добавить соавтора? Y-да, любая другая клавиша - нет";
-
-    final String WARNING_INCORRECT_INPUT = "Некорректный ввод. Введите Uid";
+    private final TranslationService translationService;
 
     @Autowired
-    public ShellHelper(String infoColor,
-                       String successColor,
-                       String warningColor,
-                       String errorColor,
-                       Terminal terminal,
-                       InputReader inputReader) {
+    public ShellHelper(@Lazy Terminal terminal,
+                       @Value("${shell.out.info}") String infoColor,
+                       @Value("${shell.out.success}") String successColor,
+                       @Value("${shell.out.warning}") String warningColor,
+                       @Value("${shell.out.error}") String errorColor,
+                       InputReader inputReader,
+                       TranslationService translationService){
+
         this.infoColor = infoColor;
         this.successColor = successColor;
         this.warningColor = warningColor;
         this.errorColor = errorColor;
         this.terminal = terminal;
         this.inputReader = inputReader;
+        this.translationService = translationService;
     }
 
     public String getColored(String message, @NotNull PromptColor color) {
@@ -55,7 +58,17 @@ public class ShellHelper {
         print(message, null);
     }
 
+    public void printTranslated(String property) {
+        String message = translationService.getTranslation(property,"");
+        print(message, null);
+    }
+
     public void printSuccess(String message) {
+        print(message, PromptColor.valueOf(successColor));
+    }
+
+    public void printSuccessTranslated(String property) {
+        String message = translationService.getTranslation(property,"");
         print(message, PromptColor.valueOf(successColor));
     }
 
@@ -63,11 +76,26 @@ public class ShellHelper {
         print(message, PromptColor.valueOf(infoColor));
     }
 
+    public void printInfoTranslated(String property) {
+        String message = translationService.getTranslation(property,"");
+        print(message, PromptColor.valueOf(infoColor));
+    }
+
     public void printWarning(String message) {
         print(message, PromptColor.valueOf(warningColor));
     }
 
+    public void printWarningTranslated(String property) {
+        String message = translationService.getTranslation(property,"");
+        print(message, PromptColor.valueOf(warningColor));
+    }
+
     public void printError(String message) {
+        print(message, PromptColor.valueOf(errorColor));
+    }
+
+    public void printErrorTranslated(String property) {
+        String message = translationService.getTranslation(property,"");
         print(message, PromptColor.valueOf(errorColor));
     }
 
@@ -88,7 +116,7 @@ public class ShellHelper {
         print(tableBuilder.build().render(180), null);
     }
 
-    public List<Author> getAuthorsOfBookFromTheList(List<Author> authors, AuthorService authorService) {
+    public List<Author> getAuthorsFromList(List<Author> authors, AuthorService authorService) {
         //Вывод справочника авторов для выбора
         if (authors != null && authors.isEmpty()) {
             LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
@@ -98,23 +126,23 @@ public class ShellHelper {
         }
         Long uid = null;
         do {
-            String userInput = inputReader.prompt(PROMPT_CHOOSE_AUTHOR, "");
+            String userInput = inputReader.prompt(translationService.getTranslation("prompt.choose.author", ""), "");
             if (isStringLong(userInput)) {
                 uid = Long.parseLong(userInput);
             } else {
-                printWarning(WARNING_INCORRECT_INPUT);
+                printError(translationService.getTranslation("error.incorrect.input", ""));
             }
         }
         while (uid == null);
         authors.add(authorService.getByUid(uid));
-        String userInput = inputReader.prompt(PROMPT_ADDITIONAL_AUTHOR, "");
+        String userInput = inputReader.prompt(translationService.getTranslation("prompt.additional.author", ""), "");
         if (("Y").equals(userInput.toUpperCase())) {
-            this.getAuthorsOfBookFromTheList(authors, authorService);
+            this.getAuthorsFromList(authors, authorService);
         }
         return authors;
     }
 
-    private boolean isStringLong(String s) {
+    public boolean isStringLong(String s) {
         try {
             Long.parseLong(s);
             return true;

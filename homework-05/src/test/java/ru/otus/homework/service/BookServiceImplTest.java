@@ -23,7 +23,7 @@ class BookServiceImplTest {
     private final int EXPECTED_GENRES_COUNT = 3;
 
     @Autowired
-    private BookService bookService;
+    private BookServiceImpl bookService;
 
     @DisplayName("Получает книгу, ее жанр и авторов по Uid")
     @Test
@@ -33,7 +33,9 @@ class BookServiceImplTest {
                 () -> assertNotNull(book),
                 () -> assertEquals(EXPECTED_AUTHORS_COUNT, book.getAuthors().size()),
                 () -> assertEquals(EXPECTED_GENRES_COUNT, book.getGenres().size()),
-                () -> assertEquals(EXPECTED_BOOK_TITLE, book.getTitle())
+                () -> assertEquals(EXPECTED_BOOK_TITLE, book.getTitle()),
+                () -> assertNotNull(book.getGenres()),
+                () -> assertNotNull(book.getAuthors())
         );
     }
 }

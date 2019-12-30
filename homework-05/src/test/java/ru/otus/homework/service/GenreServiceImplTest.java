@@ -15,14 +15,14 @@ import static org.junit.jupiter.api.Assertions.*;
         InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
         ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT + ".enabled=false"
 })
-class GenreSericeImplTest {
+class GenreServiceImplTest {
 
     private final long TEST_GENRE_UID = 2;
     private final int EXPECTED_BOOKS_COUNT = 5;
     private final String EXPECTED_GENRE_NAME = "Science fiction";
 
     @Autowired
-    private GenreService genreService;
+    private GenreServiceImpl genreService;
 
     @DisplayName("Выборка жанра по Uid и книг этого жанра")
     @Test
