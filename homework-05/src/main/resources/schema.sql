@@ -42,8 +42,8 @@ CREATE TABLE `tbl_book_author` (
   PRIMARY KEY (`uid`),
   KEY `tbl_book_author_book_FK` (`book_uid`),
   KEY `tbl_book_author_author_FK` (`author_uid`),
-  CONSTRAINT `tbl_book_author_author_FK` FOREIGN KEY (`author_uid`) REFERENCES `tbl_authors` (`uid`) ON RESTRICT RESTRICT ON UPDATE CASCADE,
-  CONSTRAINT `tbl_book_author_book_FK` FOREIGN KEY (`book_uid`) REFERENCES `tbl_books` (`uid`) ON DELETE RESTRICT ON UPDATE CASCADE
+  CONSTRAINT `tbl_book_author_author_FK` FOREIGN KEY (`author_uid`) REFERENCES `tbl_authors` (`uid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `tbl_book_author_book_FK` FOREIGN KEY (`book_uid`) REFERENCES `tbl_books` (`uid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8 COMMENT='Регистр сопоставлений книги ее авторов';
 
 CREATE TABLE `tbl_book_genre` (
@@ -53,6 +53,6 @@ CREATE TABLE `tbl_book_genre` (
   PRIMARY KEY (`uid`),
   KEY `fk_book_genre_idx` (`book_uid`),
   KEY `fk_book_genre_book_idx` (`genre_uid`),
-  CONSTRAINT `fk_book_genre_book` FOREIGN KEY (`book_uid`) REFERENCES `tbl_books` (`uid`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  CONSTRAINT `fk_book_genre_genre` FOREIGN KEY (`genre_uid`) REFERENCES `tbl_genres` (`uid`) ON DELETE RESTRICT ON UPDATE CASCADE
+  CONSTRAINT `fk_book_genre_book` FOREIGN KEY (`book_uid`) REFERENCES `tbl_books` (`uid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_book_genre_genre` FOREIGN KEY (`genre_uid`) REFERENCES `tbl_genres` (`uid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8 COMMENT='Регистр сопоставлений жанра книгам';

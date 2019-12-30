@@ -2,7 +2,11 @@ package ru.otus.homework.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.domain.Book;
 
@@ -22,14 +26,17 @@ public class BookDaoJdbc implements BookDao {
         this.jdbc = jdbc;
     }
 
-    public void insert(Book book) {
-        final Map<String, Object> params = new HashMap<>(3);
-        params.put("title", book.getTitle());
-        params.put("isbn", book.getIsbn());
-        params.put("publication_year", book.getPublication_year());
+    public Book insert(Book book) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("title", book.getTitle())
+                .addValue("isbn", book.getIsbn())
+                .addValue("publication_year", book.getPublicationYear());
         jdbc.update("insert into tbl_books(title, isbn, publication_year) " +
-                "values(:title, :isbn, :publication_year)"
-                ,params);
+                        "values(:title, :isbn, :publication_year)"
+                , params, keyHolder);
+        book.setUid(keyHolder.getKey().longValue());
+        return book;
     }
 
     public void edit(Book book) {
@@ -37,11 +44,11 @@ public class BookDaoJdbc implements BookDao {
         params.put("uid", book.getUid());
         params.put("title", book.getTitle());
         params.put("isbn", book.getIsbn());
-        params.put("publication_year", book.getPublication_year());
+        params.put("publication_year", book.getPublicationYear());
         jdbc.update("update tbl_books set title = :title, " +
                         "isbn = :isbn, publication_year = :publication_year " +
                         "where uid = :uid"
-                ,params);
+                , params);
     }
 
     public void deleteByUid(long uid) {

@@ -2,7 +2,12 @@ package ru.otus.homework.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
 
@@ -12,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class AuthorDaoJdbc implements AuthorDao {
 
     private final NamedParameterJdbcOperations jdbc;
@@ -22,13 +28,16 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public void insert(Author author) {
-        final Map<String, Object> params = new HashMap<>(2);
-        params.put("full_name", author.getFullName());
-        params.put("pen_name", author.getPenName());
+    public Author insert(Author author) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("full_name", author.getFullName())
+                .addValue("pen_name", author.getPenName());
         jdbc.update("insert into tbl_authors(full_name, pen_name) " +
                         "values(:full_name, :pen_name)"
-                , params);
+                , params, keyHolder);
+        author.setUid(keyHolder.getKey().longValue());
+        return author;
     }
 
     @Override

@@ -2,6 +2,7 @@ package ru.otus.homework.dao;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.stereotype.Repository;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Genre;
 
@@ -11,12 +12,46 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class BookGenreDaoJdbc implements BookGenreDao {
 
     private final NamedParameterJdbcOperations jdbc;
 
     public BookGenreDaoJdbc(NamedParameterJdbcOperations jdbc) {
         this.jdbc = jdbc;
+    }
+
+    @Override
+    public void insertGenresByBookUid(long bookUid, List<Genre> genres) {
+        if (genres == null){
+            return;
+        }
+        genres.forEach(genre -> {
+            final Map<String, Object> params = new HashMap<>(2);
+            params.put("bookUid", bookUid);
+            params.put("genreUid", genre.getUid());
+            jdbc.update("insert into tbl_book_genre(book_uid, genre_uid) values(:bookUid, :genreUid)", params);
+        });
+    }
+
+    @Override
+    public void editGenresByBookUid(long bookUid, List<Genre> genres) {
+        genres.forEach(genre -> {
+            final Map<String, Object> params = new HashMap<>(1);
+            params.put("bookUid", bookUid);
+            jdbc.update("delete from tbl_book_genre where book_uid = :bookUid", params);
+        });
+        this.insertGenresByBookUid(bookUid, genres);
+    }
+
+    @Override
+    public void deleteGenresByBookUid(long bookUid, List<Genre> genres) {
+        genres.forEach(genre -> {
+            final Map<String, Object> params = new HashMap<>(2);
+            params.put("bookUid", bookUid);
+            params.put("genreUid", genre.getUid());
+            jdbc.update("delete from tbl_book_genre where book_uid = :bookUid and genre_uid = :genreUid", params);
+        });
     }
 
     @Override

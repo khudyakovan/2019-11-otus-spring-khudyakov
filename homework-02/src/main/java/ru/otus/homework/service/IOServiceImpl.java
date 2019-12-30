@@ -29,7 +29,7 @@ public class IOServiceImpl implements IOService {
     }
 
     @Override
-    public void printLocalizedMessage(String property, String[] args) {
+    public void printLocalizedMessage(String property, String...args) {
         this.printLine(messageSource.getMessage(property,
                 args,
                 this.currentLocale));
@@ -43,7 +43,7 @@ public class IOServiceImpl implements IOService {
     @Override
     public int readInteger() {
         while (!scanner.hasNextInt()) {
-            this.printLocalizedMessage("gettingAnswers.wrongAnswer", new String[]{});
+            this.printLocalizedMessage("gettingAnswers.wronganswer", "");
             scanner.next();
         }
         return scanner.nextInt();

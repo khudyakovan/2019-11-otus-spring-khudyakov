@@ -5,7 +5,7 @@ import ru.otus.homework.domain.Author;
 import java.util.List;
 
 public interface AuthorService {
-    void insert(Author author);
+    Author insert(Author author);
 
     void edit(Author author);
 
