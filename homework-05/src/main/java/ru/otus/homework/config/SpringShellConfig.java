@@ -2,6 +2,7 @@ package ru.otus.homework.config;
 
 import org.jline.reader.LineReader;
 import org.jline.terminal.Terminal;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,9 +18,10 @@ public class SpringShellConfig {
                                    @Value("${shell.out.info}") String infoColor,
                                    @Value("${shell.out.success}") String successColor,
                                    @Value("${shell.out.warning}") String warningColor,
-                                   @Value("${shell.out.error}") String errorColor
+                                   @Value("${shell.out.error}") String errorColor,
+                                   InputReader inputReader
                                    ) {
-        return new ShellHelper(infoColor, successColor, warningColor, errorColor, terminal);
+        return new ShellHelper(infoColor, successColor, warningColor, errorColor, terminal, inputReader);
     }
 
     @Bean

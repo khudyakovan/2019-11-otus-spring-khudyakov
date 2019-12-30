@@ -31,7 +31,7 @@ public class ShellAuthorCommandHandler {
     }
 
     @ShellMethod("Получить список авторов книг в библиотеке")
-    public void getAuthors() {
+    public void showAuthors() {
         LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
         headers.put("uid", "Uid");
         headers.put("fullName", "Author's Full Name");
@@ -49,8 +49,8 @@ public class ShellAuthorCommandHandler {
 //
 //    }
 
-//    @ShellMethod("Удалить автора")
-//    public void deleteAuthor() {
-//
-//    }
+    @ShellMethod("Удалить автора")
+    public void deleteAuthor() {
+        //shellHelper
+    }
 }

@@ -32,7 +32,7 @@ public class ShellGenresCommandHandler {
     }
 
     @ShellMethod("Получить список жанров и книг этого жанра")
-    public void getGenres() {
+    public void showGenres() {
         LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
         headers.put("uid", "Uid");
         headers.put("name", "Genre");

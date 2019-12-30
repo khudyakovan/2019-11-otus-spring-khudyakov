@@ -9,6 +9,8 @@ import org.springframework.shell.table.BeanListTableModel;
 import org.springframework.shell.table.BorderStyle;
 import org.springframework.shell.table.TableBuilder;
 import org.springframework.shell.table.TableModel;
+import ru.otus.homework.domain.Author;
+import ru.otus.homework.service.AuthorService;
 
 import javax.validation.constraints.NotNull;
 import java.util.LinkedHashMap;
@@ -21,18 +23,26 @@ public class ShellHelper {
     private final String warningColor;
     private final String errorColor;
     private final Terminal terminal;
+    private final InputReader inputReader;
+
+    final String PROMPT_CHOOSE_AUTHOR = "Выберите Uid автора книги из справочника выше";
+    final String PROMPT_ADDITIONAL_AUTHOR = "Добавить соавтора? Y-да, любая другая клавиша - нет";
+
+    final String WARNING_INCORRECT_INPUT = "Некорректный ввод. Введите Uid";
 
     @Autowired
     public ShellHelper(String infoColor,
                        String successColor,
                        String warningColor,
                        String errorColor,
-                       Terminal terminal) {
+                       Terminal terminal,
+                       InputReader inputReader) {
         this.infoColor = infoColor;
         this.successColor = successColor;
         this.warningColor = warningColor;
         this.errorColor = errorColor;
         this.terminal = terminal;
+        this.inputReader = inputReader;
     }
 
     public String getColored(String message, @NotNull PromptColor color) {
@@ -76,5 +86,40 @@ public class ShellHelper {
         tableBuilder.addInnerBorder(BorderStyle.oldschool);
         tableBuilder.addHeaderBorder(BorderStyle.oldschool);
         print(tableBuilder.build().render(180), null);
+    }
+
+    public List<Author> getAuthorsOfBookFromTheList(List<Author> authors, AuthorService authorService) {
+        //Вывод справочника авторов для выбора
+        if (authors != null && authors.isEmpty()) {
+            LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
+            headers.put("uid", "Uid");
+            headers.put("fullName", "Author's Full Name");
+            render(authorService.getAll(), headers);
+        }
+        Long uid = null;
+        do {
+            String userInput = inputReader.prompt(PROMPT_CHOOSE_AUTHOR, "");
+            if (isStringLong(userInput)) {
+                uid = Long.parseLong(userInput);
+            } else {
+                printWarning(WARNING_INCORRECT_INPUT);
+            }
+        }
+        while (uid == null);
+        authors.add(authorService.getByUid(uid));
+        String userInput = inputReader.prompt(PROMPT_ADDITIONAL_AUTHOR, "");
+        if (("Y").equals(userInput.toUpperCase())) {
+            this.getAuthorsOfBookFromTheList(authors, authorService);
+        }
+        return authors;
+    }
+
+    private boolean isStringLong(String s) {
+        try {
+            Long.parseLong(s);
+            return true;
+        } catch (NumberFormatException ex) {
+            return false;
+        }
     }
 }
