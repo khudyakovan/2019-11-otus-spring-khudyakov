@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Dao для работы со регистром книг и авторов")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @JdbcTest
-@Import({BookAuthorDaoJdbc.class, AuthorDaoJdbc.class})
+@Import({BookDaoJdbc.class, AuthorDaoJdbc.class})
 class BookAuthorDaoJdbcTest {
 
     private final long BOOK_UID = 15;
@@ -29,7 +29,7 @@ class BookAuthorDaoJdbcTest {
     final long TEST_AUTHOR_2 = 32;
 
     @Autowired
-    private BookAuthorDaoJdbc bookAuthorDaoJdbc;
+    private BookDaoJdbc bookDaoJdbc;
 
     @Autowired
     private AuthorDaoJdbc authorDaoJdbc;
@@ -42,9 +42,9 @@ class BookAuthorDaoJdbcTest {
         authors.add(authorDaoJdbc.getByUid(TEST_AUTHOR_1));
         authors.add(authorDaoJdbc.getByUid(TEST_AUTHOR_2));
 
-        bookAuthorDaoJdbc.insertAuthorsByBookUid(BOOK_UID, authors);
+        authorDaoJdbc.insertAuthorsByBookUid(BOOK_UID, authors);
 
-        authors = bookAuthorDaoJdbc.getAuthorsByBookUid(BOOK_UID);
+        authors = authorDaoJdbc.getAuthorsByBookUid(BOOK_UID);
         assertThat(!authors.isEmpty());
         assertThat(authors.size()).isEqualTo(EXPECTED_AUTHORS_COUNT + 2);
     }
@@ -52,11 +52,11 @@ class BookAuthorDaoJdbcTest {
     @DisplayName("Удаляет связку книга-авторы из регистра")
     @Test
     void shouldDeleteBookAuthorsRelation() {
-        List<Author> authors = bookAuthorDaoJdbc.getAuthorsByBookUid(BOOK_UID);
+        List<Author> authors = authorDaoJdbc.getAuthorsByBookUid(BOOK_UID);
         authors.remove(0);
-        bookAuthorDaoJdbc.deleteAuthorsByBookUid(BOOK_UID, authors);
+        authorDaoJdbc.deleteAuthorsByBookUid(BOOK_UID, authors);
 
-        authors = bookAuthorDaoJdbc.getAuthorsByBookUid(BOOK_UID);
+        authors = authorDaoJdbc.getAuthorsByBookUid(BOOK_UID);
         assertThat(!authors.isEmpty());
         assertThat(authors.size()).isEqualTo(EXPECTED_AUTHORS_COUNT - 2);
     }
@@ -64,11 +64,11 @@ class BookAuthorDaoJdbcTest {
     @DisplayName("Редактирует связь книги с авторами")
     @Test
     void shouldEditBookAuthorsRelation() {
-        List<Author> authors = bookAuthorDaoJdbc.getAuthorsByBookUid(BOOK_UID);
+        List<Author> authors = authorDaoJdbc.getAuthorsByBookUid(BOOK_UID);
         authors.remove(0);
-        bookAuthorDaoJdbc.editAuthorsByBookUid(BOOK_UID, authors);
+        authorDaoJdbc.editAuthorsByBookUid(BOOK_UID, authors);
 
-        authors = bookAuthorDaoJdbc.getAuthorsByBookUid(BOOK_UID);
+        authors = authorDaoJdbc.getAuthorsByBookUid(BOOK_UID);
         assertThat(!authors.isEmpty());
         assertThat(authors.size()).isEqualTo(EXPECTED_AUTHORS_COUNT - 1);
     }
@@ -76,7 +76,7 @@ class BookAuthorDaoJdbcTest {
     @DisplayName("Возвращает книги за авторством писателя")
     @Test
     void shouldGetBooksByAuthorUid() {
-        List<Book> books = bookAuthorDaoJdbc.getBooksByAuthorUid(AUTHOR_UID);
+        List<Book> books = bookDaoJdbc.getBooksByAuthorUid(AUTHOR_UID);
         assertThat(!books.isEmpty());
         assertThat(books.size()).isEqualTo(EXPECTED_BOOKS_COUNT);
     }
@@ -84,7 +84,7 @@ class BookAuthorDaoJdbcTest {
     @DisplayName("Возвращает авторов книги")
     @Test
     void shouldGetAuthorsByBookUid() {
-        List<Author> authors = bookAuthorDaoJdbc.getAuthorsByBookUid(BOOK_UID);
+        List<Author> authors = authorDaoJdbc.getAuthorsByBookUid(BOOK_UID);
         assertThat(!authors.isEmpty());
         assertThat(authors.size()).isEqualTo(EXPECTED_AUTHORS_COUNT);
     }

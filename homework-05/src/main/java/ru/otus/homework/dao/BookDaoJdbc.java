@@ -71,6 +71,26 @@ public class BookDaoJdbc implements BookDao {
         return jdbc.queryForObject("select count(*) from tbl_books", new HashMap<>(0), Integer.class);
     }
 
+    @Override
+    public List<Book> getBooksByAuthorUid(long authorUid) {
+        final Map<String, Object> params = new HashMap<>(1);
+        params.put("authorUid", authorUid);
+        return jdbc.query("select b.uid, b.title, b.isbn, b.publication_year from tbl_book_author ba\n" +
+                "join tbl_authors a on ba.author_uid = a.uid\n" +
+                "join tbl_books b on ba.book_uid = b.uid\n" +
+                "where a.uid = :authorUid", params, new BookMapper());
+    }
+
+    @Override
+    public List<Book> getBooksByGenreUid(long genreUid) {
+        final Map<String, Object> params = new HashMap<>(1);
+        params.put("genreUid", genreUid);
+        return jdbc.query("select b.uid, b.title, b.isbn, b.publication_year from tbl_book_genre bg\n" +
+                "join tbl_genres g on bg.genre_uid = g.uid\n" +
+                "join tbl_books b on bg.book_uid = b.uid\n" +
+                "where g.uid = :genreUid", params, new BookMapper());
+    }
+
     private static class BookMapper implements RowMapper<Book> {
         @Override
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {

@@ -16,4 +16,12 @@ public interface GenreService {
     List<GenreDto> getAll();
 
     int count();
+
+    void insertGenresByBookUid(long bookUid, List<GenreDto> genres);
+
+    void editGenresByBookUid(long bookUid, List<GenreDto> genres);
+
+    void deleteGenresByBookUid(long bookUid, List<GenreDto> genres);
+
+    List<GenreDto> getGenresByBookUid(long bookUid);
 }

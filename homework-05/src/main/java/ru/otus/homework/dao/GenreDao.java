@@ -17,4 +17,12 @@ public interface GenreDao {
     List<Genre> getAll();
 
     int count();
+
+    void insertGenresByBookUid(long bookUid, List<Genre> genres);
+
+    void editGenresByBookUid(long bookUid, List<Genre> genres);
+
+    void deleteGenresByBookUid(long bookUid, List<Genre> genres);
+
+    List<Genre> getGenresByBookUid(long bookUid);
 }

@@ -1,6 +1,7 @@
 package ru.otus.homework.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.dao.AuthorDao;
 import ru.otus.homework.domain.Author;
@@ -13,15 +14,18 @@ import java.util.List;
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorDao authorDao;
-    private final BookAuthorService bookAuthorService;
-    private final BookGenreService bookGenreService;
+    private final BookService bookService;
+    private final GenreService genreService;
     private final UtilityService utilityService;
 
     @Autowired
-    public AuthorServiceImpl(AuthorDao authorDao, BookAuthorService bookAuthorService, BookGenreService bookGenreService, UtilityService utilityService) {
+    public AuthorServiceImpl(AuthorDao authorDao,
+                             @Lazy BookService bookService,
+                             @Lazy GenreService genreService,
+                             UtilityService utilityService) {
         this.authorDao = authorDao;
-        this.bookAuthorService = bookAuthorService;
-        this.bookGenreService = bookGenreService;
+        this.bookService = bookService;
+        this.genreService = genreService;
         this.utilityService = utilityService;
     }
 
@@ -44,7 +48,7 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public AuthorDto getByUid(long uid) {
         AuthorDto authorDto = new AuthorDto(authorDao.getByUid(uid));
-        List<BookDto> bookDtos = bookAuthorService.getBooksByAuthorUid(uid);
+        List<BookDto> bookDtos = bookService.getBooksByAuthorUid(uid);
         authorDto.setBooks(bookDtos);
         return authorDto;
     }
@@ -53,7 +57,7 @@ public class AuthorServiceImpl implements AuthorService {
     public List<AuthorDto> getAll() {
         List<AuthorDto> authorDtos = utilityService.convertToAuthorDto(authorDao.getAll());
         authorDtos.forEach(author -> {
-            List<BookDto> bookDtos = bookAuthorService.getBooksByAuthorUid(author.getUid());
+            List<BookDto> bookDtos = bookService.getBooksByAuthorUid(author.getUid());
             author.setBooks(bookDtos);
         });
         return authorDtos;
@@ -62,5 +66,25 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public int count() {
         return authorDao.count();
+    }
+
+    @Override
+    public void insertAuthorsByBookUid(long bookUid, List<AuthorDto> authors) {
+        authorDao.insertAuthorsByBookUid(bookUid, utilityService.convertToAuthorDomain(authors));
+    }
+
+    @Override
+    public void editAuthorsByBookUid(long bookUid, List<AuthorDto> authors) {
+        authorDao.editAuthorsByBookUid(bookUid, utilityService.convertToAuthorDomain(authors));
+    }
+
+    @Override
+    public void deleteAuthorsByBookUid(long bookUid, List<AuthorDto> authors) {
+        authorDao.deleteAuthorsByBookUid(bookUid, utilityService.convertToAuthorDomain(authors));
+    }
+
+    @Override
+    public List<AuthorDto> getAuthorsByBookUid(long bookUid) {
+        return utilityService.convertToAuthorDto(authorDao.getAuthorsByBookUid(bookUid));
     }
 }

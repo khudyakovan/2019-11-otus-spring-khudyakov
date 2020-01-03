@@ -17,4 +17,8 @@ public interface BookDao {
     List<Book> getAll();
 
     int count();
+
+    List<Book> getBooksByGenreUid(long genreUid);
+
+    List<Book> getBooksByAuthorUid(long authorUid);
 }

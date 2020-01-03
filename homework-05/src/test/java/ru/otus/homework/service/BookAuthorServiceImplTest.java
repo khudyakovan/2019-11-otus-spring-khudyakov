@@ -32,22 +32,20 @@ class BookAuthorServiceImplTest {
     private final int EXPECTED_VALUE = 1;
 
     @Autowired
-    private BookAuthorServiceImpl bookAuthorService;
-    @Autowired
     private BookService bookService;
     @Autowired
     private AuthorService authorService;
 
     @Test
     void shouldInsertAuthorsByBookUid() {
-        int size = bookAuthorService.getAuthorsByBookUid(BOOK_UID).size();
+        int size = authorService.getAuthorsByBookUid(BOOK_UID).size();
         AuthorDto author0 = authorService.insert(new AuthorDto(AUTHOR_FULL_NAME_0, AUTHOR_PEN_NAME_0));
         AuthorDto author1 = authorService.insert(new AuthorDto(AUTHOR_FULL_NAME_1, AUTHOR_PEN_NAME_1));
         List<AuthorDto> authors = new ArrayList<>();
         authors.add(author0);
         authors.add(author1);
-        bookAuthorService.insertAuthorsByBookUid(BOOK_UID, authors);
-        assertEquals(size + 2, bookAuthorService.getAuthorsByBookUid(BOOK_UID).size());
+        authorService.insertAuthorsByBookUid(BOOK_UID, authors);
+        assertEquals(size + 2, authorService.getAuthorsByBookUid(BOOK_UID).size());
     }
 
     @Test
@@ -57,26 +55,26 @@ class BookAuthorServiceImplTest {
         List<AuthorDto> authors = new ArrayList<>();
         authors.add(author0);
         authors.add(author1);
-        bookAuthorService.editAuthorsByBookUid(BOOK_UID, authors);
-        assertEquals(EXPECTED_AUTHORS_COUNT_AFTER_EDIT, bookAuthorService.getAuthorsByBookUid(BOOK_UID).size());
+        authorService.editAuthorsByBookUid(BOOK_UID, authors);
+        assertEquals(EXPECTED_AUTHORS_COUNT_AFTER_EDIT, authorService.getAuthorsByBookUid(BOOK_UID).size());
     }
 
     @Test
     void shouldDeleteAuthorsByBookUid() {
-        List<AuthorDto> authors = bookAuthorService.getAuthorsByBookUid(BOOK_UID);
+        List<AuthorDto> authors = authorService.getAuthorsByBookUid(BOOK_UID);
         int size = authors.size();
         authors.remove(0);
-        bookAuthorService.deleteAuthorsByBookUid(BOOK_UID, authors);
-        assertEquals(EXPECTED_VALUE, bookAuthorService.getAuthorsByBookUid(BOOK_UID).size());
+        authorService.deleteAuthorsByBookUid(BOOK_UID, authors);
+        assertEquals(EXPECTED_VALUE, authorService.getAuthorsByBookUid(BOOK_UID).size());
     }
 
     @Test
     void shouldGetBooksByAuthorUid() {
-        assertNotEquals(UNEXPECTED_VALUE, bookAuthorService.getBooksByAuthorUid(AUTHOR_UID).size());
+        assertNotEquals(UNEXPECTED_VALUE, bookService.getBooksByAuthorUid(AUTHOR_UID).size());
     }
 
     @Test
     void shouldGetAuthorsByBookUid() {
-        assertNotEquals(UNEXPECTED_VALUE, bookAuthorService.getAuthorsByBookUid(BOOK_UID));
+        assertNotEquals(UNEXPECTED_VALUE, authorService.getAuthorsByBookUid(BOOK_UID));
     }
 }

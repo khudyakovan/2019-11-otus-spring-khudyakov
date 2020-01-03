@@ -9,7 +9,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.domain.Author;
-import ru.otus.homework.domain.Book;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -74,6 +73,47 @@ public class AuthorDaoJdbc implements AuthorDao {
     @Override
     public int count() {
         return jdbc.queryForObject("select count(*) from tbl_authors", new HashMap<>(0), Integer.class);
+    }
+
+    @Override
+    public void insertAuthorsByBookUid(long bookUid, List<Author> authors) {
+        if (authors == null){
+            return;
+        }
+        authors.forEach(author -> {
+            Map<String, Object> params = new HashMap<>(2);
+            params.put("bookUid", bookUid);
+            params.put("authorUid", author.getUid());
+            jdbc.update("insert into tbl_book_author(book_uid, author_uid) values(:bookUid, :authorUid)", params);
+        });
+    }
+
+    @Override
+    public void editAuthorsByBookUid(long bookUid, List<Author> authors) {
+        final Map<String, Object> params = new HashMap<>(1);
+        params.put("bookUid", bookUid);
+        jdbc.update("delete from tbl_book_author where book_uid = :bookUid", params);
+        this.insertAuthorsByBookUid(bookUid, authors);
+    }
+
+    @Override
+    public void deleteAuthorsByBookUid(long bookUid, List<Author> authors) {
+        authors.forEach(author -> {
+            Map<String, Object> params = new HashMap<>(2);
+            params.put("bookUid", bookUid);
+            params.put("authorUid", author.getUid());
+            jdbc.update("delete from tbl_book_author where book_uid = :bookUid and author_uid = :authorUid", params);
+        });
+    }
+
+    @Override
+    public List<Author> getAuthorsByBookUid(long bookUid) {
+        final Map<String, Object> params = new HashMap<>(1);
+        params.put("bookUid", bookUid);
+        return jdbc.query("select a.uid, a.full_name, a.pen_name from tbl_book_author ba\n" +
+                "join tbl_authors a on ba.author_uid = a.uid\n" +
+                "join tbl_books b on ba.book_uid = b.uid\n" +
+                "where b.uid = :bookUid", params, new AuthorMapper());
     }
 
     private static class AuthorMapper implements RowMapper<Author> {

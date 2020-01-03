@@ -16,4 +16,12 @@ public interface AuthorService {
     List<AuthorDto> getAll();
 
     int count();
+
+    void insertAuthorsByBookUid(long bookUid, List<AuthorDto> authors);
+
+    void editAuthorsByBookUid(long bookUid, List<AuthorDto> authors);
+
+    void deleteAuthorsByBookUid(long bookUid, List<AuthorDto> authors);
+
+    List<AuthorDto> getAuthorsByBookUid(long bookUid);
 }

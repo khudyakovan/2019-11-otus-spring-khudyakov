@@ -16,4 +16,8 @@ public interface BookService {
     List<BookDto> getAll();
 
     int count();
+
+    List<BookDto> getBooksByGenreUid(long genreUid);
+
+    List<BookDto> getBooksByAuthorUid(long authorUid);
 }

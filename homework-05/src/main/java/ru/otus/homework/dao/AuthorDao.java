@@ -17,4 +17,12 @@ public interface AuthorDao {
     List<Author> getAll();
 
     int count();
+
+    void insertAuthorsByBookUid(long bookUid, List<Author> authors);
+
+    void editAuthorsByBookUid(long bookUid, List<Author> authors);
+
+    void deleteAuthorsByBookUid(long bookUid, List<Author> authors);
+
+    List<Author> getAuthorsByBookUid(long bookUid);
 }
