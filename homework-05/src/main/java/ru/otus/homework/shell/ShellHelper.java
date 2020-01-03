@@ -11,13 +11,14 @@ import org.springframework.shell.table.BorderStyle;
 import org.springframework.shell.table.TableBuilder;
 import org.springframework.shell.table.TableModel;
 import org.springframework.stereotype.Component;
-import ru.otus.homework.domain.Author;
+import ru.otus.homework.dto.AuthorDto;
 import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.TranslationService;
 
 import javax.validation.constraints.NotNull;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class ShellHelper {
@@ -116,9 +117,9 @@ public class ShellHelper {
         print(tableBuilder.build().render(180), null);
     }
 
-    public List<Author> getAuthorsFromList(List<Author> authors, AuthorService authorService) {
+    public List<AuthorDto> getAuthorsFromList(List<AuthorDto> authorDtos, AuthorService authorService) {
         //Вывод справочника авторов для выбора
-        if (authors != null && authors.isEmpty()) {
+        if (authorDtos != null && authorDtos.isEmpty()) {
             LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
             headers.put("uid", "Uid");
             headers.put("fullName", "Author's Full Name");
@@ -134,12 +135,12 @@ public class ShellHelper {
             }
         }
         while (uid == null);
-        authors.add(authorService.getByUid(uid));
+        Objects.requireNonNull(authorDtos).add(authorService.getByUid(uid));
         String userInput = inputReader.prompt(translationService.getTranslation("prompt.additional.author", ""), "");
         if (("Y").equals(userInput.toUpperCase())) {
-            this.getAuthorsFromList(authors, authorService);
+            this.getAuthorsFromList(authorDtos, authorService);
         }
-        return authors;
+        return authorDtos;
     }
 
     public boolean isStringLong(String s) {

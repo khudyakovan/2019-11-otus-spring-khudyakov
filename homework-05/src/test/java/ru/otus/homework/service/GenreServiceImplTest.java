@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
-import ru.otus.homework.domain.Genre;
+import ru.otus.homework.dto.GenreDto;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +27,7 @@ class GenreServiceImplTest {
     @DisplayName("Выборка жанра по Uid и книг этого жанра")
     @Test
     void shouldGetGenreByUid() {
-        Genre genre = genreService.getByUid(TEST_GENRE_UID);
+        GenreDto genre = genreService.getByUid(TEST_GENRE_UID);
         System.out.println(genre);
         assertAll(
                 () -> assertNotNull(genre),

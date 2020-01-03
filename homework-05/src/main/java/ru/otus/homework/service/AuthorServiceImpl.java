@@ -2,9 +2,10 @@ package ru.otus.homework.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.otus.homework.dao.*;
+import ru.otus.homework.dao.AuthorDao;
 import ru.otus.homework.domain.Author;
-import ru.otus.homework.domain.Book;
+import ru.otus.homework.dto.AuthorDto;
+import ru.otus.homework.dto.BookDto;
 
 import java.util.List;
 
@@ -12,24 +13,27 @@ import java.util.List;
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorDao authorDao;
-    private final BookAuthorDao bookAuthorDao;
-    private final BookGenreDao bookGenreDao;
+    private final BookAuthorService bookAuthorService;
+    private final BookGenreService bookGenreService;
+    private final UtilityService utilityService;
 
     @Autowired
-    public AuthorServiceImpl(AuthorDao authorDao, BookAuthorDao bookAuthorDao, BookGenreDao bookGenreDao) {
+    public AuthorServiceImpl(AuthorDao authorDao, BookAuthorService bookAuthorService, BookGenreService bookGenreService, UtilityService utilityService) {
         this.authorDao = authorDao;
-        this.bookAuthorDao = bookAuthorDao;
-        this.bookGenreDao = bookGenreDao;
+        this.bookAuthorService = bookAuthorService;
+        this.bookGenreService = bookGenreService;
+        this.utilityService = utilityService;
     }
 
     @Override
-    public Author insert(Author author) {
-        return authorDao.insert(author);
+    public AuthorDto insert(AuthorDto authorDto) {
+        Author author = authorDao.insert(new Author(authorDto.getFullName(), authorDto.getPenName()));
+        return this.getByUid(author.getUid());
     }
 
     @Override
-    public void edit(Author author) {
-        authorDao.edit(author);
+    public void edit(AuthorDto authorDto) {
+        authorDao.edit(new Author(authorDto.getUid(), authorDto.getFullName(), authorDto.getPenName()));
     }
 
     @Override
@@ -38,19 +42,21 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getByUid(long uid) {
-        Author author = authorDao.getByUid(uid);
-        List<Book> books = bookAuthorDao.getBooksByAuthorUid(uid);
-        books.forEach(book -> book.setGenres(bookGenreDao.getGenresByBookUid(book.getUid())));
-        author.setBooks(books);
-        return author;
+    public AuthorDto getByUid(long uid) {
+        AuthorDto authorDto = new AuthorDto(authorDao.getByUid(uid));
+        List<BookDto> bookDtos = bookAuthorService.getBooksByAuthorUid(uid);
+        authorDto.setBooks(bookDtos);
+        return authorDto;
     }
 
     @Override
-    public List<Author> getAll() {
-        List<Author> authors = authorDao.getAll();
-        authors.forEach(author -> author.setBooks(bookAuthorDao.getBooksByAuthorUid(author.getUid())));
-        return authors;
+    public List<AuthorDto> getAll() {
+        List<AuthorDto> authorDtos = utilityService.convertToAuthorDto(authorDao.getAll());
+        authorDtos.forEach(author -> {
+            List<BookDto> bookDtos = bookAuthorService.getBooksByAuthorUid(author.getUid());
+            author.setBooks(bookDtos);
+        });
+        return authorDtos;
     }
 
     @Override

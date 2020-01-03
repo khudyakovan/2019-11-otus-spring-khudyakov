@@ -1,19 +1,19 @@
 package ru.otus.homework.service;
 
-import ru.otus.homework.domain.Author;
+import ru.otus.homework.dto.AuthorDto;
 
 import java.util.List;
 
 public interface AuthorService {
-    Author insert(Author author);
+    AuthorDto insert(AuthorDto author);
 
-    void edit(Author author);
+    void edit(AuthorDto authorDto);
 
     void deleteByUid(long uid);
 
-    Author getByUid(long uid);
+    AuthorDto getByUid(long uid);
 
-    List<Author> getAll();
+    List<AuthorDto> getAll();
 
     int count();
 }

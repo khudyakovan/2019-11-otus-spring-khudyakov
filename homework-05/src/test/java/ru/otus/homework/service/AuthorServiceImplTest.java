@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
-import ru.otus.homework.domain.Author;
+import ru.otus.homework.dto.AuthorDto;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,7 +28,7 @@ class AuthorServiceImplTest {
     @Test
     void shouldGetAuthorByUid() {
 
-        Author author = authorService.getByUid(TEST_AUTHOR_UID);
+        AuthorDto author = authorService.getByUid(TEST_AUTHOR_UID);
         assertAll(
                 () -> assertNotNull(author),
                 () -> assertEquals(EXPECTED_BOOKS_COUNT, author.getBooks().size()),

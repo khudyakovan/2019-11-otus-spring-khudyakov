@@ -1,11 +1,8 @@
 package ru.otus.homework.domain;
 
-import java.util.List;
-
 public class Genre {
     private long uid;
     private String name;
-    private List<Book> books;
 
     public Genre(String name) {
         this.name = name;
@@ -14,12 +11,6 @@ public class Genre {
     public Genre(long uid, String name) {
         this.uid = uid;
         this.name = name;
-    }
-
-    public Genre(long uid, String name, List<Book> books) {
-        this.uid = uid;
-        this.name = name;
-        this.books = books;
     }
 
     public long getUid() {
@@ -36,14 +27,6 @@ public class Genre {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
     }
 
     @Override

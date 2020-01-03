@@ -1,19 +1,19 @@
 package ru.otus.homework.service;
 
-import ru.otus.homework.domain.Book;
-import ru.otus.homework.domain.Genre;
+import ru.otus.homework.dto.BookDto;
+import ru.otus.homework.dto.GenreDto;
 
 import java.util.List;
 
 public interface BookGenreService {
 
-    void insertGenresByBookUid(long bookUid, List<Genre> genres);
+    void insertGenresByBookUid(long bookUid, List<GenreDto> genres);
 
-    void editGenresByBookUid(long bookUid, List<Genre> genres);
+    void editGenresByBookUid(long bookUid, List<GenreDto> genres);
 
-    void deleteGenresByBookUid(long bookUid, List<Genre> genres);
+    void deleteGenresByBookUid(long bookUid, List<GenreDto> genres);
 
-    List<Book> getBooksByGenreUid(long genreUid);
+    List<BookDto> getBooksByGenreUid(long genreUid);
 
-    List<Genre> getGenresByBookUid(long bookUid);
+    List<GenreDto> getGenresByBookUid(long bookUid);
 }

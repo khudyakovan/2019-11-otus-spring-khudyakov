@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
-import ru.otus.homework.domain.Author;
+import ru.otus.homework.dto.AuthorDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,9 +41,9 @@ class BookAuthorServiceImplTest {
     @Test
     void shouldInsertAuthorsByBookUid() {
         int size = bookAuthorService.getAuthorsByBookUid(BOOK_UID).size();
-        Author author0 = authorService.insert(new Author(AUTHOR_FULL_NAME_0, AUTHOR_PEN_NAME_0));
-        Author author1 = authorService.insert(new Author(AUTHOR_FULL_NAME_1, AUTHOR_PEN_NAME_1));
-        List<Author> authors = new ArrayList<>();
+        AuthorDto author0 = authorService.insert(new AuthorDto(AUTHOR_FULL_NAME_0, AUTHOR_PEN_NAME_0));
+        AuthorDto author1 = authorService.insert(new AuthorDto(AUTHOR_FULL_NAME_1, AUTHOR_PEN_NAME_1));
+        List<AuthorDto> authors = new ArrayList<>();
         authors.add(author0);
         authors.add(author1);
         bookAuthorService.insertAuthorsByBookUid(BOOK_UID, authors);
@@ -52,9 +52,9 @@ class BookAuthorServiceImplTest {
 
     @Test
     void shouldEditAuthorsByBookUid() {
-        Author author0 = authorService.insert(new Author(AUTHOR_FULL_NAME_0, AUTHOR_PEN_NAME_0));
-        Author author1 = authorService.insert(new Author(AUTHOR_FULL_NAME_1, AUTHOR_PEN_NAME_1));
-        List<Author> authors = new ArrayList<>();
+        AuthorDto author0 = authorService.insert(new AuthorDto(AUTHOR_FULL_NAME_0, AUTHOR_PEN_NAME_0));
+        AuthorDto author1 = authorService.insert(new AuthorDto(AUTHOR_FULL_NAME_1, AUTHOR_PEN_NAME_1));
+        List<AuthorDto> authors = new ArrayList<>();
         authors.add(author0);
         authors.add(author1);
         bookAuthorService.editAuthorsByBookUid(BOOK_UID, authors);
@@ -63,7 +63,7 @@ class BookAuthorServiceImplTest {
 
     @Test
     void shouldDeleteAuthorsByBookUid() {
-        List<Author> authors = bookAuthorService.getAuthorsByBookUid(BOOK_UID);
+        List<AuthorDto> authors = bookAuthorService.getAuthorsByBookUid(BOOK_UID);
         int size = authors.size();
         authors.remove(0);
         bookAuthorService.deleteAuthorsByBookUid(BOOK_UID, authors);

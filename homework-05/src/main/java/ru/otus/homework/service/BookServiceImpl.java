@@ -2,41 +2,45 @@ package ru.otus.homework.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.otus.homework.dao.BookAuthorDao;
 import ru.otus.homework.dao.BookDao;
-import ru.otus.homework.dao.BookGenreDao;
-import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
-import ru.otus.homework.domain.Genre;
+import ru.otus.homework.dto.AuthorDto;
+import ru.otus.homework.dto.BookDto;
+import ru.otus.homework.dto.GenreDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
 
     private final BookDao bookDao;
-    private final BookAuthorDao bookAuthorDao;
-    private final BookGenreDao bookGenreDao;
+    private final BookAuthorService bookAuthorService;
+    private final BookGenreService bookGenreService;
 
     @Autowired
-    public BookServiceImpl(BookDao bookDao, BookAuthorDao bookAuthorDao, BookGenreDao bookGenreDao) {
+    public BookServiceImpl(BookDao bookDao, BookAuthorService bookAuthorService, BookGenreService bookGenreService) {
         this.bookDao = bookDao;
-        this.bookAuthorDao = bookAuthorDao;
-        this.bookGenreDao = bookGenreDao;
+        this.bookAuthorService = bookAuthorService;
+        this.bookGenreService = bookGenreService;
     }
 
     @Override
-    public Book insert(Book book) {
-        book = bookDao.insert(book);
-        bookGenreDao.insertGenresByBookUid(book.getUid(), book.getGenres());
-        bookAuthorDao.insertAuthorsByBookUid(book.getUid(), book.getAuthors());
-        return book;
+    public BookDto insert(BookDto bookDto) {
+        List<GenreDto> genres = bookDto.getGenres();
+        List<AuthorDto> authors = bookDto.getAuthors();
+        Book book = new Book(bookDto.getTitle(), bookDto.getIsbn(), bookDto.getPublicationYear());
+        bookDto = new BookDto(bookDao.insert(book));
+        bookGenreService.insertGenresByBookUid(bookDto.getUid(), genres);
+        bookAuthorService.insertAuthorsByBookUid(bookDto.getUid(), authors);
+        return this.getByUid(bookDto.getUid());
     }
 
     @Override
-    public void edit(Book book) {
-        bookGenreDao.editGenresByBookUid(book.getUid(), book.getGenres());
-        bookAuthorDao.editAuthorsByBookUid(book.getUid(), book.getAuthors());
+    public void edit(BookDto bookDto) {
+        bookGenreService.editGenresByBookUid(bookDto.getUid(), bookDto.getGenres());
+        bookAuthorService.editAuthorsByBookUid(bookDto.getUid(), bookDto.getAuthors());
+        Book book = new Book(bookDto.getUid(), bookDto.getTitle(), bookDto.getIsbn(), bookDto.getPublicationYear());
         bookDao.edit(book);
     }
 
@@ -46,25 +50,29 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book getByUid(long uid) {
-        Book book = bookDao.getByUid(uid);
-        book.setAuthors(bookAuthorDao.getAuthorsByBookUid(uid));
-        book.setGenres(bookGenreDao.getGenresByBookUid(uid));
-        return book;
+    public BookDto getByUid(long uid) {
+        BookDto bookDto = new BookDto(bookDao.getByUid(uid));
+        bookDto.setAuthors(bookAuthorService.getAuthorsByBookUid(uid));
+        bookDto.setGenres(bookGenreService.getGenresByBookUid(uid));
+        return bookDto;
     }
 
     @Override
-    public List<Book> getAll() {
+    public List<BookDto> getAll() {
         List<Book> books = bookDao.getAll();
+        List<BookDto> bookDtos = new ArrayList<>();
         books.forEach(book -> {
-            book.setAuthors(bookAuthorDao.getAuthorsByBookUid(book.getUid()));
-            book.setGenres(bookGenreDao.getGenresByBookUid(book.getUid()));
+            BookDto bookDto = new BookDto(book,
+                    bookAuthorService.getAuthorsByBookUid(book.getUid()),
+                    bookGenreService.getGenresByBookUid(book.getUid()));
+            bookDtos.add(bookDto);
         });
-        return books;
+        return bookDtos;
     }
 
     @Override
     public int count() {
         return bookDao.count();
     }
+
 }

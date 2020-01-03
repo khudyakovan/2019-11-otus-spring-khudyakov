@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
-import ru.otus.homework.domain.Genre;
+import ru.otus.homework.dto.GenreDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +39,9 @@ class BookGenreServiceImplTest {
     @Test
     void shouldInsertGenresByBookUid() {
         int size = bookGenreService.getGenresByBookUid(BOOK_UID).size();
-        Genre genre0 = genreService.insert(new Genre(GENRE_NAME_0));
-        Genre genre1 = genreService.insert(new Genre(GENRE_NAME_1));
-        List<Genre> genres = new ArrayList<>();
+        GenreDto genre0 = genreService.insert(new GenreDto(GENRE_NAME_0));
+        GenreDto genre1 = genreService.insert(new GenreDto(GENRE_NAME_1));
+        List<GenreDto> genres = new ArrayList<>();
         genres.add(genre0);
         genres.add(genre1);
         bookGenreService.insertGenresByBookUid(BOOK_UID, genres);
@@ -50,9 +50,9 @@ class BookGenreServiceImplTest {
 
     @Test
     void shouldEditGenresByBookUid() {
-        Genre genre0 = genreService.insert(new Genre(GENRE_NAME_0));
-        Genre genre1 = genreService.insert(new Genre(GENRE_NAME_1));
-        List<Genre> genres = new ArrayList<>();
+        GenreDto genre0 = genreService.insert(new GenreDto(GENRE_NAME_0));
+        GenreDto genre1 = genreService.insert(new GenreDto(GENRE_NAME_1));
+        List<GenreDto> genres = new ArrayList<>();
         genres.add(genre0);
         genres.add(genre1);
         bookGenreService.editGenresByBookUid(BOOK_UID, genres);
@@ -61,7 +61,7 @@ class BookGenreServiceImplTest {
 
     @Test
     void shouldDeleteGenresByBookUid() {
-        List<Genre> genres = bookGenreService.getGenresByBookUid(BOOK_UID);
+        List<GenreDto> genres = bookGenreService.getGenresByBookUid(BOOK_UID);
         int size = genres.size();
         genres.remove(0);
         bookGenreService.deleteGenresByBookUid(BOOK_UID, genres);
