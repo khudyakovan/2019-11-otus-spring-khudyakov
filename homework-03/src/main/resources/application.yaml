@@ -1,0 +1,6 @@
+application:
+  language: en
+  country: EN
+  anonymous-username: Anonymous Incognito
+  question-file-prefix: questions_
+  answer-file-prefix: answers_
