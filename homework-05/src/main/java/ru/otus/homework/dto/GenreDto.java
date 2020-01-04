@@ -1,5 +1,6 @@
 package ru.otus.homework.dto;
 
+import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Genre;
 
 import java.util.List;
@@ -7,14 +8,14 @@ import java.util.List;
 public class GenreDto {
     private long uid;
     private String name;
-    private List<BookDto> books;
+    private List<Book> books;
 
     public GenreDto(Genre genre){
         this.uid = genre.getUid();
         this.name = genre.getName();
     }
 
-    public GenreDto(Genre genre, List<BookDto> books){
+    public GenreDto(Genre genre, List<Book> books){
         this.uid = genre.getUid();
         this.name = genre.getName();
         this.books = books;
@@ -45,11 +46,11 @@ public class GenreDto {
         this.name = name;
     }
 
-    public List<BookDto> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(List<BookDto> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
     }
 

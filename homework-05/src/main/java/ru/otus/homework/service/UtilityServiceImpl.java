@@ -2,10 +2,8 @@ package ru.otus.homework.service;
 
 import org.springframework.stereotype.Service;
 import ru.otus.homework.domain.Author;
-import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Genre;
 import ru.otus.homework.dto.AuthorDto;
-import ru.otus.homework.dto.BookDto;
 import ru.otus.homework.dto.GenreDto;
 
 import java.util.ArrayList;
@@ -15,12 +13,17 @@ import java.util.List;
 @Service
 public class UtilityServiceImpl implements UtilityService {
 
-    @Override
-    public List<BookDto> convertToBookDto(List<Book> books) {
-        List<BookDto> bookDtos = new ArrayList<>();
-        books.forEach(book -> bookDtos.add(new BookDto(book)));
-        return bookDtos;
-    }
+//    @Override
+//    public List<BookDto> convertToBookDto(List<Book> books) {
+//        List<BookDto> bookDtos = new ArrayList<>();
+//        books.forEach(book -> {
+//            BookDto bookDto = new BookDto(book,
+//                    this.convertToAuthorDto(book.getAuthors()),
+//                    this.convertToGenreDto(book.getGenres()));
+//            bookDtos.add(new BookDto(book));
+//        });
+//        return bookDtos;
+//    }
 
     @Override
     public List<Author> convertToAuthorDomain(List<AuthorDto> authorDtos) {

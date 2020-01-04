@@ -5,8 +5,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.dao.AuthorDao;
 import ru.otus.homework.domain.Author;
+import ru.otus.homework.domain.Book;
 import ru.otus.homework.dto.AuthorDto;
-import ru.otus.homework.dto.BookDto;
 
 import java.util.List;
 
@@ -48,8 +48,8 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public AuthorDto getByUid(long uid) {
         AuthorDto authorDto = new AuthorDto(authorDao.getByUid(uid));
-        List<BookDto> bookDtos = bookService.getBooksByAuthorUid(uid);
-        authorDto.setBooks(bookDtos);
+        List<Book> books = bookService.getBooksByAuthorUid(uid);
+        authorDto.setBooks(books);
         return authorDto;
     }
 
@@ -57,8 +57,8 @@ public class AuthorServiceImpl implements AuthorService {
     public List<AuthorDto> getAll() {
         List<AuthorDto> authorDtos = utilityService.convertToAuthorDto(authorDao.getAll());
         authorDtos.forEach(author -> {
-            List<BookDto> bookDtos = bookService.getBooksByAuthorUid(author.getUid());
-            author.setBooks(bookDtos);
+            List<Book> books = bookService.getBooksByAuthorUid(author.getUid());
+            author.setBooks(books);
         });
         return authorDtos;
     }

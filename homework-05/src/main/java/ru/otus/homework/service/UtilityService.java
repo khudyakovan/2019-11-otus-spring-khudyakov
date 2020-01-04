@@ -1,16 +1,14 @@
 package ru.otus.homework.service;
 
 import ru.otus.homework.domain.Author;
-import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Genre;
 import ru.otus.homework.dto.AuthorDto;
-import ru.otus.homework.dto.BookDto;
 import ru.otus.homework.dto.GenreDto;
 
 import java.util.List;
 
 public interface UtilityService {
-    List<BookDto> convertToBookDto(List<Book> books);
+    //List<Book> convertToBookDto(List<Book> books);
 
     List<Author> convertToAuthorDomain(List<AuthorDto> authorDtos);
 

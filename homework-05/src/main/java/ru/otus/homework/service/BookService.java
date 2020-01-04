@@ -1,23 +1,23 @@
 package ru.otus.homework.service;
 
-import ru.otus.homework.dto.BookDto;
+import ru.otus.homework.domain.Book;
 
 import java.util.List;
 
 public interface BookService {
-    BookDto insert(BookDto book);
+    Book insert(Book book);
 
-    void edit(BookDto book);
+    void edit(Book book);
 
     void deleteByUid(long uid);
 
-    BookDto getByUid(long uid);
+    Book getByUid(long uid);
 
-    List<BookDto> getAll();
+    List<Book> getAll();
 
     int count();
 
-    List<BookDto> getBooksByGenreUid(long genreUid);
+    List<Book> getBooksByGenreUid(long genreUid);
 
-    List<BookDto> getBooksByAuthorUid(long authorUid);
+    List<Book> getBooksByAuthorUid(long authorUid);
 }

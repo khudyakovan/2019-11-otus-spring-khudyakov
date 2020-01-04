@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Dao для работы со регистром книг и авторов")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @JdbcTest
-@Import({BookDaoJdbc.class, AuthorDaoJdbc.class})
+@Import({BookDaoJdbc.class, AuthorDaoJdbc.class, GenreDaoJdbc.class})
 class BookAuthorDaoJdbcTest {
 
     private final long BOOK_UID = 15;

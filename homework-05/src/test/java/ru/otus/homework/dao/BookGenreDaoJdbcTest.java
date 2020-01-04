@@ -14,10 +14,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Dao для работы со регистром книг и авторов")
+@DisplayName("Dao для работы со регистром книг и жанров")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @JdbcTest
-@Import({BookDaoJdbc.class, GenreDaoJdbc.class})
+@Import({BookDaoJdbc.class, GenreDaoJdbc.class, AuthorDaoJdbc.class})
 class BookGenreDaoJdbcTest {
 
     private final long BOOK_UID = 19;

@@ -3,8 +3,8 @@ package ru.otus.homework.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.otus.homework.dao.GenreDao;
+import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Genre;
-import ru.otus.homework.dto.BookDto;
 import ru.otus.homework.dto.GenreDto;
 
 import java.util.List;
@@ -51,8 +51,8 @@ public class GenreServiceImpl implements GenreService {
     public List<GenreDto> getAll() {
         List<GenreDto> genreDtos = utilityService.convertToGenreDto(genreDao.getAll());
         genreDtos.forEach(genreDto -> {
-            List<BookDto> bookDtos = bookService.getBooksByGenreUid(genreDto.getUid());
-            genreDto.setBooks(bookDtos);
+            List<Book> books = bookService.getBooksByGenreUid(genreDto.getUid());
+            genreDto.setBooks(books);
 
         });
         return genreDtos;

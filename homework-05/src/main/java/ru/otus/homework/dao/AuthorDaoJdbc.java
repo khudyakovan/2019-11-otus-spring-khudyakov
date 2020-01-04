@@ -67,6 +67,7 @@ public class AuthorDaoJdbc implements AuthorDao {
 
     @Override
     public List<Author> getAll() {
+
         return jdbc.query("select * from tbl_authors", new AuthorMapper());
     }
 

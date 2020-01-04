@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
-import ru.otus.homework.dto.BookDto;
+import ru.otus.homework.domain.Book;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,7 +28,7 @@ class BookServiceImplTest {
     @DisplayName("Получает книгу, ее жанр и авторов по Uid")
     @Test
     void shouldGetBookByUid() {
-        BookDto book = bookService.getByUid(BOOK_UID);
+        Book book = bookService.getByUid(BOOK_UID);
         assertAll(
                 () -> assertNotNull(book),
                 () -> assertNotNull(book.getGenres()),

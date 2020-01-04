@@ -1,6 +1,7 @@
 package ru.otus.homework.dto;
 
 import ru.otus.homework.domain.Author;
+import ru.otus.homework.domain.Book;
 
 import java.util.List;
 
@@ -8,7 +9,7 @@ public class AuthorDto {
     private long uid;
     private String fullName;
     private String penName;
-    private List<BookDto> books;
+    private List<Book> books;
 
     public AuthorDto() {
     }
@@ -19,7 +20,7 @@ public class AuthorDto {
         this.penName = author.getPenName();
     }
 
-    public AuthorDto(Author author, List<BookDto> books){
+    public AuthorDto(Author author, List<Book> books){
         this.uid = author.getUid();
         this.fullName = author.getFullName();
         this.penName = author.getPenName();
@@ -37,7 +38,7 @@ public class AuthorDto {
         this.penName = penName;
     }
 
-    public AuthorDto(long uid, String fullName, String penName, List<BookDto> books) {
+    public AuthorDto(long uid, String fullName, String penName, List<Book> books) {
         this.uid = uid;
         this.fullName = fullName;
         this.penName = penName;
@@ -68,11 +69,11 @@ public class AuthorDto {
         this.penName = penName;
     }
 
-    public List<BookDto> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(List<BookDto> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
     }
 

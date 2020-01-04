@@ -4,12 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.util.StringUtils;
+import ru.otus.homework.domain.Book;
 import ru.otus.homework.dto.AuthorDto;
-import ru.otus.homework.dto.BookDto;
 import ru.otus.homework.dto.GenreDto;
 import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.BookService;
 import ru.otus.homework.service.GenreService;
+import ru.otus.homework.service.UtilityService;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -23,19 +24,22 @@ public class ShellBookCommandHandler {
     private final GenreService genreService;
     private final ShellHelper shellHelper;
     private final InputReader inputReader;
+    private final UtilityService utilityService;
 
     @Autowired
     public ShellBookCommandHandler(BookService bookService,
                                    AuthorService authorService,
                                    GenreService genreService,
                                    ShellHelper shellHelper,
-                                   InputReader inputReader
+                                   InputReader inputReader,
+                                   UtilityService utilityService
                                    ) {
         this.bookService = bookService;
         this.authorService = authorService;
         this.genreService = genreService;
         this.shellHelper = shellHelper;
         this.inputReader = inputReader;
+        this.utilityService = utilityService;
     }
 
     @ShellMethod("Получить список книг в библиотеке")
@@ -52,23 +56,23 @@ public class ShellBookCommandHandler {
 
     @ShellMethod("Добавить новую книгу")
     public void addBook() {
-        BookDto bookDto = this.bookWizard("prompt.add.book", new BookDto(), false);
-        if (bookDto.getUid() == -1) {
+        Book book = this.bookWizard("prompt.add.book", new Book(), false);
+        if (book.getUid() == -1) {
             shellHelper.printWarningTranslated("warning.termination");
             return;
         }
-        bookService.insert(bookDto);
+        bookService.insert(book);
         shellHelper.printSuccessTranslated("info.record.added.successfully");
     }
 
     @ShellMethod("Редактировать книгу")
     public void editBook() {
-        BookDto bookDto = this.bookWizard("prompt.edit.book", new BookDto(), true);
-        if (bookDto.getUid() == -1) {
+        Book book = this.bookWizard("prompt.edit.book", new Book(), true);
+        if (book.getUid() == -1) {
             shellHelper.printWarningTranslated("warning.termination");
             return;
         }
-        bookService.edit(bookDto);
+        bookService.edit(book);
         shellHelper.printSuccessTranslated("info.record.edited.successfully");
     }
 
@@ -78,63 +82,63 @@ public class ShellBookCommandHandler {
         if (!"Y".equals(userInput.toUpperCase())) {
             return;
         }
-        BookDto bookDto = this.getBookFromList();
-        bookService.deleteByUid(bookDto.getUid());
+        Book book = this.getBookFromList();
+        bookService.deleteByUid(book.getUid());
         shellHelper.printWarningTranslated("info.record.deleted.successfully");
     }
 
-    private BookDto bookWizard(String prompt, BookDto bookDto, boolean edit) {
+    private Book bookWizard(String prompt, Book book, boolean edit) {
         String userInput = inputReader.promptTranslated(prompt,"");
         if ("Q".equals(userInput.toUpperCase())) {
-            bookDto.setUid(-1);
-            return bookDto;
+            book.setUid(-1);
+            return book;
         }
 
         if (edit) {
             inputReader.promptTranslated("prompt.list.books","");
             //Выбрать книги из справочника
-            bookDto = this.getBookFromList();
+            book = this.getBookFromList();
         }
 
         inputReader.promptTranslated("prompt.list.genres","");
         //Выбрать жанры книги из справочника
         List<GenreDto> genres = this.getGenreOfBookFromTheList(new ArrayList<>());
-        bookDto.setGenres(genres);
+        book.setGenres(utilityService.convertToGenreDomain(genres));
 
         inputReader.promptTranslated("prompt.list.authors","");
         //Выбрать автора из справочника
         List<AuthorDto> authors = shellHelper.getAuthorsFromList(new ArrayList<>(), authorService);
-        bookDto.setAuthors(authors);
+        book.setAuthors(utilityService.convertToAuthorDomain(authors));
 
         // Добавить заголовок
         do {
-            String title = inputReader.promptTranslated("prompt.enter.book.title", bookDto.getTitle());
+            String title = inputReader.promptTranslated("prompt.enter.book.title", book.getTitle());
             if (StringUtils.hasText(title)) {
-                bookDto.setTitle(title);
+                book.setTitle(title);
             } else {
                 shellHelper.printErrorTranslated("error.empty.title");
             }
-        } while (bookDto.getTitle() == null);
+        } while (book.getTitle() == null);
 
         // Добавить ISBN
-        String isbn = inputReader.promptTranslated("prompt.enter.isbn",String.valueOf(bookDto.getIsbn()));
+        String isbn = inputReader.promptTranslated("prompt.enter.isbn",String.valueOf(book.getIsbn()));
         if (shellHelper.isStringLong(isbn)) {
-            bookDto.setIsbn(Long.parseLong(isbn));
+            book.setIsbn(Long.parseLong(isbn));
         } else {
-            bookDto.setIsbn(-1);
+            book.setIsbn(-1);
         }
         //Добавить год издания
         String publicationYear = inputReader.promptTranslated("prompt.enter.publishing.year",
-                String.valueOf(bookDto.getPublicationYear()));
+                String.valueOf(book.getPublicationYear()));
         if (shellHelper.isStringLong(publicationYear)) {
-            bookDto.setPublicationYear(Integer.parseInt(publicationYear));
+            book.setPublicationYear(Integer.parseInt(publicationYear));
         } else {
-            bookDto.setPublicationYear(-1);
+            book.setPublicationYear(-1);
         }
-        return bookDto;
+        return book;
     }
 
-    private BookDto getBookFromList() {
+    private Book getBookFromList() {
         this.showBooks();
         Long uid = null;
         do {
