@@ -4,3 +4,8 @@ application:
   anonymous-username: Anonymous Incognito
   question-file-prefix: questions_
   answer-file-prefix: answers_
+
+spring:
+  messages:
+    basename: labels
+    encoding: UTF-8

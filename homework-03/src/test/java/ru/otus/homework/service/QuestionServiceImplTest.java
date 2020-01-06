@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class QuestionServiceImplTest {
 
     private static QuestionServiceImpl questionService;
-    private static AnswerServiceImpl answerService;
     private static AnswerDaoImpl answerDao;
     private static Resource answerFilePath;
     private static QuestionDaoImpl questionDao;
@@ -28,7 +27,6 @@ class QuestionServiceImplTest {
         answerDao = new AnswerDaoImpl(answerFilePath);
         questionFilePath = new ClassPathResource("questions_" + LANGUAGE_POSTFIX + ".csv");
         questionDao = new QuestionDaoImpl(questionFilePath, answerDao);
-
         questionService = new QuestionServiceImpl(questionDao);
     }
 
