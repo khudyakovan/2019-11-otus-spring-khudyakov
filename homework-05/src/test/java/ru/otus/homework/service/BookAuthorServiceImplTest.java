@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @DisplayName("Сервис для работы с регистром книг и их авторов")
 @SpringBootTest(properties = {
@@ -66,15 +65,5 @@ class BookAuthorServiceImplTest {
         authors.remove(0);
         authorService.deleteAuthorsByBookUid(BOOK_UID, authors);
         assertEquals(EXPECTED_VALUE, authorService.getAuthorsByBookUid(BOOK_UID).size());
-    }
-
-    @Test
-    void shouldGetBooksByAuthorUid() {
-        assertNotEquals(UNEXPECTED_VALUE, bookService.getBooksByAuthorUid(AUTHOR_UID).size());
-    }
-
-    @Test
-    void shouldGetAuthorsByBookUid() {
-        assertNotEquals(UNEXPECTED_VALUE, authorService.getAuthorsByBookUid(BOOK_UID));
     }
 }
