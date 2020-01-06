@@ -15,3 +15,8 @@ shell:
     success: GREEN
     warning: YELLOW
     error: RED
+
+spring:
+  messages:
+    basename: labels
+    encoding: UTF-8
