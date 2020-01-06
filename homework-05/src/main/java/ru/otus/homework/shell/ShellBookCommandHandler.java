@@ -4,12 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.util.StringUtils;
-import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
-import ru.otus.homework.domain.Genre;
+import ru.otus.homework.dto.AuthorDto;
+import ru.otus.homework.dto.GenreDto;
 import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.BookService;
 import ru.otus.homework.service.GenreService;
+import ru.otus.homework.service.UtilityService;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -23,19 +24,22 @@ public class ShellBookCommandHandler {
     private final GenreService genreService;
     private final ShellHelper shellHelper;
     private final InputReader inputReader;
+    private final UtilityService utilityService;
 
     @Autowired
     public ShellBookCommandHandler(BookService bookService,
                                    AuthorService authorService,
                                    GenreService genreService,
                                    ShellHelper shellHelper,
-                                   InputReader inputReader
+                                   InputReader inputReader,
+                                   UtilityService utilityService
                                    ) {
         this.bookService = bookService;
         this.authorService = authorService;
         this.genreService = genreService;
         this.shellHelper = shellHelper;
         this.inputReader = inputReader;
+        this.utilityService = utilityService;
     }
 
     @ShellMethod("Получить список книг в библиотеке")
@@ -52,7 +56,6 @@ public class ShellBookCommandHandler {
 
     @ShellMethod("Добавить новую книгу")
     public void addBook() {
-
         Book book = this.bookWizard("prompt.add.book", new Book(), false);
         if (book.getUid() == -1) {
             shellHelper.printWarningTranslated("warning.termination");
@@ -99,13 +102,13 @@ public class ShellBookCommandHandler {
 
         inputReader.promptTranslated("prompt.list.genres","");
         //Выбрать жанры книги из справочника
-        List<Genre> genres = this.getGenreOfBookFromTheList(new ArrayList<>());
-        book.setGenres(genres);
+        List<GenreDto> genres = this.getGenreOfBookFromTheList(new ArrayList<>());
+        book.setGenres(utilityService.convertToGenreDomain(genres));
 
         inputReader.promptTranslated("prompt.list.authors","");
         //Выбрать автора из справочника
-        List<Author> authors = shellHelper.getAuthorsFromList(new ArrayList<>(), authorService);
-        book.setAuthors(authors);
+        List<AuthorDto> authors = shellHelper.getAuthorsFromList(new ArrayList<>(), authorService);
+        book.setAuthors(utilityService.convertToAuthorDomain(authors));
 
         // Добавить заголовок
         do {
@@ -150,9 +153,9 @@ public class ShellBookCommandHandler {
         return bookService.getByUid(uid);
     }
 
-    private List<Genre> getGenreOfBookFromTheList(List<Genre> genres) {
+    private List<GenreDto> getGenreOfBookFromTheList(List<GenreDto> genreDtos) {
         //Вывод справочника жанров для выбора
-        if (genres != null && genres.isEmpty()) {
+        if (genreDtos != null && genreDtos.isEmpty()) {
             LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
             headers.put("uid", "Uid");
             headers.put("name", "Genre");
@@ -168,11 +171,11 @@ public class ShellBookCommandHandler {
             }
         }
         while (uid == null);
-        genres.add(genreService.getByUid(uid));
+        genreDtos.add(genreService.getByUid(uid));
         String userInput = inputReader.promptTranslated("prompt.additional.genre","");
         if (("Y").equals(userInput.toUpperCase())) {
-            this.getGenreOfBookFromTheList(genres);
+            this.getGenreOfBookFromTheList(genreDtos);
         }
-        return genres;
+        return genreDtos;
     }
 }

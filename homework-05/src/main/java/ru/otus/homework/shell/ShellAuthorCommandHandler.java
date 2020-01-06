@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.util.StringUtils;
-import ru.otus.homework.domain.Author;
+import ru.otus.homework.dto.AuthorDto;
 import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.BookService;
 import ru.otus.homework.service.GenreService;
@@ -43,8 +43,8 @@ public class ShellAuthorCommandHandler {
 
     @ShellMethod("Добавить нового автора")
     public void addAuthor() {
-        Author author = this.authorWizard("prompt.add.author", false);
-        authorService.insert(author);
+        AuthorDto authorDto = this.authorWizard("prompt.add.author", false);
+        authorService.insert(authorDto);
         shellHelper.printSuccessTranslated("info.record.added.successfully");
     }
 
@@ -59,12 +59,12 @@ public class ShellAuthorCommandHandler {
         if (!"Y".equals(userInput.toUpperCase())) {
             return;
         }
-        Author author = this.getAuthorFromList();
-        authorService.deleteByUid(author.getUid());
+        AuthorDto authorDto = this.getAuthorFromList();
+        authorService.deleteByUid(authorDto.getUid());
         shellHelper.printWarningTranslated("info.record.deleted.successfully");
     }
 
-    private Author getAuthorFromList() {
+    private AuthorDto getAuthorFromList() {
         this.showAuthors();
         Long uid = null;
         do {
@@ -78,32 +78,32 @@ public class ShellAuthorCommandHandler {
         return authorService.getByUid(uid);
     }
 
-    private Author authorWizard(String prompt, boolean edit) {
-        Author author = new Author(-1, "", "");
+    private AuthorDto authorWizard(String prompt, boolean edit) {
+        AuthorDto authorDto = new AuthorDto(-1, "", "");
         String userInput = inputReader.promptTranslated(prompt, "");
         if ("Q".equals(userInput.toUpperCase())) {
-            return author;
+            return authorDto;
         }
 
         if (edit) {
             inputReader.promptTranslated("prompt.list.authors", "");
             //Выбрать автора из справочника
-            author = this.getAuthorFromList();
+            authorDto = this.getAuthorFromList();
         }
 
         do {
             String fullName = inputReader.promptTranslated("prompt.enter.author.full.name",
-                    author.getFullName());
+                    authorDto.getFullName());
             if (StringUtils.hasText(fullName)) {
-                author.setFullName(fullName);
+                authorDto.setFullName(fullName);
             } else {
                 shellHelper.printErrorTranslated("error.empty.full.name");
             }
-        } while (author.getFullName().isBlank());
+        } while (authorDto.getFullName().isBlank());
 
         String penName = inputReader.promptTranslated("prompt.enter.author.pen.name",
-                author.getFullName());
-        author.setPenName(penName);
-        return author;
+                authorDto.getFullName());
+        authorDto.setPenName(penName);
+        return authorDto;
     }
 }

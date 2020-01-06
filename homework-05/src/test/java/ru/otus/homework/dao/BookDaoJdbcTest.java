@@ -6,14 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.DirtiesContext;
+import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
+import ru.otus.homework.domain.Genre;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Dao для работы со справочником книг")
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
 @JdbcTest
-@Import(BookDaoJdbc.class)
+@Import({BookDaoJdbc.class, AuthorDaoJdbc.class, GenreDaoJdbc.class})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class BookDaoJdbcTest {
 
     private static final int EXPECTED_BOOKS_COUNT = 20;
@@ -60,17 +66,23 @@ class BookDaoJdbcTest {
     void shouldGetBookByUid() {
         Book book = jdbc.getByUid(TEST_BOOK_UID);
         assertThat(book.getTitle().equals(EXPECTED_BOOK_TITLE));
+        assertThat(book.getAuthors()).hasSizeGreaterThan(0);
+        assertThat(book.getGenres()).hasSizeGreaterThan(0);
     }
 
     @DisplayName("Возвращает все записи справочника")
     @Test
     void shouldGetAllBook() {
+        List<Author> authors = jdbc.getAll().get(0).getAuthors();
+        List<Genre> genres = jdbc.getAll().get(0).getGenres();
         assertThat(!jdbc.getAll().isEmpty());
+        assertThat(authors).isNotNull().hasSizeGreaterThan(0);
+        assertThat(genres).isNotNull().hasSizeGreaterThan(0);
     }
 
     @DisplayName("Возвращает количество записей справочника")
     @Test
-    void testShouldGetExpectedCountOfBook() {
+    void shouldGetExpectedCountOfBook() {
         assertThat(jdbc.count()).isEqualTo(EXPECTED_BOOKS_COUNT);
     }
 }

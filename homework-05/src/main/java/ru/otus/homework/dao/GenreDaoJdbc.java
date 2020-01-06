@@ -66,6 +66,49 @@ public class GenreDaoJdbc implements GenreDao {
         return jdbc.queryForObject("select count(*) from tbl_genres", new HashMap<>(0), Integer.class);
     }
 
+    @Override
+    public void insertGenresByBookUid(long bookUid, List<Genre> genres) {
+        if (genres == null){
+            return;
+        }
+        genres.forEach(genre -> {
+            final Map<String, Object> params = new HashMap<>(2);
+            params.put("bookUid", bookUid);
+            params.put("genreUid", genre.getUid());
+            jdbc.update("insert into tbl_book_genre(book_uid, genre_uid) values(:bookUid, :genreUid)", params);
+        });
+    }
+
+    @Override
+    public void editGenresByBookUid(long bookUid, List<Genre> genres) {
+        genres.forEach(genre -> {
+            final Map<String, Object> params = new HashMap<>(1);
+            params.put("bookUid", bookUid);
+            jdbc.update("delete from tbl_book_genre where book_uid = :bookUid", params);
+        });
+        this.insertGenresByBookUid(bookUid, genres);
+    }
+
+    @Override
+    public void deleteGenresByBookUid(long bookUid, List<Genre> genres) {
+        genres.forEach(genre -> {
+            final Map<String, Object> params = new HashMap<>(2);
+            params.put("bookUid", bookUid);
+            params.put("genreUid", genre.getUid());
+            jdbc.update("delete from tbl_book_genre where book_uid = :bookUid and genre_uid = :genreUid", params);
+        });
+    }
+
+    @Override
+    public List<Genre> getGenresByBookUid(long bookUid) {
+        final Map<String, Object> params = new HashMap<>(1);
+        params.put("bookUid", bookUid);
+        return jdbc.query("select g.uid, g.name from tbl_book_genre bg\n" +
+                "join tbl_genres g on bg.genre_uid = g.uid\n" +
+                "join tbl_books b on bg.book_uid = b.uid\n" +
+                "where b.uid = :bookUid", params, new GenreMapper());
+    }
+
     private static class GenreMapper implements RowMapper<Genre> {
         @Override
         public Genre mapRow(ResultSet resultSet, int i) throws SQLException {

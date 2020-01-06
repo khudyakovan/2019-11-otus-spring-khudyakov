@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.homework.domain.Book;
 import ru.otus.homework.domain.Genre;
 
@@ -14,10 +15,11 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Dao для работы со регистром книг и авторов")
+@DisplayName("Dao для работы со регистром книг и жанров")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @JdbcTest
-@Import({BookGenreDaoJdbc.class, GenreDaoJdbc.class})
+@Import({BookDaoJdbc.class, GenreDaoJdbc.class, AuthorDaoJdbc.class})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class BookGenreDaoJdbcTest {
 
     private final long BOOK_UID = 19;
@@ -28,7 +30,7 @@ class BookGenreDaoJdbcTest {
     private final int EXPECTED_BOOKS_COUNT = 4;
 
     @Autowired
-    private BookGenreDaoJdbc bookGenreDaoJdbc;
+    private BookDaoJdbc bookDaoJdbc;
     @Autowired
     private GenreDaoJdbc genreDaoJdbc;
 
@@ -38,9 +40,9 @@ class BookGenreDaoJdbcTest {
         List<Genre> genres = new ArrayList<>();
         genres.add(genreDaoJdbc.getByUid(TEST_GENRE_1));
         genres.add(genreDaoJdbc.getByUid(TEST_GENRE_2));
-        bookGenreDaoJdbc.insertGenresByBookUid(BOOK_UID, genres);
+        genreDaoJdbc.insertGenresByBookUid(BOOK_UID, genres);
 
-        genres = bookGenreDaoJdbc.getGenresByBookUid(BOOK_UID);
+        genres = genreDaoJdbc.getGenresByBookUid(BOOK_UID);
         assertThat(!genres.isEmpty());
         assertThat(genres.size()).isEqualTo(EXPECTED_GENRES_COUNT + 2);
     }
@@ -48,11 +50,11 @@ class BookGenreDaoJdbcTest {
     @DisplayName("Редактирует связку книга-жанры")
     @Test
     void shouldEditBookGenresRelation() {
-        List<Genre> genres = bookGenreDaoJdbc.getGenresByBookUid(BOOK_UID);
+        List<Genre> genres = genreDaoJdbc.getGenresByBookUid(BOOK_UID);
         genres.remove(0);
-        bookGenreDaoJdbc.editGenresByBookUid(BOOK_UID, genres);
+        genreDaoJdbc.editGenresByBookUid(BOOK_UID, genres);
 
-        genres = bookGenreDaoJdbc.getGenresByBookUid(BOOK_UID);
+        genres = genreDaoJdbc.getGenresByBookUid(BOOK_UID);
         assertThat(!genres.isEmpty());
         assertThat(genres.size()).isEqualTo(EXPECTED_GENRES_COUNT - 1);
     }
@@ -60,11 +62,11 @@ class BookGenreDaoJdbcTest {
     @DisplayName("Удаляет связку книга-авторы из регистра")
     @Test
     void shouldDeleteBookGenresRelation() {
-        List<Genre> genres = bookGenreDaoJdbc.getGenresByBookUid(BOOK_UID);
+        List<Genre> genres = genreDaoJdbc.getGenresByBookUid(BOOK_UID);
         genres.remove(0);
-        bookGenreDaoJdbc.deleteGenresByBookUid(BOOK_UID, genres);
+        genreDaoJdbc.deleteGenresByBookUid(BOOK_UID, genres);
 
-        genres = bookGenreDaoJdbc.getGenresByBookUid(BOOK_UID);
+        genres = genreDaoJdbc.getGenresByBookUid(BOOK_UID);
         assertThat(!genres.isEmpty());
         assertThat(genres.size()).isEqualTo(EXPECTED_GENRES_COUNT - 2);
     }
@@ -72,7 +74,7 @@ class BookGenreDaoJdbcTest {
     @DisplayName("Возвращает книги определенного жанра")
     @Test
     void shouldGetBooksByGenreUid() {
-        List<Book> books = bookGenreDaoJdbc.getBooksByGenreUid(GENRE_UID);
+        List<Book> books = bookDaoJdbc.getBooksByGenreUid(GENRE_UID);
         assertThat(!books.isEmpty());
         assertThat(books.size()).isEqualTo(EXPECTED_BOOKS_COUNT);
     }
@@ -80,7 +82,7 @@ class BookGenreDaoJdbcTest {
     @DisplayName("Возвращает жанры книги")
     @Test
     void shouldGetGenresByBookUid() {
-        List<Genre> genres = bookGenreDaoJdbc.getGenresByBookUid(BOOK_UID);
+        List<Genre> genres = genreDaoJdbc.getGenresByBookUid(BOOK_UID);
         assertThat(!genres.isEmpty());
         assertThat(genres.size()).isEqualTo(EXPECTED_GENRES_COUNT);
     }

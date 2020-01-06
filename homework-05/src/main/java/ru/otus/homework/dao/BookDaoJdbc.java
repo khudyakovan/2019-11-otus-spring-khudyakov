@@ -8,21 +8,28 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import ru.otus.homework.dao.relation.BookAuthorRelation;
+import ru.otus.homework.dao.relation.BookGenreRelation;
+import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
+import ru.otus.homework.domain.Genre;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class BookDaoJdbc implements BookDao {
 
     private final NamedParameterJdbcOperations jdbc;
+    private final AuthorDao authorDao;
+    private final GenreDao genreDao;
 
     @Autowired
-    public BookDaoJdbc(NamedParameterJdbcOperations jdbc) {
+    public BookDaoJdbc(NamedParameterJdbcOperations jdbc, AuthorDao authorDao, GenreDao genreDao) {
+        this.genreDao = genreDao;
+        this.authorDao = authorDao;
         this.jdbc = jdbc;
     }
 
@@ -60,15 +67,48 @@ public class BookDaoJdbc implements BookDao {
     public Book getByUid(long uid) {
         final Map<String, Object> params = new HashMap<>(1);
         params.put("uid", uid);
-        return jdbc.queryForObject("select * from tbl_books where uid = :uid", params, new BookMapper());
+        Book book = jdbc.queryForObject("select * from tbl_books where uid = :uid", params, new BookMapper());
+        List<Book> books = Collections.singletonList(book);
+        mergeBookInfo(books, authorDao.getAll(), this.getBookAuthorRelations());
+        mergeGenreInfo(books, genreDao.getAll(), this.getBookGenreRelations());
+        return book;
     }
 
     public List<Book> getAll() {
-        return jdbc.query("select * from tbl_books", new BookMapper());
+        List<Book> books = jdbc.query("select * from tbl_books", new BookMapper());
+        mergeBookInfo(books, authorDao.getAll(), this.getBookAuthorRelations());
+        mergeGenreInfo(books, genreDao.getAll(), this.getBookGenreRelations());
+        return books;
     }
 
     public int count() {
         return jdbc.queryForObject("select count(*) from tbl_books", new HashMap<>(0), Integer.class);
+    }
+
+    @Override
+    public List<Book> getBooksByAuthorUid(long authorUid) {
+        final Map<String, Object> params = new HashMap<>(1);
+        params.put("authorUid", authorUid);
+        List<Book> books = jdbc.query("select b.uid, b.title, b.isbn, b.publication_year from tbl_book_author ba\n" +
+                "join tbl_authors a on ba.author_uid = a.uid\n" +
+                "join tbl_books b on ba.book_uid = b.uid\n" +
+                "where a.uid = :authorUid", params, new BookMapper());
+        mergeBookInfo(books, authorDao.getAll(), this.getBookAuthorRelations());
+        mergeGenreInfo(books, genreDao.getAll(), this.getBookGenreRelations());
+        return books;
+    }
+
+    @Override
+    public List<Book> getBooksByGenreUid(long genreUid) {
+        final Map<String, Object> params = new HashMap<>(1);
+        params.put("genreUid", genreUid);
+        List<Book> books =  jdbc.query("select b.uid, b.title, b.isbn, b.publication_year from tbl_book_genre bg\n" +
+                "join tbl_genres g on bg.genre_uid = g.uid\n" +
+                "join tbl_books b on bg.book_uid = b.uid\n" +
+                "where g.uid = :genreUid", params, new BookMapper());
+        mergeBookInfo(books, authorDao.getAll(), this.getBookAuthorRelations());
+        mergeGenreInfo(books, genreDao.getAll(), this.getBookGenreRelations());
+        return books;
     }
 
     private static class BookMapper implements RowMapper<Book> {
@@ -78,7 +118,41 @@ public class BookDaoJdbc implements BookDao {
             String title = resultSet.getString("title");
             long isbn = resultSet.getLong("isbn");
             short publication_year = resultSet.getShort("publication_year");
-            return new Book(uid, title, isbn, publication_year);
+            return new Book(uid, title, isbn, publication_year, new ArrayList<>(), new ArrayList<>());
         }
+    }
+
+    private List<BookAuthorRelation> getBookAuthorRelations() {
+        return jdbc.query("select * from tbl_book_author",
+                (rs, i) -> new BookAuthorRelation(rs.getLong(1),
+                        rs.getLong(2),
+                        rs.getLong(3)));
+    }
+
+    private List<BookGenreRelation> getBookGenreRelations() {
+        return jdbc.query("select * from tbl_book_genre",
+                (rs, i) -> new BookGenreRelation(rs.getLong(1),
+                        rs.getLong(2),
+                        rs.getLong(3)));
+    }
+
+    private void mergeBookInfo(List<Book> books, List<Author> authors, List<BookAuthorRelation> relations) {
+        Map<Long, Book> booksMap = books.stream().collect(Collectors.toMap(Book::getUid, c -> c));
+        Map<Long, Author> authorsMap = authors.stream().collect(Collectors.toMap(Author::getUid, c -> c));
+        relations.forEach(relation -> {
+            if (booksMap.containsKey(relation.getBookUid()) && authorsMap.containsKey(relation.getAuthorUid())) {
+                booksMap.get(relation.getBookUid()).getAuthors().add(authorsMap.get(relation.getAuthorUid()));
+            }
+        });
+    }
+
+    private void mergeGenreInfo(List<Book> books, List<Genre> genres, List<BookGenreRelation> relations) {
+        Map<Long, Book> booksMap = books.stream().collect(Collectors.toMap(Book::getUid, c -> c));
+        Map<Long, Genre> genresMap = genres.stream().collect(Collectors.toMap(Genre::getUid, c -> c));
+        relations.forEach(relation -> {
+            if (booksMap.containsKey(relation.getBookUid()) && genresMap.containsKey(relation.getGenreUid())) {
+                booksMap.get(relation.getBookUid()).getGenres().add(genresMap.get(relation.getGenreUid()));
+            }
+        });
     }
 }

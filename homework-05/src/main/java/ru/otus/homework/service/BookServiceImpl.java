@@ -1,13 +1,10 @@
 package ru.otus.homework.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import ru.otus.homework.dao.BookAuthorDao;
 import ru.otus.homework.dao.BookDao;
-import ru.otus.homework.dao.BookGenreDao;
-import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
-import ru.otus.homework.domain.Genre;
 
 import java.util.List;
 
@@ -15,28 +12,34 @@ import java.util.List;
 public class BookServiceImpl implements BookService {
 
     private final BookDao bookDao;
-    private final BookAuthorDao bookAuthorDao;
-    private final BookGenreDao bookGenreDao;
+    private final AuthorService authorService;
+    private final GenreService genreService;
+    private final UtilityService utilityService;
 
     @Autowired
-    public BookServiceImpl(BookDao bookDao, BookAuthorDao bookAuthorDao, BookGenreDao bookGenreDao) {
+    public BookServiceImpl(BookDao bookDao,
+                           @Lazy AuthorService authorService,
+                           @Lazy GenreService genreService,
+                           UtilityService utilityService) {
         this.bookDao = bookDao;
-        this.bookAuthorDao = bookAuthorDao;
-        this.bookGenreDao = bookGenreDao;
+        this.authorService = authorService;
+        this.genreService = genreService;
+        this.utilityService = utilityService;
     }
 
     @Override
     public Book insert(Book book) {
         book = bookDao.insert(book);
-        bookGenreDao.insertGenresByBookUid(book.getUid(), book.getGenres());
-        bookAuthorDao.insertAuthorsByBookUid(book.getUid(), book.getAuthors());
-        return book;
+        genreService.insertGenresByBookUid(book.getUid(), utilityService.convertToGenreDto(book.getGenres()));
+        authorService.insertAuthorsByBookUid(book.getUid(), utilityService.convertToAuthorDto(book.getAuthors()));
+        return this.getByUid(book.getUid());
     }
 
     @Override
     public void edit(Book book) {
-        bookGenreDao.editGenresByBookUid(book.getUid(), book.getGenres());
-        bookAuthorDao.editAuthorsByBookUid(book.getUid(), book.getAuthors());
+        genreService.editGenresByBookUid(book.getUid(), utilityService.convertToGenreDto(book.getGenres()));
+        authorService.editAuthorsByBookUid(book.getUid(), utilityService.convertToAuthorDto(book.getAuthors()));
+        book = new Book(book.getUid(), book.getTitle(), book.getIsbn(), book.getPublicationYear());
         bookDao.edit(book);
     }
 
@@ -48,23 +51,26 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book getByUid(long uid) {
         Book book = bookDao.getByUid(uid);
-        book.setAuthors(bookAuthorDao.getAuthorsByBookUid(uid));
-        book.setGenres(bookGenreDao.getGenresByBookUid(uid));
         return book;
     }
 
     @Override
     public List<Book> getAll() {
-        List<Book> books = bookDao.getAll();
-        books.forEach(book -> {
-            book.setAuthors(bookAuthorDao.getAuthorsByBookUid(book.getUid()));
-            book.setGenres(bookGenreDao.getGenresByBookUid(book.getUid()));
-        });
-        return books;
+        return bookDao.getAll();
     }
 
     @Override
     public int count() {
         return bookDao.count();
+    }
+
+    @Override
+    public List<Book> getBooksByGenreUid(long genreUid) {
+        return bookDao.getBooksByGenreUid(genreUid);
+    }
+
+    @Override
+    public List<Book> getBooksByAuthorUid(long authorUid) {
+        return bookDao.getBooksByAuthorUid(authorUid);
     }
 }

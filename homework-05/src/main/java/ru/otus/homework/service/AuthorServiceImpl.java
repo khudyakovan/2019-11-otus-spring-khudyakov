@@ -1,10 +1,12 @@
 package ru.otus.homework.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import ru.otus.homework.dao.*;
+import ru.otus.homework.dao.AuthorDao;
 import ru.otus.homework.domain.Author;
 import ru.otus.homework.domain.Book;
+import ru.otus.homework.dto.AuthorDto;
 
 import java.util.List;
 
@@ -12,24 +14,30 @@ import java.util.List;
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorDao authorDao;
-    private final BookAuthorDao bookAuthorDao;
-    private final BookGenreDao bookGenreDao;
+    private final BookService bookService;
+    private final GenreService genreService;
+    private final UtilityService utilityService;
 
     @Autowired
-    public AuthorServiceImpl(AuthorDao authorDao, BookAuthorDao bookAuthorDao, BookGenreDao bookGenreDao) {
+    public AuthorServiceImpl(AuthorDao authorDao,
+                             @Lazy BookService bookService,
+                             @Lazy GenreService genreService,
+                             UtilityService utilityService) {
         this.authorDao = authorDao;
-        this.bookAuthorDao = bookAuthorDao;
-        this.bookGenreDao = bookGenreDao;
+        this.bookService = bookService;
+        this.genreService = genreService;
+        this.utilityService = utilityService;
     }
 
     @Override
-    public Author insert(Author author) {
-        return authorDao.insert(author);
+    public AuthorDto insert(AuthorDto authorDto) {
+        Author author = authorDao.insert(new Author(authorDto.getFullName(), authorDto.getPenName()));
+        return this.getByUid(author.getUid());
     }
 
     @Override
-    public void edit(Author author) {
-        authorDao.edit(author);
+    public void edit(AuthorDto authorDto) {
+        authorDao.edit(new Author(authorDto.getUid(), authorDto.getFullName(), authorDto.getPenName()));
     }
 
     @Override
@@ -38,23 +46,45 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getByUid(long uid) {
-        Author author = authorDao.getByUid(uid);
-        List<Book> books = bookAuthorDao.getBooksByAuthorUid(uid);
-        books.forEach(book -> book.setGenres(bookGenreDao.getGenresByBookUid(book.getUid())));
-        author.setBooks(books);
-        return author;
+    public AuthorDto getByUid(long uid) {
+        AuthorDto authorDto = new AuthorDto(authorDao.getByUid(uid));
+        List<Book> books = bookService.getBooksByAuthorUid(uid);
+        authorDto.setBooks(books);
+        return authorDto;
     }
 
     @Override
-    public List<Author> getAll() {
-        List<Author> authors = authorDao.getAll();
-        authors.forEach(author -> author.setBooks(bookAuthorDao.getBooksByAuthorUid(author.getUid())));
-        return authors;
+    public List<AuthorDto> getAll() {
+        List<AuthorDto> authorDtos = utilityService.convertToAuthorDto(authorDao.getAll());
+        authorDtos.forEach(author -> {
+            List<Book> books = bookService.getBooksByAuthorUid(author.getUid());
+            author.setBooks(books);
+        });
+        return authorDtos;
     }
 
     @Override
     public int count() {
         return authorDao.count();
+    }
+
+    @Override
+    public void insertAuthorsByBookUid(long bookUid, List<AuthorDto> authors) {
+        authorDao.insertAuthorsByBookUid(bookUid, utilityService.convertToAuthorDomain(authors));
+    }
+
+    @Override
+    public void editAuthorsByBookUid(long bookUid, List<AuthorDto> authors) {
+        authorDao.editAuthorsByBookUid(bookUid, utilityService.convertToAuthorDomain(authors));
+    }
+
+    @Override
+    public void deleteAuthorsByBookUid(long bookUid, List<AuthorDto> authors) {
+        authorDao.deleteAuthorsByBookUid(bookUid, utilityService.convertToAuthorDomain(authors));
+    }
+
+    @Override
+    public List<AuthorDto> getAuthorsByBookUid(long bookUid) {
+        return utilityService.convertToAuthorDto(authorDao.getAuthorsByBookUid(bookUid));
     }
 }
