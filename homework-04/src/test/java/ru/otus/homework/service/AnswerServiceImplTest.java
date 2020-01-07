@@ -1,14 +1,13 @@
 package ru.otus.homework.service;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
+import org.springframework.context.annotation.Import;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
-import ru.otus.homework.dao.AnswerDaoImpl;
+import ru.otus.homework.config.DaoConfig;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -17,18 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
         InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
         ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT + ".enabled=false"
 })
+@Import(DaoConfig.class)
 class AnswerServiceImplTest {
-    private static AnswerServiceImpl answerService;
-    private static AnswerDaoImpl answerDao;
-    private static Resource answerFilePath;
-    private static final String LANGUAGE_POSTFIX = "ru";
 
-    @BeforeAll
-    static void setUp() {
-        answerFilePath = new ClassPathResource("answers_" + LANGUAGE_POSTFIX + ".csv");
-        answerDao = new AnswerDaoImpl(answerFilePath);
-        answerService = new AnswerServiceImpl(answerDao);
-    }
+    @Autowired
+    AnswerService answerService;
 
     @DisplayName("Класс создан")
     @Test

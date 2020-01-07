@@ -1,13 +1,13 @@
 package ru.otus.homework.dao;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
+import org.springframework.context.annotation.Import;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
+import ru.otus.homework.config.DaoConfig;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,21 +15,16 @@ import static org.junit.jupiter.api.Assertions.*;
         InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
         ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT + ".enabled=false"
 })
+@Import(DaoConfig.class)
 class AnswerDaoTest {
 
-    private static AnswerDaoImpl answerDao;
-    private static Resource answerFilePath;
     final int ALL_ANSWERS_COUNT = 18;
     final int TESTING_QUESTION_UID = 1;
     final int EXPECTED_ANSWERS_COUNT = 4;
     final int CORRECT_ANSWER = 3;
-    private static final String LANGUAGE_POSTFIX = "en";
 
-    @BeforeAll
-    static void setup(){
-        answerFilePath = new ClassPathResource("answers_" + LANGUAGE_POSTFIX + ".csv");
-        answerDao = new AnswerDaoImpl(answerFilePath);
-    }
+    @Autowired
+    private AnswerDao answerDao;
 
     @DisplayName("Класс создан")
     @Test

@@ -1,13 +1,13 @@
 package ru.otus.homework.dao;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
+import org.springframework.context.annotation.Import;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
+import ru.otus.homework.config.DaoConfig;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,24 +15,17 @@ import static org.junit.jupiter.api.Assertions.*;
         InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
         ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT + ".enabled=false"
 })
+@Import(DaoConfig.class)
 class QuestionDaoTest {
 
-    private static QuestionDaoImpl questionDao;
-    private static Resource questionFilePath;
-    private static AnswerDaoImpl answerDao;
-    private static Resource answerFilePath;
     private final int ALL_QUESTIONS_COUNT = 5;
     private final int TESTING_QUESTION_UID = 2;
     private final int EXPECTED_ANSWERS_COUNT = 3;
-    private static final String LANGUAGE_POSTFIX = "en";
 
-    @BeforeAll
-    static void setup() {
-        answerFilePath = new ClassPathResource("answers_" + LANGUAGE_POSTFIX + ".csv");
-        answerDao = new AnswerDaoImpl(answerFilePath);
-        questionFilePath = new ClassPathResource("questions_" + LANGUAGE_POSTFIX + ".csv");
-        questionDao = new QuestionDaoImpl(questionFilePath, answerDao);
-    }
+    @Autowired
+    QuestionDao questionDao;
+    @Autowired
+    AnswerDao answerDao;
 
     @DisplayName("Класс и связанные классы созданы")
     @Test
