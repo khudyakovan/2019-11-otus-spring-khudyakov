@@ -2,9 +2,9 @@ package ru.otus.homework.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.test.context.TestConfiguration;
 
-@Configuration
+@TestConfiguration
 @ConfigurationProperties("application")
 @Data
 public class ApplicationProperties {

@@ -6,19 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
+import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.homework.dto.AuthorDto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 @DisplayName("Сервис для работы с регистром книг и их авторов")
 @SpringBootTest(properties = {
         InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
         ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT + ".enabled=false"
 })
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class BookAuthorServiceImplTest {
 
     private final long BOOK_UID = 15;
@@ -66,15 +67,5 @@ class BookAuthorServiceImplTest {
         authors.remove(0);
         authorService.deleteAuthorsByBookUid(BOOK_UID, authors);
         assertEquals(EXPECTED_VALUE, authorService.getAuthorsByBookUid(BOOK_UID).size());
-    }
-
-    @Test
-    void shouldGetBooksByAuthorUid() {
-        assertNotEquals(UNEXPECTED_VALUE, bookService.getBooksByAuthorUid(AUTHOR_UID).size());
-    }
-
-    @Test
-    void shouldGetAuthorsByBookUid() {
-        assertNotEquals(UNEXPECTED_VALUE, authorService.getAuthorsByBookUid(BOOK_UID));
     }
 }

@@ -17,21 +17,19 @@ public class IOServiceImpl implements IOService {
 
     @Autowired
     public IOServiceImpl(MessageSource messageSource, ApplicationProperties applicationProperties) {
-        this.messageSource = messageSource;
         currentLocale = new Locale(applicationProperties.getLanguage(),
                 applicationProperties.getCountry());
+        this.messageSource = messageSource;
     }
 
     @Override
-    public void printLine(String line) {
+    public void printLocalizedMessage(String property, String... args) {
+        String line = messageSource.getMessage(property, args, this.currentLocale);
+        this.printLine(line);
+    }
+
+    private void printLine(String line) {
         System.out.println(line);
-    }
-
-    @Override
-    public void printLocalizedMessage(String property, String...args) {
-        this.printLine(messageSource.getMessage(property,
-                args,
-                this.currentLocale));
     }
 
     @Override
@@ -42,7 +40,7 @@ public class IOServiceImpl implements IOService {
     @Override
     public int readInteger() {
         while (!scanner.hasNextInt()) {
-            this.printLocalizedMessage("gettingAnswers.wronganswer", "");
+            this.printLocalizedMessage("gettinganswers.wronganswer", "");
             scanner.next();
         }
         return scanner.nextInt();

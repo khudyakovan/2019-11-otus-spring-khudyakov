@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import ru.otus.homework.domain.Genre;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Dao для работы со справочником жанров")
