@@ -1,34 +1,17 @@
 package ru.otus.homework.service;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import ru.otus.homework.dao.AnswerDaoImpl;
-import ru.otus.homework.dao.QuestionDaoImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class QuestionServiceImplTest {
 
-    private static QuestionServiceImpl questionService;
-    private static AnswerDaoImpl answerDao;
-    private static Resource answerFilePath;
-    private static QuestionDaoImpl questionDao;
-    private static Resource questionFilePath;
-    private static final String LANGUAGE_POSTFIX = "ru";
-
-    @BeforeAll
-    static void setUp() {
-        answerFilePath = new ClassPathResource("answers_" + LANGUAGE_POSTFIX + ".csv");
-        answerDao = new AnswerDaoImpl(answerFilePath);
-        questionFilePath = new ClassPathResource("questions_" + LANGUAGE_POSTFIX + ".csv");
-        questionDao = new QuestionDaoImpl(questionFilePath, answerDao);
-        questionService = new QuestionServiceImpl(questionDao);
-    }
+    @Autowired
+    QuestionService questionService;
 
     @DisplayName("Класс создан")
     @Test
