@@ -10,4 +10,5 @@ import org.springframework.stereotype.Component;
 public class ApplicationProperties {
     private String language;
     private String country;
+    private String objectNotFoundMessage;
 }

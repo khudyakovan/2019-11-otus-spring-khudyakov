@@ -5,11 +5,17 @@ import org.jline.utils.AttributedStringBuilder;
 import org.jline.utils.AttributedStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.shell.table.BeanListTableModel;
+import org.springframework.shell.table.BorderStyle;
+import org.springframework.shell.table.TableBuilder;
+import org.springframework.shell.table.TableModel;
 import org.springframework.stereotype.Component;
 import ru.otus.homework.config.ShellProperties;
 import ru.otus.homework.service.TranslationService;
 
 import javax.validation.constraints.NotNull;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 @Component
 public class ShellHelper {
@@ -71,5 +77,13 @@ public class ShellHelper {
         }
         terminal.writer().println(toPrint);
         terminal.flush();
+    }
+
+    public void render(List list, LinkedHashMap<String, Object> headers) {
+        TableModel model = new BeanListTableModel<>(list, headers);
+        TableBuilder tableBuilder = new TableBuilder(model);
+        tableBuilder.addInnerBorder(BorderStyle.oldschool);
+        tableBuilder.addHeaderBorder(BorderStyle.oldschool);
+        print(tableBuilder.build().render(180), null);
     }
 }
