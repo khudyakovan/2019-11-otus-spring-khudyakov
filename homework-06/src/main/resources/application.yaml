@@ -2,6 +2,7 @@ application:
   language: ru
   country: RU
   object-not-found-message: "Object with Uid=%s not found!"
+  anonymous-comments-only: true
 
 spring:
   datasource:
@@ -9,12 +10,12 @@ spring:
     username: otus
     password: javaclub
     driver-class-name: com.mysql.cj.jdbc.Driver
-    initialization-mode: always
+    initialization-mode: never
   jpa:
     generate-ddl: false
     hibernate:
       ddl-auto: none
-    show-sql: true
+    show-sql: false
   messages:
     basename: messages
     encoding: UTF-8

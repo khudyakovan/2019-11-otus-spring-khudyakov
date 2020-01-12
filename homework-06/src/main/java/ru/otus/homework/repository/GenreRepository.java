@@ -3,27 +3,25 @@ package ru.otus.homework.repository;
 import ru.otus.homework.entity.Genre;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GenreRepository {
 
-      List<Genre> getAll();
+      List<Genre> findAll();
 
-//    Genre insert(Genre genre);
-//
-//    void edit(Genre genre);
-//
-//    void deleteByUid(long uid);
-//
-//    Genre getByUid(long uid);
-//
-//
-//    int count();
-//
-//    void insertGenresByBookUid(long bookUid, List<Genre> genres);
-//
-//    void editGenresByBookUid(long bookUid, List<Genre> genres);
-//
-//    void deleteGenresByBookUid(long bookUid, List<Genre> genres);
-//
-//    List<Genre> getGenresByBookUid(long bookUid);
+      Genre save(Genre genre);
+
+      void deleteByUid(long uid);
+
+      Optional<Genre> findByUid(long uid);
+
+      long count();
+
+      void insertGenresByBookUid(long bookUid, List<Genre> genres);
+
+      void editGenresByBookUid(long bookUid, List<Genre> genres);
+
+      void deleteGenresByBookUid(long bookUid, List<Genre> genres);
+
+      List<Genre> findGenresByBookUid(long bookUid);
 }

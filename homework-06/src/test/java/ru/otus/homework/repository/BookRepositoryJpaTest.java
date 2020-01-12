@@ -9,17 +9,18 @@ import org.springframework.context.annotation.Import;
 import ru.otus.homework.config.ApplicationProperties;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
+import ru.otus.homework.entity.Comment;
 import ru.otus.homework.entity.Genre;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("Репозиторий на основе Jpa для работы с авторами...")
+@DisplayName("Репозиторий Jpa для работы с авторами...")
 @DataJpaTest
 @Import({BookRepositoryJpa.class, ApplicationProperties.class})
 class BookRepositoryJpaTest {
-    /*TODO Убрать константы*/
+
     private final int EXPECTED_BOOKS_COUNT = 20;
     private final long TEST_BOOK_UID = 10;
     private final long TEST_BOOK_ISBN = 1234567891013L;
@@ -36,68 +37,76 @@ class BookRepositoryJpaTest {
     ApplicationProperties applicationProperties;
 
     @Autowired
-    BookRepositoryJpa jpa;
+    BookRepositoryJpa bookRepository;
 
     @DisplayName("... должен записать 1 книгу в БД и проверить, что количество изменилось")
     @Test
     void shouldSaveBook() {
-        long initialSize = jpa.count();
+        long initialSize = bookRepository.count();
         Book book = new Book(
                 TEST_BOOK_TITLE,
                 TEST_BOOK_ISBN,
                 TEST_BOOK_PUBLISHING_YEAR);
-        jpa.save(book);
-        assertThat(jpa.findAll().size()).isEqualTo(initialSize + 1);
+        bookRepository.save(book);
+        assertThat(bookRepository.findAll().size()).isEqualTo(initialSize + 1);
     }
 
     @DisplayName("... должен измененить и проверить изменение в справочнике книг")
     @Test
     void shouldEditRecord() {
-        Book book = jpa.findByUid(TEST_BOOK_UID).orElseThrow(null);
+        Book book = bookRepository.findByUid(TEST_BOOK_UID).orElseThrow(null);
         book.setIsbn(TEST_BOOK_ISBN);
-        book = jpa.save(book);
+        book = bookRepository.save(book);
         assertThat(book.getIsbn()).isEqualTo(TEST_BOOK_ISBN);
     }
 
     @DisplayName("... должен удалить 1 запись по uid")
     @Test
     void shouldDeleteRecordByUid() {
-        long initialSize = jpa.count();
-        jpa.deleteByUid(TEST_BOOK_UID);
-        assertThat(jpa.findAll().size()).isEqualTo(initialSize - 1);
+        long initialSize = bookRepository.count();
+        bookRepository.deleteByUid(TEST_BOOK_UID);
+        assertThat(bookRepository.findAll().size()).isEqualTo(initialSize - 1);
     }
 
     @DisplayName("...должен вернуть запись по ее Uid")
     @Test
     void shouldGetBookByUid() {
-        Book book = jpa.findByUid(TEST_BOOK_UID).orElse(null);
-        assertThat(book.getTitle().equals(EXPECTED_BOOK_TITLE));
+        Book book = bookRepository.findByUid(TEST_BOOK_UID).orElse(null);
+        assertThat(book.getTitle()).isEqualTo(EXPECTED_BOOK_TITLE);
         assertThat(book.getAuthors()).hasSizeGreaterThan(0);
         assertThat(book.getGenres()).hasSizeGreaterThan(0);
+        assertThat(book.getComments()).hasSizeGreaterThan(0);
+        System.out.println(book);
+        System.out.println(book.getAuthors());
+        System.out.println(book.getGenres());
+        System.out.println(book.getComments());
     }
 
     @DisplayName("...должен вернуть все записи")
     @Test
     void shouldFindAll() {
-        List<Author> authors = jpa.findAll().get(0).getAuthors();
-        List<Genre> genres = jpa.findAll().get(0).getGenres();
-        assertThat(jpa.findAll()).isNotNull().hasSizeGreaterThan(0);
+        List<Book> books = bookRepository.findAll();
+        List<Author> authors = books.get(0).getAuthors();
+        List<Genre> genres = books.get(0).getGenres();
+        List<Comment> comments = books.get(0).getComments();
+        assertThat(books).isNotNull().hasSizeGreaterThan(0);
         assertThat(authors).isNotNull().hasSizeGreaterThan(0);
         assertThat(genres).isNotNull().hasSizeGreaterThan(0);
+        assertThat(comments).isNotNull().hasSizeGreaterThan(0);
     }
 
 
     @DisplayName("... должен вернуть книги за авторством писателя")
     @Test
     void shouldGetBooksByAuthorUid() {
-        List<Book> books = jpa.findBooksByAuthorUid(AUTHOR_UID);
+        List<Book> books = bookRepository.findBooksByAuthorUid(AUTHOR_UID);
         assertThat(books).isNotEmpty().isNotNull().hasSizeGreaterThan(0);
     }
 
     @DisplayName("... должен вернуть книги определенного жанра")
     @Test
     void shouldGetBooksByGenreUid() {
-        List<Book> books = jpa.findBooksByGenreUid(GENRE_UID);
+        List<Book> books = bookRepository.findBooksByGenreUid(GENRE_UID);
         assertThat(!books.isEmpty());
         assertThat(books.size()).isGreaterThan(0);
     }
@@ -105,6 +114,6 @@ class BookRepositoryJpaTest {
     @DisplayName("... должен вернуть количество записей справочника")
     @Test
     void shouldGetExpectedCountOfBook() {
-        assertThat(jpa.count()).isEqualTo(EXPECTED_BOOKS_COUNT);
+        assertThat(bookRepository.count()).isEqualTo(EXPECTED_BOOKS_COUNT);
     }
 }

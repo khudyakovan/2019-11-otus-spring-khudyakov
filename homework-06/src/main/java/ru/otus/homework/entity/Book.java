@@ -3,6 +3,8 @@ package ru.otus.homework.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -32,22 +34,31 @@ public class Book {
         this.publicationYear = publicationYear;
     }
 
-    @ManyToMany(targetEntity = Author.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Author.class, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "tbl_book_author",
             joinColumns = {@JoinColumn(name = "book_uid")},
             inverseJoinColumns = {@JoinColumn(name = "author_uid")})
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Author> authors;
 
-    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(
             name = "tbl_book_genre",
             joinColumns = {@JoinColumn(name = "book_uid")},
             inverseJoinColumns = {@JoinColumn(name = "genre_uid")})
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Genre> genres;
 
+    @ManyToMany(targetEntity = Comment.class, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinTable(
+            name = "tbl_book_comment",
+            joinColumns = {@JoinColumn(name = "book_uid")},
+            inverseJoinColumns = {@JoinColumn(name = "comment_uid")})
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Comment> comments;
 
     @Override
     public String toString() {

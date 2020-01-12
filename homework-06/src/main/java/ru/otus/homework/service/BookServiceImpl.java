@@ -30,11 +30,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book findByUid(long uid) {
-        Book book =  bookRepository.findByUid(uid).orElseThrow(
+        return bookRepository.findByUid(uid).orElseThrow(
                 () -> new ObjectNotFoundException(String.format(applicationProperties.getObjectNotFoundMessage(), uid)));
-        book.getGenres();
-        book.getAuthors();
-        return book;
     }
 
     @Override

@@ -3,8 +3,8 @@ package ru.otus.homework.repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.otus.homework.config.ApplicationProperties;
-import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
+import ru.otus.homework.entity.Genre;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class AuthorRepositoryJpa implements AuthorRepository {
+public class GenreRepositoryJpa implements GenreRepository {
 
     @PersistenceContext
     private EntityManager em;
@@ -24,68 +24,68 @@ public class AuthorRepositoryJpa implements AuthorRepository {
     private final ApplicationProperties applicationProperties;
 
     @Override
-    public Author save(Author author) {
-        if (author.getUid() <= 0) {
-            em.persist(author);
-            return author;
+    public List<Genre> findAll() {
+        return em.createQuery("select g from Genre g", Genre.class).getResultList();
+    }
+
+    @Override
+    public Genre save(Genre genre) {
+        if (genre.getUid() <= 0) {
+            em.persist(genre);
+            return genre;
         } else {
-            return em.merge(author);
+            return em.merge(genre);
         }
     }
 
     @Override
     public void deleteByUid(long uid) {
-        Query query = em.createQuery("delete from Author a where a.uid = :uid");
+        Query query = em.createQuery("delete from Genre g where g.uid = :uid");
         query.setParameter("uid", uid);
         query.executeUpdate();
     }
 
     @Override
-    public Optional<Author> findByUid(long uid) {
-        return Optional.ofNullable(em.find(Author.class, uid));
-    }
-
-    @Override
-    public List<Author> findAll() {
-        return em.createQuery("select a from Author a", Author.class).getResultList();
-    }
-
-    @Override
-    public void insertAuthorsByBookUid(long bookUid, List<Author> authors) {
-        if (authors == null){
-            return;
-        }
-        Book book = bookRepository.findByUid(bookUid).orElseThrow(
-                () -> new ObjectNotFoundException(String.format(applicationProperties.getObjectNotFoundMessage(), bookUid)));
-        book.getAuthors().addAll(authors);
-        bookRepository.save(book);
-    }
-
-    @Override
-    public void editAuthorsByBookUid(long bookUid, List<Author> authors) {
-        Book book = bookRepository.findByUid(bookUid).orElseThrow(
-                () -> new ObjectNotFoundException(String.format(applicationProperties.getObjectNotFoundMessage(), bookUid)));
-        book.setAuthors(authors);
-        bookRepository.save(book);
-    }
-
-    @Override
-    public void deleteAuthorsByBookUid(long bookUid, List<Author> authors) {
-        Book book = bookRepository.findByUid(bookUid).orElseThrow(
-                () -> new ObjectNotFoundException(String.format(applicationProperties.getObjectNotFoundMessage(), bookUid)));
-        book.getAuthors().removeAll(authors);
-        bookRepository.save(book);
-    }
-
-    @Override
-    public List<Author> findAuthorsByBookUid(long bookUid) {
-        Book book = bookRepository.findByUid(bookUid).orElseThrow(
-                () -> new ObjectNotFoundException(String.format(applicationProperties.getObjectNotFoundMessage(), bookUid)));
-        return book.getAuthors();
+    public Optional<Genre> findByUid(long uid) {
+        return Optional.ofNullable(em.find(Genre.class, uid));
     }
 
     @Override
     public long count() {
-        return em.createQuery("select count(a) from Author a", Long.class).getSingleResult();
+        return em.createQuery("select count(a) from Genre a", Long.class).getSingleResult();
+    }
+
+    @Override
+    public void insertGenresByBookUid(long bookUid, List<Genre> genres) {
+        if (genres == null) {
+            return;
+        }
+        Book book = bookRepository.findByUid(bookUid).orElseThrow(
+                () -> new ObjectNotFoundException(String.format(applicationProperties.getObjectNotFoundMessage(), bookUid)));
+        book.getGenres().addAll(genres);
+        bookRepository.save(book);
+    }
+
+    @Override
+    public void editGenresByBookUid(long bookUid, List<Genre> genres) {
+        Book book = bookRepository.findByUid(bookUid).orElseThrow(
+                () -> new ObjectNotFoundException(String.format(applicationProperties.getObjectNotFoundMessage(), bookUid)));
+        book.setGenres(genres);
+        bookRepository.save(book);
+    }
+
+    @Override
+    public void deleteGenresByBookUid(long bookUid, List<Genre> genres) {
+        Book book = bookRepository.findByUid(bookUid).orElseThrow(
+                () -> new ObjectNotFoundException(String.format(applicationProperties.getObjectNotFoundMessage(), bookUid)));
+        book.getGenres().removeAll(genres);
+        bookRepository.save(book);
+    }
+
+    @Override
+    public List<Genre> findGenresByBookUid(long bookUid) {
+        Book book = bookRepository.findByUid(bookUid).orElseThrow(
+                () -> new ObjectNotFoundException(String.format(applicationProperties.getObjectNotFoundMessage(), bookUid)));
+        return book.getGenres();
     }
 }

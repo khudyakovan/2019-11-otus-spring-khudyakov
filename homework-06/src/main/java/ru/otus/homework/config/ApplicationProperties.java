@@ -11,4 +11,5 @@ public class ApplicationProperties {
     private String language;
     private String country;
     private String objectNotFoundMessage;
+    private boolean anonymousCommentsOnly;
 }

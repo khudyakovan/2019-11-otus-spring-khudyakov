@@ -1,80 +1,9 @@
--- MySQL dump 10.13  Distrib 8.0.18, for Linux (x86_64)
---
--- Host: localhost    Database: library_test
--- ------------------------------------------------------
--- Server version	8.0.18-0ubuntu0.19.10.1
+INSERT INTO tbl_genres(uid,name) VALUES (1,'Dystopian'),(2,'Science fiction'),(3,'Fantasy'),(4,'Romance'),(5,'Young adult fiction'),(6,'Southern Gothic'),(7,'Bildungsroman'),(8,'Tragedy'),(9,'Realistic fiction'),(10,'High fantasy'),(11,'Juvenile fantasy'),(12,'Coming-of-age fiction'),(13,'Action'),(14,'Mystery'),(15,'Thriller'),(16,'Classic Regency novel'),(17,'Historical fiction'),(18,'Drama'),(19,'Classic'),(20,'Political fiction'),(21,'Political satire'),(22,'Autobiography'),(23,'Crime'),(24,'Scandinavian noir'),(25,'War'),(26,'Adventure');
+INSERT INTO tbl_authors(uid,full_name,pen_name) VALUES (31,'Suzanne Collins',NULL),(32,'Joanne Rowling',NULL),(33,' Mary GrandPré',NULL),(34,'Stephenie Meyer',NULL),(35,'Harper Lee',NULL),(36,'Scott Fitzgerald',NULL),(37,'John Green',NULL),(38,'John Tolkien',NULL),(39,'Jerome Salinger',NULL),(40,'Dan Brown',NULL),(41,'Jane Austen',NULL),(42,'Khaled Hosseini',NULL),(43,'Veronica Roth',NULL),(44,'George Orwell',NULL),(45,'Erich Fromm',NULL),(46,'Celâl Üster',NULL),(48,'Anne Frank',NULL),(49,'Eleanor Roosevelt',NULL),(50,'Barbara Mooyaart-Doubleday',NULL),(51,'Stieg Larsson',NULL),(55,'Reg Keeland',NULL),(56,'Rufus Beck',NULL);
+INSERT INTO tbl_books(uid, title,isbn,publication_year) VALUES (3,'The Hunger Games',9780439023480,2008),(4,'Harry Potter and the Philosophers Stone',9780439554930,1997),(5,'Twilight',9780316015840,2005),(6,'To Kill a Mockingbird',9780061120080,1960),(7,'The Great Gatsby',9780743273560,1925),(8,'The Fault in Our Stars',9780525478810,2012),(9,'The Hobbit or There and Back Again',9780618260300,1937),(10,'The Catcher in the Rye',9780316769170,1951),(11,'Angels & Demons ',9781416524790,2000),(12,'Pride and Prejudice',9780679783270,1813),(13,'The Kite Runner ',9781594480000,2003),(14,'Divergent',9780062024040,2011),(15,'Nineteen Eighty-Four',9780451524940,1949),(16,'Animal Farm: A Fairy Story',9780452284240,1945),(17,'Het Achterhuis: Dagboekbrieven 14 juni 1942 - 1 augustus 1944',9780553296980,1947),(18,'Män som hatar kvinnor',9780307269750,2005),(19,'Catching Fire',9780439023500,2009),(20,'Harry Potter and the Prisoner of Azkaban',9780439655480,1999),(21,' The Fellowship of the Ring',9780618346260,1954),(22,'Mockingjay',9780439023510,2010);
+INSERT INTO tbl_book_author(book_uid,author_uid) VALUES (15,46),(15,45),(4,33),(18,55),(17,48),(17,50),(11,40),(17,49),(15,44),(16,44),(6,35),(12,41),(10,39),(4,32),(20,32),(8,37),(9,38),(21,38),(13,42),(20,55),(20,56),(7,36),(5,34),(18,51),(3,31),(19,31),(22,31),(14,43);
+INSERT INTO tbl_book_genre(book_uid,genre_uid) VALUES (3,1),(14,1),(15,1),(19,1),(3,2),(14,2),(15,2),(19,2),(22,2),(4,3),(5,3),(20,3),(21,3),(5,4),(5,5),(8,5),(14,5),(6,6),(6,7),(7,8),(8,9),(10,9),(9,10),(9,11),(10,12),(11,13),(22,13),(11,14),(18,14),(11,15),(18,15),(22,15),(12,16),(13,17),(13,18),(13,19),(15,20),(16,21),(17,22),(18,23),(18,24),(22,25),(3,26),(19,26),(22,26);
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Dumping data for table `tbl_authors`
---
-
-LOCK TABLES `tbl_authors` WRITE;
-/*!40000 ALTER TABLE `tbl_authors` DISABLE KEYS */;
-INSERT INTO `tbl_authors` VALUES (31,'Suzanne Collins',NULL),(32,'Joanne Rowling',NULL),(33,' Mary GrandPré',NULL),(34,'Stephenie Meyer',NULL),(35,'Harper Lee',NULL),(36,'Scott Fitzgerald',NULL),(37,'John Green',NULL),(38,'John Tolkien',NULL),(39,'Jerome Salinger',NULL),(40,'Dan Brown',NULL),(41,'Jane Austen',NULL),(42,'Khaled Hosseini',NULL),(43,'Veronica Roth',NULL),(44,'George Orwell',NULL),(45,'Erich Fromm',NULL),(46,'Celâl Üster',NULL),(48,'Anne Frank',NULL),(49,'Eleanor Roosevelt',NULL),(50,'Barbara Mooyaart-Doubleday',NULL),(51,'Stieg Larsson',NULL),(55,'Reg Keeland',NULL),(56,'Rufus Beck',NULL);
-/*!40000 ALTER TABLE `tbl_authors` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping data for table `tbl_book_author`
---
-
---
--- Dumping data for table `tbl_books`
---
-
-LOCK TABLES `tbl_books` WRITE;
-/*!40000 ALTER TABLE `tbl_books` DISABLE KEYS */;
-INSERT INTO `tbl_books` VALUES (3,'The Hunger Games',9780439023480,2008),(4,'Harry Potter and the Philosopher\'s Stone',9780439554930,1997),(5,'Twilight',9780316015840,2005),(6,'To Kill a Mockingbird',9780061120080,1960),(7,'The Great Gatsby',9780743273560,1925),(8,'The Fault in Our Stars',9780525478810,2012),(9,'The Hobbit or There and Back Again',9780618260300,1937),(10,'The Catcher in the Rye',9780316769170,1951),(11,'Angels & Demons ',9781416524790,2000),(12,'Pride and Prejudice',9780679783270,1813),(13,'The Kite Runner ',9781594480000,2003),(14,'Divergent',9780062024040,2011),(15,'Nineteen Eighty-Four',9780451524940,1949),(16,'Animal Farm: A Fairy Story',9780452284240,1945),(17,'Het Achterhuis: Dagboekbrieven 14 juni 1942 - 1 augustus 1944',9780553296980,1947),(18,'Män som hatar kvinnor',9780307269750,2005),(19,'Catching Fire',9780439023500,2009),(20,'Harry Potter and the Prisoner of Azkaban',9780439655480,1999),(21,' The Fellowship of the Ring',9780618346260,1954),(22,'Mockingjay',9780439023510,2010);
-/*!40000 ALTER TABLE `tbl_books` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping data for table `tbl_genres`
---
-
-LOCK TABLES `tbl_genres` WRITE;
-/*!40000 ALTER TABLE `tbl_genres` DISABLE KEYS */;
-INSERT INTO `tbl_genres` VALUES (1,'Dystopian'),(2,'Science fiction'),(3,'Fantasy'),(4,'Romance'),(5,'Young adult fiction'),(6,'Southern Gothic'),(7,'Bildungsroman'),(8,'Tragedy'),(9,'Realistic fiction'),(10,'High fantasy'),(11,'Juvenile fantasy'),(12,'Coming-of-age fiction'),(13,'Action'),(14,'Mystery'),(15,'Thriller'),(16,'Classic Regency novel'),(17,'Historical fiction'),(18,'Drama'),(19,'Classic'),(20,'Political fiction'),(21,'Political satire'),(22,'Autobiography'),(23,'Crime'),(24,'Scandinavian noir'),(25,'War'),(26,'Adventure');
-/*!40000 ALTER TABLE `tbl_genres` ENABLE KEYS */;
-UNLOCK TABLES;
-
-
---
--- Dumping data for table `tbl_book_genre`
---
-
-LOCK TABLES `tbl_book_genre` WRITE;
-/*!40000 ALTER TABLE `tbl_book_genre` DISABLE KEYS */;
-INSERT INTO `tbl_book_genre` VALUES (47,3,1),(48,14,1),(49,15,1),(50,19,1),(51,3,2),(52,14,2),(53,15,2),(54,19,2),(55,22,2),(56,4,3),(57,5,3),(58,20,3),(59,21,3),(60,5,4),(61,5,5),(62,8,5),(63,14,5),(64,6,6),(65,6,7),(66,7,8),(67,8,9),(68,10,9),(69,9,10),(70,9,11),(71,10,12),(72,11,13),(73,22,13),(74,11,14),(75,18,14),(76,11,15),(77,18,15),(78,22,15),(79,12,16),(80,13,17),(81,13,18),(82,13,19),(83,15,20),(84,16,21),(85,17,22),(86,18,23),(87,18,24),(88,22,25),(89,3,26),(90,19,26),(91,22,26);
-/*!40000 ALTER TABLE `tbl_book_genre` ENABLE KEYS */;
-UNLOCK TABLES;
-
-
-LOCK TABLES `tbl_book_author` WRITE;
-/*!40000 ALTER TABLE `tbl_book_author` DISABLE KEYS */;
-INSERT INTO `tbl_book_author` VALUES (5,15,46),(6,15,45),(7,4,33),(8,18,55),(9,17,48),(10,17,50),(11,11,40),(12,17,49),(13,15,44),(14,16,44),(15,6,35),(16,12,41),(17,10,39),(18,4,32),(19,20,32),(20,8,37),(21,9,38),(22,21,38),(23,13,42),(24,20,55),(25,20,56),(26,7,36),(27,5,34),(28,18,51),(29,3,31),(30,19,31),(31,22,31),(32,14,43);
-/*!40000 ALTER TABLE `tbl_book_author` ENABLE KEYS */;
-UNLOCK TABLES;
-
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2019-12-22 22:52:41
+INSERT INTO tbl_commentators (uid,login,password,first_name,last_name) VALUES(1,'ac1','strongpassword','1 Angry','Commentator'),(2,'ac2','strongpassword','2 Angry','Commentator'),(3,'ac3','strongpassword','3 Angry','Commentator'),(4,'ac4','strongpassword','4 Angry','Commentator'),(5,'ac5','strongpassword','5 Angry','Commentator'),(6,'ac6','strongpassword','6 Angry','Commentator'),(7,'ac7','strongpassword','7 Angry','Commentator'),(8,'ac8','strongpassword','8 Angry','Commentator'),(9,'ac9','strongpassword','9 Angry','Commentator'),(10,'ac10','strongpassword','10 Angry','Commentator'),(11,'ac11','strongpassword','11 Angry','Commentator'),(12,'ac12','strongpassword','12 Angry','Commentator');
+INSERT INTO tbl_comments (uid,commentator_uid,comment_text,comment_date) VALUES(1,1,'An angry comment','2020-01-11 22:29:00'),(2, 2,'An angry comment','2020-01-11 22:29:00'),(3, 3,'An angry comment','2020-01-11 22:29:00'),(4, 4,'An angry comment','2020-01-11 22:29:00'),(5, 5,'An angry comment','2020-01-11 22:29:00'),(6, 6,'An angry comment','2020-01-11 22:29:00'),(7, 7,'An angry comment','2020-01-11 22:29:00'),(8, 8,'An angry comment','2020-01-11 22:29:00'),(9, 9,'An angry comment','2020-01-11 22:29:00'),(10, 10,'An angry comment','2020-01-11 22:29:00'),(11, 11,'An angry comment','2020-01-11 22:29:00'),(12, 12,'An angry comment','2020-01-11 22:29:00');
+INSERT INTO tbl_book_comment (book_uid,comment_uid) VALUES(3,1),(3,2),(3,3),(3,4),(3,5),(3,6),(3,7),(3,8),(3,9),(3,10),(3,11),(3,12),(4,1),(4,2),(4,3),(4,4),(4,5),(4,6),(4,7),(4,8),(4,9),(4,10),(4,11),(4,12),(5,1),(5,2),(5,3),(5,4),(5,5),(5,6),(5,7),(5,8),(5,9),(5,10),(5,11),(5,12),(6,1),(6,2),(6,3),(6,4),(6,5),(6,6),(6,7),(6,8),(6,9),(6,10),(6,11),(6,12),(7,1),(7,2),(7,3),(7,4),(7,5),(7,6),(7,7),(7,8),(7,9),(7,10),(7,11),(7,12),(8,1),(8,2),(8,3),(8,4),(8,5),(8,6),(8,7),(8,8),(8,9),(8,10),(8,11),(8,12),(9,1),(9,2),(9,3),(9,4),(9,5),(9,6),(9,7),(9,8),(9,9),(9,10),(9,11),(9,12),(10,1),(10,2),(10,3),(10,4),(10,5),(10,6),(10,7),(10,8),(10,9),(10,10),(10,11),(10,12),(11,1),(11,2),(11,3),(11,4),(11,5),(11,6),(11,7),(11,8),(11,9),(11,10),(11,11),(11,12),(12,1),(12,2),(12,3),(12,4),(12,5),(12,6),(12,7),(12,8),(12,9),(12,10),(12,11),(12,12),(13,1),(13,2),(13,3),(13,4),(13,5),(13,6),(13,7),(13,8),(13,9),(13,10),(13,11),(13,12),(14,1),(14,2),(14,3),(14,4),(14,5),(14,6),(14,7),(14,8),(14,9),(14,10),(14,11),(14,12),(15,1),(15,2),(15,3),(15,4),(15,5),(15,6),(15,7),(15,8),(15,9),(15,10),(15,11),(15,12),(16,1),(16,2),(16,3),(16,4),(16,5),(16,6),(16,7),(16,8),(16,9),(16,10),(16,11),(16,12),(17,1),(17,2),(17,3),(17,4),(17,5),(17,6),(17,7),(17,8),(17,9),(17,10),(17,11),(17,12),(18,1),(18,2),(18,3),(18,4),(18,5),(18,6),(18,7),(18,8),(18,9),(18,10),(18,11),(18,12),(19,1),(19,2),(19,3),(19,4),(19,5),(19,6),(19,7),(19,8),(19,9),(19,10),(19,11),(19,12),(20,1),(20,2),(20,3),(20,4),(20,5),(20,6),(20,7),(20,8),(20,9),(20,10),(20,11),(20,12),(21,1),(21,2),(21,3),(21,4),(21,5),(21,6),(21,7),(21,8),(21,9),(21,10),(21,11),(21,12),(22,1),(22,2),(22,3),(22,4),(22,5),(22,6),(22,7),(22,8),(22,9),(22,10),(22,11),(22,12);

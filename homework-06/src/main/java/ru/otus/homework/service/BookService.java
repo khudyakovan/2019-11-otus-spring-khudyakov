@@ -18,4 +18,5 @@ public interface BookService {
     List<Book> findBooksByAuthorUid(long authorUid);
 
     long count();
+
 }
