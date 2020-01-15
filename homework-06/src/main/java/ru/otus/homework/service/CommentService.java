@@ -15,4 +15,6 @@ public interface CommentService {
     List<Comment> findAll();
 
     long count();
+
+    List<Comment> findCommentsByBookUid(long bookUid);
 }

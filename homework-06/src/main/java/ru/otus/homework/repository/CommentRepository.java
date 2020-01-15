@@ -16,4 +16,6 @@ public interface CommentRepository {
     List<Comment> findAll();
 
     long count();
+
+    List<Comment> findCommentsByBookUid(long bookUid);
 }

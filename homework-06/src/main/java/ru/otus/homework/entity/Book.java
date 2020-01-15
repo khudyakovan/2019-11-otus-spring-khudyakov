@@ -52,14 +52,6 @@ public class Book {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Genre> genres;
 
-    @ManyToMany(targetEntity = Comment.class, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinTable(
-            name = "tbl_book_comment",
-            joinColumns = {@JoinColumn(name = "book_uid")},
-            inverseJoinColumns = {@JoinColumn(name = "comment_uid")})
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Comment> comments;
-
     @Override
     public String toString() {
         return title;

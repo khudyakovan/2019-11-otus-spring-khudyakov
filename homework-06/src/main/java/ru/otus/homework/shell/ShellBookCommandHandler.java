@@ -45,15 +45,16 @@ public class ShellBookCommandHandler {
     @ShellMethod("Получить описание книги")
     public void showBookDetails(){
         Book book = this.getBookFromList();
+        List<Comment> comments = commentService.findCommentsByBookUid(book.getUid());
         shellHelper.printInfoTranslated("info.book.details","");
         shellHelper.printSuccessTranslated("info.book.details.title", book.getTitle());
         shellHelper.printSuccessTranslated("info.book.details.isbn", String.valueOf(book.getIsbn()));
         shellHelper.printSuccessTranslated("info.book.details.publicationYear", String.valueOf(book.getPublicationYear()));
         shellHelper.printSuccessTranslated("info.book.details.authors", book.getAuthors().toString());
         shellHelper.printSuccessTranslated("info.book.details.genres", book.getGenres().toString());
-        shellHelper.printInfoTranslated("info.book.details.comments", String.valueOf(book.getComments().size()));
+        shellHelper.printInfoTranslated("info.book.details.comments", String.valueOf(comments.size()));
         inputReader.promptTranslated("prompt.list.comments","");
-        book.getComments().forEach(comment -> shellHelper.printSuccessTranslated("info.book.details.template",
+        comments.forEach(comment -> shellHelper.printSuccessTranslated("info.book.details.template",
                 comment.getCommentator().toString(),
                 comment.getCommentText(),
                 comment.getCommentDate().toString()));
@@ -75,9 +76,8 @@ public class ShellBookCommandHandler {
                 shellHelper.printErrorTranslated("error.empty.comment");
             }
         } while (comment.getCommentText() == null);
-        comment = commentService.save(comment);
-        book.getComments().add(comment);
-        bookService.save(book);
+        comment.setBooks(List.of(book));
+        commentService.save(comment);
         shellHelper.printSuccessTranslated("info.record.added.successfully");
     }
 

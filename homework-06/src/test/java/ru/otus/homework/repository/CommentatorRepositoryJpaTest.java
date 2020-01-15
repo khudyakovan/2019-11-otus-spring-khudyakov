@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Репозиторий Jpa для работы с комментаторами...")
 @DataJpaTest
 @Import({CommentatorRepositoryJpa.class})
-class CommentatorRepositoryImplTest {
+class CommentatorRepositoryJpaTest {
 
     @Autowired
     TestEntityManager em;
@@ -23,13 +23,13 @@ class CommentatorRepositoryImplTest {
     @Autowired
     CommentatorRepositoryJpa commentatorRepository;
 
-    private final long UID = 1;
-    private final String NEW_LOGIN = "login";
-    private final String LOGIN = "ac1";
-    private final String PASSWORD = "password";
-    private final String NEW_PASSWORD = "new_password";
-    private final String FIRST_NAME = "First Name";
-    private final String LAST_NAME = "Last Name";
+    private static final long UID = 1;
+    private static final String NEW_LOGIN = "login";
+    private static final String LOGIN = "ac1";
+    private static final String PASSWORD = "password";
+    private static final String NEW_PASSWORD = "new_password";
+    private static final String FIRST_NAME = "First Name";
+    private static final String LAST_NAME = "Last Name";
 
     @DisplayName("...должен сохранить запись")
     @Test

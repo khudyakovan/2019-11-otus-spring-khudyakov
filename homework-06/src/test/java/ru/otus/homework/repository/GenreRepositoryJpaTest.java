@@ -25,11 +25,11 @@ class GenreRepositoryJpaTest {
     @Autowired
     GenreRepositoryJpa genreRepository;
 
-    private final long NEW_GENRE_UID = 0;
-    private final String NEW_GENRE_NAME = "Test Genre Name";
-    private final long TEST_GENRE_1 = 2;
-    private final long TEST_GENRE_2 = 3;
-    private final long BOOK_UID = 19;
+    private static final long NEW_GENRE_UID = 0;
+    private static final String NEW_GENRE_NAME = "Test Genre Name";
+    private static final long TEST_GENRE_1 = 2;
+    private static final long TEST_GENRE_2 = 3;
+    private static final long BOOK_UID = 19;
 
     @DisplayName("...должен сохранить запись")
     @Test

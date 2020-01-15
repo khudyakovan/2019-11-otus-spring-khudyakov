@@ -34,10 +34,10 @@ class AuthorServiceImplTest {
     @Autowired
     AuthorServiceImpl authorService;
 
-    private final long BOOK_UID = 15;
-    final long NEW_AUTHOR_UID = 100500;
-    final long TEST_AUTHOR_1 = 31;
-    private final String TEST_AUTHOR_NAME = "Test author full name";
+    private static final long BOOK_UID = 15;
+    private static final long NEW_AUTHOR_UID = 100500;
+    private static final long TEST_AUTHOR_1 = 31;
+    private static final String TEST_AUTHOR_NAME = "Test author full name";
 
     @BeforeEach
     void setUp(){

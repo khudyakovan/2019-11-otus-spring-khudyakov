@@ -50,4 +50,11 @@ public class CommentRepositoryJpa implements CommentRepository {
     public long count() {
         return em.createQuery("select count(c) from Comment c", Long.class).getSingleResult();
     }
+
+    @Override
+    public List<Comment> findCommentsByBookUid(long bookUid) {
+        return em.createQuery("select c from Comment c join c.books b where b.uid = :bookUid")
+                .setParameter("bookUid", bookUid)
+                .getResultList();
+    }
 }

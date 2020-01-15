@@ -63,4 +63,9 @@ public class CommentServiceImpl implements CommentService {
     public long count() {
         return commentRepository.count();
     }
+
+    @Override
+    public List<Comment> findCommentsByBookUid(long bookUid) {
+        return commentRepository.findCommentsByBookUid(bookUid);
+    }
 }

@@ -9,7 +9,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
-import ru.otus.homework.entity.*;
+import ru.otus.homework.entity.Author;
+import ru.otus.homework.entity.Book;
+import ru.otus.homework.entity.Comment;
+import ru.otus.homework.entity.Genre;
 import ru.otus.homework.repository.BookRepositoryJpa;
 
 import java.util.ArrayList;
@@ -35,13 +38,13 @@ class BookServiceImplTest {
     @Autowired
     BookServiceImpl bookService;
 
-    private final long EXPECTED_BOOKS_COUNT = 20;
-    private final long TEST_BOOK_UID = 10;
-    private final long TEST_BOOK_ISBN = 1234567891013L;
-    private final int TEST_BOOK_PUBLISHING_YEAR = 21;
-    private final String TEST_BOOK_TITLE = "Test book title";
-    private final long AUTHOR_UID = 44;
-    private final long GENRE_UID = 1;
+    private static final long EXPECTED_BOOKS_COUNT = 20;
+    private static final long TEST_BOOK_UID = 10;
+    private static final long TEST_BOOK_ISBN = 1234567891013L;
+    private static final int TEST_BOOK_PUBLISHING_YEAR = 21;
+    private static final String TEST_BOOK_TITLE = "Test book title";
+    private static final long AUTHOR_UID = 44;
+    private static final long GENRE_UID = 1;
 
     @BeforeEach
     void setUp(){
@@ -52,13 +55,13 @@ class BookServiceImplTest {
         Book book = new Book(TEST_BOOK_TITLE, TEST_BOOK_ISBN, TEST_BOOK_PUBLISHING_YEAR);
         genres.add(new Genre(100500, ""));
         authors.add(new Author(100500,"",""));
-        comments.add(new Comment(100500,
-                new Commentator("","","",""),
-                "",
-                null));
+//        comments.add(new Comment(100500,
+//                new Commentator("","","",""),
+//                "",
+//                null));
         book.setAuthors(authors);
         book.setGenres(genres);
-        book.setComments(comments);
+        //book.setComments(comments);
         books.add(book);
         given(bookRepository.findByUid(anyLong())).willReturn(Optional.ofNullable(book));
         given(bookRepository.findAll()).willReturn(books);
@@ -74,7 +77,7 @@ class BookServiceImplTest {
         Book book = bookService.findByUid(TEST_BOOK_UID);
         assertThat(book.getAuthors()).isNotNull().hasSizeGreaterThan(0);
         assertThat(book.getGenres()).isNotNull().hasSizeGreaterThan(0);
-        assertThat(book.getComments()).isNotNull().hasSizeGreaterThan(0);
+        //assertThat(book.getComments()).isNotNull().hasSizeGreaterThan(0);
     }
 
     @DisplayName("...должен вернуть все записи")
@@ -84,10 +87,10 @@ class BookServiceImplTest {
         assertThat(books).isNotNull().hasSizeGreaterThan(0);
         List<Author> authors = books.get(0).getAuthors();
         List<Genre> genres = books.get(0).getGenres();
-        List<Comment> comments = books.get(0).getComments();
+        //List<Comment> comments = books.get(0).getComments();
         assertThat(authors).isNotNull().hasSizeGreaterThan(0);
         assertThat(genres).isNotNull().hasSizeGreaterThan(0);
-        assertThat(comments).isNotNull().hasSizeGreaterThan(0);
+        //assertThat(comments).isNotNull().hasSizeGreaterThan(0);
     }
 
     @DisplayName("... должен вернуть книги за авторством писателя")

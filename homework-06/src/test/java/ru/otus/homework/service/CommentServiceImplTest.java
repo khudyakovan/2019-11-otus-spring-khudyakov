@@ -37,10 +37,10 @@ class CommentServiceImplTest {
     @Autowired
     CommentServiceImpl commentService;
 
-    final String COMMENTATOR_LOGIN = "anonymous";
-    final String COMMENTATOR_PASSWORD = "strongpassword";
-    final long COMMENT_UID = 1;
-    final long RECORD_COUNT = 10;
+    private static final String COMMENTATOR_LOGIN = "anonymous";
+    private static final String COMMENTATOR_PASSWORD = "strongpassword";
+    private static final long COMMENT_UID = 1;
+    private static final long RECORD_COUNT = 10;
 
     @BeforeEach
     void setUp() {

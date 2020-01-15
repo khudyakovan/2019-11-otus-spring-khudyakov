@@ -11,6 +11,7 @@ import ru.otus.homework.entity.Commentator;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,9 +29,10 @@ class CommentRepositoryJpaTest {
     @Autowired
     CommentatorRepositoryJpa commentatorRepository;
 
-    private final long COMMENTATOR_UID = 1;
-    private final long COMMENT_UID = 1;
-    private final String COMMENT_TEXT = "Comment Text";
+    private static final long COMMENTATOR_UID = 1;
+    private static final long COMMENT_UID = 1;
+    private static final String COMMENT_TEXT = "Comment Text";
+    private static final long BOOK_UID = 14;
 
     @DisplayName("...должен сохранить запись")
     @Test
@@ -63,14 +65,25 @@ class CommentRepositoryJpaTest {
     @DisplayName("...должен найти запись по ее Uid")
     @Test
     void shouldFindByUid() {
-        assertThat(commentRepository.findByUid(COMMENT_UID)).isNotNull();
+
+        Optional<Comment> comment = commentRepository.findByUid(COMMENT_UID);
+        assertThat(comment).isNotNull();
+        assertThat(comment.get().getBooks()).isNotNull();
     }
 
     @DisplayName("...должен извлечь все записи")
     @Test
     void shouldFindAll() {
-
         assertThat(commentRepository.findAll()).isNotNull().hasSizeGreaterThan(0);
+    }
+
+    @DisplayName("...должен извлечь все записи")
+    @Test
+    void shouldFindCommentsByBookUid(){
+        List<Comment> comments = commentRepository.findCommentsByBookUid(BOOK_UID);
+        assertThat(comments).isNotNull();
+        assertThat(comments.get(0).getBooks()).isNotNull();
+        assertThat(comments.get(0).getCommentator()).isNotNull();
     }
 
 }
