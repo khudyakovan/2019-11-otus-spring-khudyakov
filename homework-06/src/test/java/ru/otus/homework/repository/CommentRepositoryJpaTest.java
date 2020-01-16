@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Репозиторий Jpa для работы с комментариями...")
 @DataJpaTest
-@Import({CommentRepositoryJpa.class, CommentatorRepositoryJpa.class})
+@Import({CommentRepositoryJpa.class, CommentatorRepositoryJpa.class, BookRepositoryJpa.class})
 class CommentRepositoryJpaTest {
 
     @Autowired
@@ -28,6 +28,9 @@ class CommentRepositoryJpaTest {
 
     @Autowired
     CommentatorRepositoryJpa commentatorRepository;
+
+    @Autowired
+    BookRepositoryJpa bookRepository;
 
     private static final long COMMENTATOR_UID = 1;
     private static final long COMMENT_UID = 1;
@@ -40,6 +43,7 @@ class CommentRepositoryJpaTest {
         long countBefore = commentRepository.count();
         Commentator commentator = commentatorRepository.findByUid(COMMENTATOR_UID).get();
         Comment comment = new Comment(commentator, COMMENT_TEXT, new Date());
+        comment.setBook(bookRepository.findByUid(BOOK_UID).get());
         commentRepository.save(comment);
         assertThat(commentRepository.count()).isEqualTo(countBefore + 1);
     }
@@ -68,7 +72,7 @@ class CommentRepositoryJpaTest {
 
         Optional<Comment> comment = commentRepository.findByUid(COMMENT_UID);
         assertThat(comment).isNotNull();
-        assertThat(comment.get().getBooks()).isNotNull();
+        assertThat(comment.get().getBook()).isNotNull();
     }
 
     @DisplayName("...должен извлечь все записи")
@@ -82,7 +86,7 @@ class CommentRepositoryJpaTest {
     void shouldFindCommentsByBookUid(){
         List<Comment> comments = commentRepository.findCommentsByBookUid(BOOK_UID);
         assertThat(comments).isNotNull();
-        assertThat(comments.get(0).getBooks()).isNotNull();
+        assertThat(comments.get(0).getBook()).isNotNull();
         assertThat(comments.get(0).getCommentator()).isNotNull();
     }
 

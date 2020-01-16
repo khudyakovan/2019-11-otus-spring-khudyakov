@@ -26,16 +26,16 @@ public class Commentator {
     @Column(name = "last_name")
     private String lastName;
 
+    @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "commentator_uid")
+    private List<Comment> comments;
+
     public Commentator(String login, String password, String firstName, String lastName) {
         this.login = login;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
     }
-
-    @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "commentator_uid")
-    private List<Comment> comments;
 
     @Override
     public String toString() {

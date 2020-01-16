@@ -53,7 +53,7 @@ public class CommentRepositoryJpa implements CommentRepository {
 
     @Override
     public List<Comment> findCommentsByBookUid(long bookUid) {
-        return em.createQuery("select c from Comment c join c.books b where b.uid = :bookUid")
+        return em.createQuery("select c from Comment c join c.book b join fetch c.commentator where b.uid = :bookUid")
                 .setParameter("bookUid", bookUid)
                 .getResultList();
     }

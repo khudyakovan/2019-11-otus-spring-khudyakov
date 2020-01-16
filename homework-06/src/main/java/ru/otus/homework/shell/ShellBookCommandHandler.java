@@ -76,7 +76,7 @@ public class ShellBookCommandHandler {
                 shellHelper.printErrorTranslated("error.empty.comment");
             }
         } while (comment.getCommentText() == null);
-        comment.setBooks(List.of(book));
+        comment.setBook(book);
         commentService.save(comment);
         shellHelper.printSuccessTranslated("info.record.added.successfully");
     }

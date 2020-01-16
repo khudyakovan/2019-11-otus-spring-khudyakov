@@ -3,14 +3,9 @@ package ru.otus.homework.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -22,7 +17,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long uid;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Commentator commentator;
 
     @Column(name = "comment_text", columnDefinition = "TEXT")
@@ -31,14 +26,8 @@ public class Comment {
     @Column(name = "comment_date")
     private Date commentDate;
 
-    @ManyToMany(targetEntity = Book.class, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinTable(
-            name = "tbl_book_comment",
-            joinColumns = {@JoinColumn(name = "comment_uid")},
-            inverseJoinColumns = {@JoinColumn(name = "book_uid")})
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @Fetch(value = FetchMode.SUBSELECT)
-    private List<Book> books;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Book book;
 
     public Comment(String commentText, Date commentDate) {
         this.commentText = commentText;
