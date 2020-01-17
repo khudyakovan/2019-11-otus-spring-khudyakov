@@ -40,15 +40,15 @@ public class TestingServiceImpl implements TestingService {
         int correctAnswersCount = 0;
         for (Question question : questionService.getAllQuestions()) {
             int correctAnswerNumber = 0;
-            ioService.printLine(question.getQuestion());
+            ioService.printLocalizedMessage("question.template", question.getQuestion());
             //Print possible answers
             for (Answer answer : question.getAnswers()) {
                 if (answer.isCorrect()) {
                     correctAnswerNumber = answer.getAnswerNumber();
                 }
-                ioService.printLine(String.format("   %s. %s.",
-                        answer.getAnswerNumber(),
-                        answer.getAnswer()));
+                ioService.printLocalizedMessage("answer.template",
+                        String.valueOf(answer.getAnswerNumber()),
+                        answer.getAnswer());
             }
             correctAnswersCount = gettingAnswers(correctAnswerNumber, correctAnswersCount);
         }
@@ -57,7 +57,7 @@ public class TestingServiceImpl implements TestingService {
     }
 
     private int gettingAnswers(int correctAnswerNumber, int correctAnswersCount) {
-        ioService.printLocalizedMessage("gettingAnswers.getuseranswer", "");
+        ioService.printLocalizedMessage("gettinganswers.getuseranswer", "");
         if (correctAnswerNumber == ioService.readInteger()) {
             correctAnswersCount++;
         }

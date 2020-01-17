@@ -89,20 +89,26 @@ public class BookDaoJdbc implements BookDao {
     public List<Book> getBooksByAuthorUid(long authorUid) {
         final Map<String, Object> params = new HashMap<>(1);
         params.put("authorUid", authorUid);
-        return jdbc.query("select b.uid, b.title, b.isbn, b.publication_year from tbl_book_author ba\n" +
+        List<Book> books = jdbc.query("select b.uid, b.title, b.isbn, b.publication_year from tbl_book_author ba\n" +
                 "join tbl_authors a on ba.author_uid = a.uid\n" +
                 "join tbl_books b on ba.book_uid = b.uid\n" +
                 "where a.uid = :authorUid", params, new BookMapper());
+        mergeBookInfo(books, authorDao.getAll(), this.getBookAuthorRelations());
+        mergeGenreInfo(books, genreDao.getAll(), this.getBookGenreRelations());
+        return books;
     }
 
     @Override
     public List<Book> getBooksByGenreUid(long genreUid) {
         final Map<String, Object> params = new HashMap<>(1);
         params.put("genreUid", genreUid);
-        return jdbc.query("select b.uid, b.title, b.isbn, b.publication_year from tbl_book_genre bg\n" +
+        List<Book> books =  jdbc.query("select b.uid, b.title, b.isbn, b.publication_year from tbl_book_genre bg\n" +
                 "join tbl_genres g on bg.genre_uid = g.uid\n" +
                 "join tbl_books b on bg.book_uid = b.uid\n" +
                 "where g.uid = :genreUid", params, new BookMapper());
+        mergeBookInfo(books, authorDao.getAll(), this.getBookAuthorRelations());
+        mergeGenreInfo(books, genreDao.getAll(), this.getBookGenreRelations());
+        return books;
     }
 
     private static class BookMapper implements RowMapper<Book> {
@@ -149,55 +155,4 @@ public class BookDaoJdbc implements BookDao {
             }
         });
     }
-
-//    private void mergeStudentsInfo(Map<Long, OtusStudent> students, List<Course> courses, List<StudentCourseRelation> relations) {
-//        Map<Long, Course> coursesMap = courses.stream().collect(Collectors.toMap(Course::getId, c -> c));
-//        relations.forEach(r -> {
-//            if (students.containsKey(r.getStudentId()) && coursesMap.containsKey(r.getCourseId())) {
-//                students.get(r.getStudentId()).getCourses().add(coursesMap.get(r.getCourseId()));
-//            }
-//        });
-//    }
-
-//    private List<StudentCourseRelation> getAllRelations() {
-//        return op.query("select student_id, course_id from student_courses sc order by student_id, course_id",
-//                (rs, i) -> new StudentCourseRelation(rs.getLong(1), rs.getLong(2)));
-//    }
-
-//    private class BookDetailsExtractor implements ResultSetExtractor<Map<Long, Book>>{
-//        @Override
-//        public Map<Long, Book> extractData(ResultSet rs) throws SQLException, DataAccessException {
-//            Map<Long, Book> books = new HashMap<>();
-//            while (rs.next()){
-//                long bookUid = rs.getLong("bookUid");
-//                if
-//            }
-//            return books;
-//        }
-//    }
-
-//    public class OtusStudentResultSetExtractor implements
-//            ResultSetExtractor<Map<Long, OtusStudent>> {
-//        @Override
-//        public Map<Long, OtusStudent> extractData(ResultSet rs) throws SQLException,
-//                DataAccessException {
-//
-//            Map<Long, OtusStudent> students = new HashMap<>();
-//            while (rs.next()) {
-//                long id = rs.getLong("id");
-//                OtusStudent student = students.get(id);
-//                if (student == null) {
-//                    student = new OtusStudent(id, rs.getString("name"),
-//                            new Avatar(rs.getLong("avatar_id"), rs.getString("photo_url")),
-//                            new ArrayList<>(), new ArrayList<>());
-//                    students.put(student.getId(), student);
-//                }
-//
-//                student.getEmails().add(new EMail(rs.getLong("email_id"),
-//                        rs.getString("email")));
-//            }
-//            return students;
-//        }
-//    }
-
 }

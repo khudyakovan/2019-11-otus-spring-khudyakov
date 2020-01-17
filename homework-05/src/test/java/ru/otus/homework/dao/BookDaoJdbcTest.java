@@ -83,11 +83,4 @@ class BookDaoJdbcTest {
     void shouldGetExpectedCountOfBook() {
         assertThat(jdbc.count()).isEqualTo(EXPECTED_BOOKS_COUNT);
     }
-
-//    @Test
-//    @DisplayName("Возвращает связи книг с авторами")
-//    void shouldGetAllBookAuthorRelations(){
-//        List<BookAuthorRelation> relations =jdbc.getAllBookAuthorRelations();
-//        assertThat(relations).isNotNull().hasSizeGreaterThan(0);
-//    }
 }
