@@ -26,25 +26,22 @@ public class GenreRepositoryImpl implements GenreRepositoryCustom {
         if (genres == null) {
             return;
         }
-        Book book = bookRepository.findById(bookUid).orElseThrow(
-                () -> new ObjectNotFoundException(String.format(applicationProperties.getObjectNotFoundMessage(), bookUid)));
+        Book book = em.find(Book.class, bookUid);
         book.getGenres().addAll(genres);
-        bookRepository.save(book);
+        em.merge(book);
     }
 
     @Override
     public void setGenresByBookUid(long bookUid, List<Genre> genres) {
-        Book book = bookRepository.findById(bookUid).orElseThrow(
-                () -> new ObjectNotFoundException(String.format(applicationProperties.getObjectNotFoundMessage(), bookUid)));
+        Book book = em.find(Book.class, bookUid);
         book.setGenres(genres);
-        bookRepository.save(book);
+        em.merge(book);
     }
 
     @Override
     public void resetGenresByBookUid(long bookUid, List<Genre> genres) {
-        Book book = bookRepository.findById(bookUid).orElseThrow(
-                () -> new ObjectNotFoundException(String.format(applicationProperties.getObjectNotFoundMessage(), bookUid)));
+        Book book = em.find(Book.class, bookUid);
         book.getGenres().removeAll(genres);
-        bookRepository.save(book);
+        em.merge(book);
     }
 }
