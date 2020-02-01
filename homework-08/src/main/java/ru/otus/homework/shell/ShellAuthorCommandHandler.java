@@ -1,12 +1,11 @@
 package ru.otus.homework.shell;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.util.StringUtils;
-import ru.otus.homework.model.Author;
-import ru.otus.homework.service.AuthorService;
+import ru.otus.homework.models.Author;
+import ru.otus.homework.services.AuthorService;
 
 import java.util.LinkedHashMap;
 
@@ -21,7 +20,7 @@ public class ShellAuthorCommandHandler {
     @ShellMethod("Получить список авторов книг в библиотеке")
     public void showAuthors() {
         LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
-        headers.put("uid", "Uid");
+        headers.put("id", "Uid");
         headers.put("fullName", "Author's Full Name");
         shellHelper.render(authorService.findAll(), headers);
     }
@@ -29,7 +28,7 @@ public class ShellAuthorCommandHandler {
     @ShellMethod("Добавить нового автора")
     public void addAuthor() {
         Author author = this.authorWizard("prompt.add.author", false);
-        if(author.getUid() == -1){
+        if("-1".equals(author.getId())){
             shellHelper.printWarningTranslated("warning.termination");
             return;
         }
@@ -49,26 +48,18 @@ public class ShellAuthorCommandHandler {
             return;
         }
         Author author = this.getAuthorFromList();
-        authorService.deleteByUid(author.getUid());
+        authorService.deleteByUid(author.getId());
         shellHelper.printWarningTranslated("info.record.deleted.successfully");
     }
 
     private Author getAuthorFromList() {
         this.showAuthors();
-        Long uid = null;
-        do {
-            String userInput = inputReader.promptTranslated("prompt.choose.author", "");
-            if (NumberUtils.isParsable(userInput)) {
-                uid = Long.parseLong(userInput);
-            } else {
-                shellHelper.printErrorTranslated("error.incorrect.input");
-            }
-        } while (uid == null);
+        String uid = inputReader.promptTranslated("prompt.choose.author", "");
         return authorService.findByUid(uid);
     }
 
     private Author authorWizard(String prompt, boolean edit) {
-        Author author = new Author(-1, "", "");
+        Author author = new Author("", "", "");
         String userInput = inputReader.promptTranslated(prompt, "");
         if ("Q".equals(userInput.toUpperCase())) {
             return author;
@@ -93,7 +84,6 @@ public class ShellAuthorCommandHandler {
         String penName = inputReader.promptTranslated("prompt.enter.author.pen.name",
                 author.getFullName());
         author.setPenName(penName);
-        author.setUid(0);
         return author;
     }
 }

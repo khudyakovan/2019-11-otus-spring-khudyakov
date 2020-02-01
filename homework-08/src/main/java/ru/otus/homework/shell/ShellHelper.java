@@ -1,6 +1,5 @@
 package ru.otus.homework.shell;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import org.jline.terminal.Terminal;
 import org.jline.utils.AttributedStringBuilder;
 import org.jline.utils.AttributedStyle;
@@ -11,10 +10,10 @@ import org.springframework.shell.table.BorderStyle;
 import org.springframework.shell.table.TableBuilder;
 import org.springframework.shell.table.TableModel;
 import org.springframework.stereotype.Component;
-import ru.otus.homework.config.ShellProperties;
-import ru.otus.homework.model.Author;
-import ru.otus.homework.service.AuthorService;
-import ru.otus.homework.service.TranslationService;
+import ru.otus.homework.configs.ShellProperties;
+import ru.otus.homework.models.Author;
+import ru.otus.homework.services.AuthorService;
+import ru.otus.homework.utils.TranslationService;
 
 import javax.validation.constraints.NotNull;
 import java.util.LinkedHashMap;
@@ -99,20 +98,11 @@ public class ShellHelper {
         //Вывод справочника авторов для выбора
         if (authorDtos != null && authorDtos.isEmpty()) {
             LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
-            headers.put("uid", "Uid");
+            headers.put("id", "Id");
             headers.put("fullName", "Author's Full Name");
             render(authorService.findAll(), headers);
         }
-        Long uid = null;
-        do {
-            String userInput = inputReader.prompt(translationService.getTranslation("prompt.choose.author", ""), "");
-            if (NumberUtils.isParsable(userInput)) {
-                uid = Long.parseLong(userInput);
-            } else {
-                printErrorTranslated("error.incorrect.input", "");
-            }
-        }
-        while (uid == null);
+        String uid = inputReader.prompt(translationService.getTranslation("prompt.choose.author", ""), "");
         Objects.requireNonNull(authorDtos).add(authorService.findByUid(uid));
         String userInput = inputReader.prompt(translationService.getTranslation("prompt.additional.author", ""), "");
         if (("Y").equals(userInput.toUpperCase())) {

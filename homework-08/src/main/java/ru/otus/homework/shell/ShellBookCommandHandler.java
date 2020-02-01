@@ -5,14 +5,12 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.util.StringUtils;
-import ru.otus.homework.model.Author;
-import ru.otus.homework.model.Book;
-import ru.otus.homework.model.Comment;
-import ru.otus.homework.model.Genre;
-import ru.otus.homework.service.AuthorService;
-import ru.otus.homework.service.BookService;
-import ru.otus.homework.service.CommentService;
-import ru.otus.homework.service.GenreService;
+import ru.otus.homework.configs.ApplicationProperties;
+import ru.otus.homework.models.*;
+import ru.otus.homework.services.AuthorService;
+import ru.otus.homework.services.BookService;
+import ru.otus.homework.services.CommentatorService;
+import ru.otus.homework.services.GenreService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,12 +26,13 @@ public class ShellBookCommandHandler {
     private final InputReader inputReader;
     private final GenreService genreService;
     private final AuthorService authorService;
-    private final CommentService commentService;
+    private final CommentatorService commentatorService;
+    private final ApplicationProperties applicationProperties;
 
     @ShellMethod("Получить список книг в библиотеке")
     public void showBooks() {
         LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
-        headers.put("uid", "Uid");
+        headers.put("id", "Id");
         headers.put("title", "Title");
         headers.put("isbn", "ISBN");
         headers.put("publicationYear", "Publication Year");
@@ -45,19 +44,21 @@ public class ShellBookCommandHandler {
     @ShellMethod("Получить описание книги")
     public void showBookDetails(){
         Book book = this.getBookFromList();
-        List<Comment> comments = commentService.findCommentsByBookUid(book.getUid());
+        List<Comment> comments = book.getComments();
         shellHelper.printInfoTranslated("info.book.details","");
         shellHelper.printSuccessTranslated("info.book.details.title", book.getTitle());
         shellHelper.printSuccessTranslated("info.book.details.isbn", String.valueOf(book.getIsbn()));
         shellHelper.printSuccessTranslated("info.book.details.publicationYear", String.valueOf(book.getPublicationYear()));
         shellHelper.printSuccessTranslated("info.book.details.authors", book.getAuthors().toString());
         shellHelper.printSuccessTranslated("info.book.details.genres", book.getGenres().toString());
-        shellHelper.printInfoTranslated("info.book.details.comments", String.valueOf(comments.size()));
-        inputReader.promptTranslated("prompt.list.comments","");
-        comments.forEach(comment -> shellHelper.printSuccessTranslated("info.book.details.template",
-                comment.getCommentator().toString(),
-                comment.getCommentText(),
-                comment.getCommentDate().toString()));
+        if(comments != null) {
+            shellHelper.printInfoTranslated("info.book.details.comments", String.valueOf(comments.size()));
+            inputReader.promptTranslated("prompt.list.comments", "");
+            comments.forEach(comment -> shellHelper.printSuccessTranslated("info.book.details.template",
+                    comment.getCommentator().toString(),
+                    comment.getCommentText(),
+                    comment.getCommentDate().toString()));
+        }
     }
 
     @ShellMethod("Добавить комментарий к книге")
@@ -76,15 +77,17 @@ public class ShellBookCommandHandler {
                 shellHelper.printErrorTranslated("error.empty.comment");
             }
         } while (comment.getCommentText() == null);
-        comment.setBook(book);
-        commentService.save(comment);
+        Commentator commentator = commentatorService.findByLogin(applicationProperties.getAnonymousLogin());
+        comment.setCommentator(commentator);
+        book.getComments().add(comment);
+        bookService.save(book);
         shellHelper.printSuccessTranslated("info.record.added.successfully");
     }
 
     @ShellMethod("Добавить новую книгу")
     public void addBook() {
         Book book = this.bookWizard("prompt.add.book", new Book(), false);
-        if (book.getUid() == -1) {
+        if ("-1".equals(book.getId())) {
             shellHelper.printWarningTranslated("warning.termination");
             return;
         }
@@ -95,7 +98,7 @@ public class ShellBookCommandHandler {
     @ShellMethod("Редактировать книгу")
     public void editBook() {
         Book book = this.bookWizard("prompt.edit.book", new Book(), true);
-        if (book.getUid() == -1) {
+        if ("-1".equals(book.getId())) {
             shellHelper.printWarningTranslated("warning.termination");
             return;
         }
@@ -110,14 +113,14 @@ public class ShellBookCommandHandler {
             return;
         }
         Book book = this.getBookFromList();
-        bookService.deleteByUid(book.getUid());
+        bookService.deleteById(book.getId());
         shellHelper.printWarningTranslated("info.record.deleted.successfully");
     }
 
     private Book bookWizard(String prompt, Book book, boolean edit) {
         String userInput = inputReader.promptTranslated(prompt,"");
         if ("Q".equals(userInput.toUpperCase())) {
-            book.setUid(-1);
+            book.setId("-1");
             return book;
         }
 
@@ -169,20 +172,11 @@ public class ShellBookCommandHandler {
         //Вывод справочника жанров для выбора
         if (genreDtos != null && genreDtos.isEmpty()) {
             LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
-            headers.put("uid", "Uid");
+            headers.put("id", "Id");
             headers.put("name", "Genre");
             shellHelper.render(genreService.findAll(), headers);
         }
-        Long uid = null;
-        do {
-            String userInput = inputReader.promptTranslated("prompt.choose.genre","");
-            if (NumberUtils.isParsable(userInput)) {
-                uid = Long.parseLong(userInput);
-            } else {
-                shellHelper.printErrorTranslated("error.incorrect.input");
-            }
-        }
-        while (uid == null);
+        String uid = inputReader.promptTranslated("prompt.choose.genre","");
         genreDtos.add(genreService.findByUid(uid));
         String userInput = inputReader.promptTranslated("prompt.additional.genre","");
         if (("Y").equals(userInput.toUpperCase())) {
@@ -193,15 +187,7 @@ public class ShellBookCommandHandler {
 
     private Book getBookFromList() {
         this.showBooks();
-        Long uid = null;
-        do {
-            String userInput = inputReader.promptTranslated("prompt.choose.book","");
-            if (NumberUtils.isParsable(userInput)) {
-                uid = Long.parseLong(userInput);
-            } else {
-                shellHelper.printErrorTranslated("error.incorrect.input");
-            }
-        } while (uid == null);
-        return bookService.findByUid(uid);
+        String uid = inputReader.promptTranslated("prompt.choose.book","");
+        return bookService.findById(uid);
     }
 }

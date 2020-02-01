@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import ru.otus.homework.service.TranslationService;
+import ru.otus.homework.utils.TranslationService;
 
 @Component
 public class InputReader {

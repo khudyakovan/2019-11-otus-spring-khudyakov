@@ -3,7 +3,7 @@ package ru.otus.homework.shell;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import ru.otus.homework.service.GenreService;
+import ru.otus.homework.services.GenreService;
 
 import java.util.LinkedHashMap;
 
@@ -17,7 +17,7 @@ public class ShellGenreCommandHandler {
     @ShellMethod("Получить список жанров и книг этого жанра")
     public void showGenres() {
         LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
-        headers.put("uid", "Uid");
+        headers.put("id", "Id");
         headers.put("name", "Genre");
         shellHelper.render(genreService.findAll(), headers);
     }

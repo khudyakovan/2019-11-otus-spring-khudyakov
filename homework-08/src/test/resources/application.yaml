@@ -3,13 +3,14 @@ application:
   country: RU
   object-not-found-message: "Object with Uid=%s not found!"
   anonymous-comments-only: true
+  anonymous-login: anonymous
 
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost
-      port: 27017
-      database: library_test
+      #uri: mongodb://localhost
+      port: 0
+      database: library
 
 logging:
   level:
