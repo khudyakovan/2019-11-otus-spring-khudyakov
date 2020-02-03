@@ -2,6 +2,9 @@ package ru.otus.homework.repositories;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import ru.otus.homework.models.Author;
 import ru.otus.homework.models.Book;
 
@@ -21,22 +24,32 @@ public class AuthorRepositoryImpl implements AuthorRepositoryCustom {
 
     @Override
     public void appendAuthorsByBookId(String bookUid, List<Author> authors) {
-        Book book = mongoTemplate.findById(bookUid, Book.class);
-        book.getAuthors().addAll(authors);
-        mongoTemplate.save(book);
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(bookUid));
+        Update update = new Update();
+        authors.forEach(author -> {
+            mongoTemplate.updateFirst(query,
+                    update.addToSet("authors", author),Book.class);
+        });
     }
 
     @Override
     public void setAuthorsByBookId(String bookUid, List<Author> authors) {
-        Book book = mongoTemplate.findById(bookUid, Book.class);
-        book.setAuthors(authors);
-        mongoTemplate.save(book);
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(bookUid));
+        Update update = new Update();
+        mongoTemplate.updateFirst(query,
+                update.set("authors", authors), Book.class);
     }
 
     @Override
     public void resetAuthorsByBookId(String bookUid, List<Author> authors) {
-        Book book = mongoTemplate.findById(bookUid, Book.class);
-        book.getAuthors().removeAll(authors);
-        mongoTemplate.save(book);
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(bookUid));
+        Update update = new Update();
+        authors.forEach(author -> {
+            mongoTemplate.updateFirst(query,
+                    update.pull("authors", author),Book.class);
+        });
     }
 }

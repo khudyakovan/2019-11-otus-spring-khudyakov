@@ -5,18 +5,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document
 public class Comment {
 
     @Id
-    private String id;
+    private String id = UUID.randomUUID().toString();
     @DBRef
     private Commentator commentator;
     private String commentText;

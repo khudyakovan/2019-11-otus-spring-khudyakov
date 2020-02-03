@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class CustomPromptProvider implements PromptProvider {
     @Override
     public AttributedString getPrompt() {
-        return new AttributedString("HW #06:>",
+        return new AttributedString("HW #08:>",
                 AttributedStyle.DEFAULT.foreground(AttributedStyle.BLUE));
     }
 }

@@ -2,6 +2,9 @@ package ru.otus.homework.repositories;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import ru.otus.homework.configs.ApplicationProperties;
 import ru.otus.homework.models.Book;
 import ru.otus.homework.models.Genre;
@@ -24,22 +27,32 @@ public class GenreRepositoryImpl implements GenreRepositoryCustom {
 
     @Override
     public void appendGenresByBookUid(String bookUid, List<Genre> genres) {
-        Book book = mongoTemplate.findById(bookUid, Book.class);
-        book.getGenres().addAll(genres);
-        mongoTemplate.save(book);
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(bookUid));
+        Update update = new Update();
+        genres.forEach(genre -> {
+            mongoTemplate.updateFirst(query,
+                    update.addToSet("genres", genre), Book.class);
+        });
     }
 
     @Override
     public void setGenresByBookUid(String bookUid, List<Genre> genres) {
-        Book book = mongoTemplate.findById(bookUid, Book.class);
-        book.setGenres(genres);
-        mongoTemplate.save(book);
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(bookUid));
+        Update update = new Update();
+        mongoTemplate.updateFirst(query,
+                update.set("genres", genres), Book.class);
     }
 
     @Override
     public void resetGenresByBookUid(String bookUid, List<Genre> genres) {
-        Book book = mongoTemplate.findById(bookUid, Book.class);
-        book.getGenres().removeAll(genres);
-        mongoTemplate.save(book);
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(bookUid));
+        Update update = new Update();
+        genres.forEach(genre -> {
+            mongoTemplate.updateFirst(query,
+                    update.pull("genres", genre), Book.class);
+        });
     }
 }

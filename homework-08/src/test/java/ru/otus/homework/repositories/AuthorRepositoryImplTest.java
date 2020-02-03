@@ -122,7 +122,7 @@ class AuthorRepositoryImplTest extends AbstractRepositoryTest {
 
     @DisplayName("...должен удалить авторов книги")
     @Test
-    @Order(10)
+    @Order(0)
     void shouldDeleteAuthorsByBookUid() {
         List<Author> authors = authorRepository.findAuthorsByBookId(BOOK_UID);
         int countBefore = authorRepository.findAuthorsByBookId(BOOK_UID).size();
