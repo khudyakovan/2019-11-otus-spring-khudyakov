@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:text="${pageHeader}">Homework ##</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="/style.css" />
+</head>
+
+<body>
+<div class="wrapper">
+	<div th:text="${pageHeader}" class="box header">Homework #09</div>
+	<div class="box sidebar">
+		<nav class="navigation">
+			<ul class="mainmenu">
+				<li>
+					<a th:text="${booksLink}" th:href="@{/}" href="index.html">List of books</a>
+					<ul class="submenu">
+						<li><a th:text="${addNewBookLink}" th:href="@{/books/add}" href="addNewBook.html">New book</a></li>
+					</ul>
+				</li>
+				<li><a th:text="${authorsLink}" th:href="@{/authors}" href="authors.html">List of authors</a></li>
+				<li><a th:text="${genresLink}" th:href="@{/genres}" href="genres.html">List of genres</a></li>
+			</ul>
+		</nav>
+	</div>
+	<div class="box content">
+		<table class="contentTable">
+			<thead>
+				<tr>
+					<th th:text="${id}">ID</th>
+					<th th:text="${title}">Title</th>
+					<th th:text="${isbn}">ISBN</th>
+					<th th:text="${publishing}">Publishing Year</th>
+					<th th:text="${authorsLabel}">Authors</th>
+					<th th:text="${genresLabel}">Genres</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="book : ${books}">
+					<td th:text="${book.uid}">ID</td>
+					<td>
+						<a th:href="@{/books/{uid}(uid=${book.uid})}" href="bookDetails.html" th:text="${book.title}" />
+					</td>
+					<td th:text="${book.isbn}">ISBN</td>
+					<td th:text="${book.publicationYear}">Publishing Year</td>
+					<td th:text="${book.authors}">Authors</td>
+					<td th:text="${book.genres}">Genres</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</body>
+</html>

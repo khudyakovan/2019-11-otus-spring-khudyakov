@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${pageHeader}">Homework ##</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/style.css"/>
+</head>
+
+<body>
+<div class="wrapper">
+    <div th:text="${pageHeader}" class="box header">Homework #09</div>
+    <div class="box sidebar">
+        <nav class="navigation">
+            <ul class="mainmenu">
+                <li>
+                    <a th:text="${booksLink}" th:href="@{/}" href="index.html">List of books</a>
+                    <ul class="submenu">
+                        <li><a th:text="${addNewBookLink}" th:href="@{/books/add}" href="addNewBook.html">New book</a>
+                        </li>
+                    </ul>
+                </li>
+                <li><a th:text="${authorsLink}" th:href="@{/authors}" href="authors.html">List of authors</a></li>
+                <li><a th:text="${genresLink}" th:href="@{/genres}" href="genres.html">List of genres</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="box content">
+        <form th:action="${add} ? @{/books/add} : @{/books/{uid}/edit(uid=${book.uid})}"
+              th:object="${book}" method="POST">
+            <table border="0">
+                <tr th:if="${book.uid}">
+                    <td>ID</td>
+                    <td>:</td>
+                    <td th:utext="${book.uid}">...</td>
+                </tr>
+                <tr>
+                    <td th:text="${title}">Title</td>
+                    <td>:</td>
+                    <td><input type="text" th:field="*{title}"/></td>
+                </tr>
+                <tr>
+                    <td th:text="${isbn}">ISBN</td>
+                    <td>:</td>
+                    <td><input type="text" th:field="*{isbn}"/></td>
+                </tr>
+                <tr>
+                    <td th:text="${publishing}">Publishing Year</td>
+                    <td>:</td>
+                    <td><input type="text" th:field="*{publicationYear}"/></td>
+                </tr>
+                <tr>
+                    <td th:text="${authorsLabel}">Authors</td>
+                    <td>:</td>
+                    <td>
+                        <select class="form-control" size="5" th:field="${book.authors}" multiple="multiple">
+                            <option th:each="author : ${authors}"
+                                    th:field="${book.authors}"
+                                    th:value="${author.uid}"
+                                    th:text="${author.fullName}">
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td th:text="${genresLabel}">Genres</td>
+                    <td>:</td>
+                    <td>
+                        <select class="form-control" size="5" th:field="${book.genres}" multiple="multiple">
+                            <option th:each="genre : ${genres}"
+                                    th:field="${book.genres}"
+                                    th:value="${genre.uid}"
+                                    th:text="${genre.name}">
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <input type="submit" th:value="${add} ? 'Create' : 'Update'"/>
+        </form>
+        <br/>
+        <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error"/>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:text="${pageHeader}">Homework ##</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+<div class="wrapper">
+	<div th:text="${pageHeader}" class="box header">Homework #09</div>
+	<div class="box sidebar">
+		<nav class="navigation">
+			<ul class="mainmenu">
+				<li>
+					<a th:text="${booksLink}" th:href="@{/}" href="index.html">List of books</a>
+					<ul class="submenu">
+						<li><a th:text="${addNewBookLink}" th:href="@{/books/add}" href="addNewBook.html">New book</a></li>
+					</ul>
+				</li>
+				<li><a th:text="${authorsLink}" th:href="@{/authors}" href="authors.html">List of authors</a></li>
+				<li><a th:text="${genresLink}" th:href="@{/genres}" href="genres.html">List of genres</a></li>
+			</ul>
+		</nav>
+	</div>
+	<div class="box content">
+		<table class="contentTable">
+			<thead>
+				<tr>
+					<th th:text="${id}">ID</th>
+					<th th:text="${name}">Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="genre : ${genres}">
+					<td th:text="${genre.uid}">ID</td>
+					<td th:text="${genre.name}">Name</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</body>
+</html>

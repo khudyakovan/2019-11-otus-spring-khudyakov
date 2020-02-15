@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${pageHeader}">Homework ##</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/style.css"/>
+</head>
+
+<body>
+<div class="wrapper">
+    <div th:text="${pageHeader}" class="box header">Homework #09</div>
+    <div class="box sidebar">
+        <nav class="navigation">
+            <ul class="mainmenu">
+                <li>
+                    <a th:text="${booksLink}" th:href="@{/}" href="index.html">List of books</a>
+                    <ul class="submenu">
+                        <li><a th:text="${addNewBookLink}" th:href="@{/books/add}" href="addNewBook.html">New book</a>
+                        </li>
+                    </ul>
+                </li>
+                <li><a th:text="${authorsLink}" th:href="@{/authors}" href="authors.html">List of authors</a></li>
+                <li><a th:text="${genresLink}" th:href="@{/genres}" href="genres.html">List of genres</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="box content">
+        <h5 th:text="${detailsHeader}">Details of the book</h5>
+        <table class="contentTable">
+            <tbody>
+            <tr>
+                <td th:text="${title}">Title</td>
+                <td>:</td>
+                <td th:text="${book.title}">Title</td>
+                <td rowspan="5">
+                    <div th:if="not ${allowDelete}">
+                        <a th:href="@{/books/{uid}/edit(uid=${book.uid})}" href="book-edit.html"
+                           th:text="${editLabel}"/>
+                        <a th:href="@{/books/{uid}/delete(uid=${book.uid})}" href="book-edit.html"
+                           th:text="${deleteLabel}"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td th:text="${isbn}">ISBN</td>
+                <td>:</td>
+                <td th:text="${book.isbn}">ISBN</td>
+            </tr>
+            <tr>
+                <td th:text="${publishing}">Publishing Year</td>
+                <td>:</td>
+                <td th:text="${book.publicationYear}">Publishing Year</td>
+            </tr>
+            <tr>
+                <td th:text="${authorsLabel}">Authors</td>
+                <td>:</td>
+                <td th:text="${book.authors}">Authors</td>
+            </tr>
+            <tr>
+                <td th:text="${genresLabel1}">Genres</td>
+                <td>:</td>
+                <td th:text="${book.genres}">Genres</td>
+            </tr>
+            </tbody>
+        </table>
+        <h5 th:text="${commentsHeader}">Details of the book</h5>
+
+        <table class="contentTable">
+            <thead>
+            <th th:text="${commentatorName}">Commentator's Name</th>
+            <th th:text="${comment}">Comment</th>
+            <th th:text="${commentDate}">Comment's date</th>
+            <th>&nbsp;</th>
+            </thead>
+            <tbody>
+            <tr th:each="comment : ${comments}">
+                <td th:text="${comment.commentator.login}">Commentator's name</td>
+                <td th:text="${comment.commentText}">Comment</td>
+                <td th:text="${comment.commentDate}">Comment's date</td>
+                <td>
+                    <a th:href="@{/comments/{uid}/delete(uid=${comment.uid})}" href="bookDetails.html"
+                       th:text="${commentDeleteLabel}"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <br />
+        <form th:if="${allowDelete}" th:action="@{/books/{uid}/delete(uid=${book.uid})}" method="POST">
+            <label for="yesButton" th:text="${deleteConfirmationLabel}">Delete this book?</label>
+            <input id="yesButton" type="submit" th:value="Yes"/>
+        </form>
+    </div>
+</div>
+</body>
+</html>
