@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.otus.homework.config.PageAttributes;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Comment;
 import ru.otus.homework.service.AuthorService;
@@ -32,24 +31,23 @@ public class BookController {
     private final GenreService genreService;
     @Autowired
     private final CommentService commentService;
-    @Autowired
-    private final PageAttributes pageAttributes;
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @GetMapping(value = {"/"})
     public String showIndexPage(Model model) {
         List<Book> books = bookService.findAll();
-        pageAttributes.setCommonAttributes(model);
-        pageAttributes.setBookAttributes(model);
+        //pageAttributes.setCommonAttributes(model);
+        //pageAttributes.setBookAttributes(model);
         model.addAttribute("books", books);
         return "index";
     }
 
     @GetMapping(value = "/books/{uid}")
     public String showBookDetailsPage(@PathVariable("uid") long uid, Model model) {
-        pageAttributes.setCommonAttributes(model);
-        pageAttributes.setBookAttributes(model);
-        pageAttributes.setBookDetailsAttributes(model);
+        //pageAttributes.setCommonAttributes(model);
+        //pageAttributes.setBookAttributes(model);
+        //pageAttributes.setBookDetailsAttributes(model);
         Book book = bookService.findByUid(uid);
         List<Comment> comments = commentService.findCommentsByBookUid(book.getUid());
         model.addAttribute("book", book);
@@ -59,8 +57,8 @@ public class BookController {
 
     @GetMapping("/books/add")
     public String showAddBook(Model model){
-        pageAttributes.setCommonAttributes(model);
-        pageAttributes.setBookAttributes(model);
+        //pageAttributes.setCommonAttributes(model);
+        //pageAttributes.setBookAttributes(model);
 
         Book book = new Book();
         model.addAttribute("add", true);
@@ -74,13 +72,13 @@ public class BookController {
     @PostMapping("/books/add")
     public String addBook(Model model, @ModelAttribute Book book){
         Book newBook = bookService.save(book);
-        return "redirect:/books/" + book.getUid();
+        return "redirect:/books/" + newBook.getUid();
     }
 
     @GetMapping(value = {"/books/{uid}/edit"})
     public String showEditBook(Model model, @PathVariable long uid){
-        pageAttributes.setCommonAttributes(model);
-        pageAttributes.setBookAttributes(model);
+        //pageAttributes.setCommonAttributes(model);
+        //pageAttributes.setBookAttributes(model);
 
         Book book = bookService.findByUid(uid);
         book.getAuthors();
@@ -111,9 +109,6 @@ public class BookController {
 
     @GetMapping(value = {"/books/{uid}/delete"})
     public String deleteBook(Model model, @PathVariable long uid){
-        pageAttributes.setCommonAttributes(model);
-        pageAttributes.setBookAttributes(model);
-        pageAttributes.setBookDetailsAttributes(model);
         Book book = bookService.findByUid(uid);
         List<Comment> comments = commentService.findCommentsByBookUid(book.getUid());
         model.addAttribute("book", book);
