@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<th:block th:include="snippets/head"></th:block>
+
+<body>
+<div class="wrapper">
+    <div th:text="#{view.header}" class="box header">Homework #09</div>
+    <th:block th:include="snippets/sidebar"></th:block>
+    <div class="box content">
+        <h5 th:text="#{view.book.details.description.header}">Details of the book</h5>
+        <table class="contentTable">
+            <tbody>
+            <tr>
+                <td th:text="#{view.book.header.title}">Title</td>
+                <td>:</td>
+                <td th:text="${book.title}">Title</td>
+                <td rowspan="5">
+                    <div th:if="not ${allowDelete}">
+                        <a th:href="@{/books/{uid}/edit(uid=${book.uid})}" href="book-edit.html"
+                           th:text="#{view.book.details.edit}"/>
+                        <a th:href="@{/books/{uid}/delete(uid=${book.uid})}" href="book-edit.html"
+                           th:text="#{view.book.details.delete}"/>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td th:text="#{view.book.header.isbn}">ISBN</td>
+                <td>:</td>
+                <td th:text="${book.isbn}">ISBN</td>
+            </tr>
+            <tr>
+                <td th:text="#{view.book.header.publishing.year}">Publishing Year</td>
+                <td>:</td>
+                <td th:text="${book.publicationYear}">Publishing Year</td>
+            </tr>
+            <tr>
+                <td th:text="#{view.book.header.authors}">Authors</td>
+                <td>:</td>
+                <td th:text="${book.authors}">Authors</td>
+            </tr>
+            <tr>
+                <td th:text="#{view.book.header.genres}">Genres</td>
+                <td>:</td>
+                <td th:text="${book.genres}">Genres</td>
+            </tr>
+            </tbody>
+        </table>
+        <h5 th:text="#{view.book.details.comments.header}">Details of the book</h5>
+
+        <table class="contentTable">
+            <thead>
+            <th th:text="#{view.book.details.commentator}">Commentator's Name</th>
+            <th th:text="#{view.book.details.comment}">Comment</th>
+            <th th:text="#{view.book.details.comment.date}">Comment's date</th>
+            <th>&nbsp;</th>
+            </thead>
+            <tbody>
+            <tr th:each="comment : ${comments}">
+                <td th:text="${comment.commentator.login}">Commentator's name</td>
+                <td th:text="${comment.commentText}">Comment</td>
+                <td th:text="${comment.commentDate}">Comment's date</td>
+                <td>
+                    <a th:href="@{/comments/{uid}/delete(uid=${comment.uid})}" href="bookDetails.html"
+                       th:text="#{view.book.details.delete}"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <br />
+        <form th:if="${allowDelete}" th:action="@{/books/{uid}/delete(uid=${book.uid})}" method="POST">
+            <label for="yesButton" th:text="#{view.book.details.delete.confirmation}">Delete this book?</label>
+            <input id="yesButton" type="submit" th:value="Yes"/>
+        </form>
+    </div>
+</div>
+</body>
+</html>

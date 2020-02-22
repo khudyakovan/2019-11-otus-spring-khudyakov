@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<th:block th:include="snippets/head"></th:block>
+
+<body>
+<div class="wrapper">
+    <div th:text="#{view.header}" class="box header">Homework #09</div>
+    <th:block th:include="snippets/sidebar"></th:block>
+    <div class="box content">
+        <form th:action="${add} ? @{/books/add} : @{/books/{uid}/edit(uid=${book.uid})}"
+              th:object="${book}" method="POST">
+            <table border="0">
+                <th:block th:include="snippets/add-edit"></th:block>
+                <tr>
+                    <td th:text="#{view.book.header.authors}">Authors</td>
+                    <td>:</td>
+                    <td>
+                        <select class="form-control" size="5" th:field="${book.authors}" multiple="multiple">
+                            <option th:each="author : ${authors}"
+                                    th:field="${book.authors}"
+                                    th:value="${author.uid}"
+                                    th:text="${author.fullName}"
+                                    th:selected="${book.authors.contains(author)}">
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td th:text="#{view.book.header.genres}">Genres</td>
+                    <td>:</td>
+                    <td>
+                        <select class="form-control" size="5" th:field="${book.genres}" multiple="multiple">
+                            <option th:each="genre : ${genres}"
+                                    th:field="${book.genres}"
+                                    th:value="${genre.uid}"
+                                    th:text="${genre.name}"
+                                    th:selected="${book.genres.contains(genre)}">
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            <input type="submit" th:value="${add} ? 'Create' : 'Update'"/>
+        </form>
+        <br/>
+        <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error"/>
+    </div>
+</div>
+</body>
+</html>

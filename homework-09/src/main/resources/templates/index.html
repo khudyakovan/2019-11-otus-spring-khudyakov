@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<th:block th:include="snippets/head"></th:block>
+
+<body>
+<div class="wrapper">
+	<div th:text="#{view.header}" class="box header">Homework #09</div>
+	<th:block th:include="snippets/sidebar"></th:block>
+	<div class="box content">
+		<table class="contentTable">
+			<thead>
+				<tr>
+					<th th:text="#{view.book.header.id}">ID</th>
+					<th th:text="#{view.book.header.title}">Title</th>
+					<th th:text="#{view.book.header.isbn}">ISBN</th>
+					<th th:text="#{view.book.header.publishing.year}">Publishing Year</th>
+					<th th:text="#{view.book.header.authors}">Authors</th>
+					<th th:text="#{view.book.header.genres}">Genres</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="book : ${books}">
+					<td th:text="${book.uid}">ID</td>
+					<td>
+						<a th:href="@{/books/{uid}(uid=${book.uid})}" href="bookDetails.html" th:text="${book.title}" />
+					</td>
+					<td th:text="${book.isbn}">ISBN</td>
+					<td th:text="${book.publicationYear}">Publishing Year</td>
+					<td th:text="${book.authors}">Authors</td>
+					<td th:text="${book.genres}">Genres</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</body>
+</html>
