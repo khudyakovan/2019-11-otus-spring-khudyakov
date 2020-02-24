@@ -1,0 +1,47 @@
+GET http://localhost:8080/api
+Accept: application/json
+
+###
+GET http://localhost:8080/api/books/15
+Accept: application/json
+
+###
+
+POST http://localhost:8080/api/books/add
+Content-Type: application/json
+
+{
+  "title": "The Brand New Book",
+  "isbn": 12345678910,
+  "publicationYear": 2019
+}
+
+###
+
+PUT http://localhost:8080/api/books/24
+Content-Type: application/json
+
+{
+  "title": "The Brand New Book (edited)",
+  "isbn": 10987654321,
+  "publicationYear": 2020
+}
+
+###
+
+DELETE http://localhost:8080/api/books/24
+Content-Type: application/json
+
+###
+GET http://localhost:8080/api/authors/all
+Accept: application/json
+
+###
+GET http://localhost:8080/api/genres/all
+Accept: application/json
+
+###
+GET http://localhost:8080/api/comments/book/15
+Accept: application/json
+
+###
