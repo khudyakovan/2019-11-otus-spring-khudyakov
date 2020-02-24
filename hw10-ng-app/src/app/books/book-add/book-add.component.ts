@@ -47,7 +47,6 @@ export class BookAddComponent implements OnInit {
   }
 
   addNewBook(): void {
-    console.log(this.book.authors);
     this.apiService.addNewBook(this.book).subscribe(
       res => {
         this.book = res;

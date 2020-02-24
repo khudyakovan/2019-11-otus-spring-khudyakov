@@ -13,6 +13,7 @@ import {FormsModule} from "@angular/forms";
 import {BookDetailsComponent} from './books/book-details/book-details.component';
 import {BookAddComponent} from './books/book-add/book-add.component';
 import {BookEditComponent} from './books/book-edit/book-edit.component';
+import {NgSelectModule} from "@ng-select/ng-select";
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import {BookEditComponent} from './books/book-edit/book-edit.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    NgSelectModule,
     FormsModule
   ],
   providers: [],

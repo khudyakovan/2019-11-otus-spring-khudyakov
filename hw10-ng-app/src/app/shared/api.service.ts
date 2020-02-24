@@ -14,6 +14,7 @@ export class ApiService {
   private ALL_BOOKS_URL = `${this.BASE_URL}/`;
   private BOOK_DETAILS_URL = `${this.BASE_URL}/books/`;
   private NEW_BOOK_URL = `${this.BASE_URL}/books/add`;
+  private EDIT_BOOK_URL = `${this.BASE_URL}/books/edit/`;
   private ALL_AUTHORS_URL = `${this.BASE_URL}/authors/all`;
   private ALL_GENRES_URL = `${this.BASE_URL}/genres/all`;
 
@@ -39,5 +40,9 @@ export class ApiService {
 
   addNewBook(book: Book): Observable<Book>{
     return this.http.post<Book>(this.NEW_BOOK_URL, book);
+  }
+
+  editBook(book: Book): Observable<Book>{
+    return this.http.put<Book>(this.EDIT_BOOK_URL+book.uid, book);
   }
 }

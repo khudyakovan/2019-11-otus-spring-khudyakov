@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Book} from "../model/book";
 import {Author} from "../../authors/model/author";
 import {Genre} from "../../genres/model/genre";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ApiService} from "../../shared/api.service";
 
 @Component({
@@ -17,13 +17,28 @@ export class BookEditComponent implements OnInit {
   authors: Author[] = [];
   genres: Genre[] = [];
 
-  constructor(private activatedRoute:ActivatedRoute, private apiService: ApiService) { }
+  constructor(private activatedRoute:ActivatedRoute,
+              private apiService: ApiService,
+              private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       this.uid = params.get('uid');
       this.getBookDetails(params.get('uid'));
     });
+  }
+
+  editBook(): void {
+    this.apiService.addNewBook(this.book).subscribe(
+      res => {
+        this.book = res;
+        this.router.navigate(["/book-details/"+this.book.uid]);
+      },
+      err => {
+        alert("An error has occurred!");
+      }
+    )
   }
 
   public getBookDetails(uid){
