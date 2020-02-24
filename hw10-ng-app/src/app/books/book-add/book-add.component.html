@@ -57,41 +57,54 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="col">
-            <div class="form-group">
-              <label for="authors">Авторы</label>
-              <select multiple
-                      class="form-control"
-                      id="authors"
-                      name="authors"
-                      [(ngModel)]="book.authors"
-                      #publicationYear="ngModel">
-                <option *ngFor="let author of authors" [ngValue]= "author">
-                  {{ author.fullName }}
-                </option>
-              </select>
-            </div>
-          </div>
-          <div class="col">
-            <div class="form-group">
-              <label for="genres">Жанры</label>
-              <select multiple
-                      class="form-control"
-                      id="genres"
-                      name="genres"
-                      [(ngModel)]="book.genres">
-                <option *ngFor="let genre of genres" [ngValue]="genre">
-                  {{ genre.name }}
-                </option>
-              </select>
-            </div>
-          </div>
+        <div class="form-group">
+          <ng-select bindLabel="fullName"
+                     placeholder="Выберите авторов"
+                     appendTo="body"
+                     multiple="true"
+                     name="authors"
+                     [searchable]="true"
+                     [clearable]="true"
+                     [(ngModel)]="book.authors">
+            <ng-option [value]="author" *ngFor="let author of authors">
+              {{author.fullName}}
+            </ng-option>
+            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+              <span>{{item.fullName}}</span>
+            </ng-template>
+          </ng-select>
         </div>
 
-        <button type="submit" class="btn btn-info pull-right">
+        <div class="form-group">
+          <ng-select bindLabel="name"
+                     placeholder="Выберите жанры"
+                     appendTo="body"
+                     multiple="true"
+                     name="genres"
+                     [searchable]="true"
+                     [clearable]="true"
+                     [(ngModel)]="book.genres">
+            <ng-option [value]="genre" *ngFor="let genre of genres">
+              {{genre.name}}
+            </ng-option>
+            <ng-template ng-label-tmp let-item="item" let-clear="clear">
+              <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+              <span>{{item.name}}</span>
+            </ng-template>
+          </ng-select>
+        </div>
+
+        <button type="submit" class="btn btn-info pull-right" style="margin-left:6px;">
           <i class="fa fa-save"></i>
           <span> Сохранить книгу</span>
+        </button>
+        <button type="button"
+                (click)="cancel()"
+                class="btn btn-danger pull-right"
+                style="margin-left:6px;">
+          <i class="fa fa-close"></i>
+          <span> Отмена</span>
         </button>
       </form>
     </div>

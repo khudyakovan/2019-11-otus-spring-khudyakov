@@ -4,6 +4,7 @@ import {Author} from "../../authors/model/author";
 import {Genre} from "../../genres/model/genre";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ApiService} from "../../shared/api.service";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-book-edit',
@@ -19,7 +20,8 @@ export class BookEditComponent implements OnInit {
 
   constructor(private activatedRoute:ActivatedRoute,
               private apiService: ApiService,
-              private router: Router
+              private router: Router,
+              private location: Location
   ) { }
 
   ngOnInit(): void {
@@ -30,7 +32,7 @@ export class BookEditComponent implements OnInit {
   }
 
   editBook(): void {
-    this.apiService.addNewBook(this.book).subscribe(
+    this.apiService.editBook(this.book).subscribe(
       res => {
         this.book = res;
         this.router.navigate(["/book-details/"+this.book.uid]);
@@ -76,4 +78,7 @@ export class BookEditComponent implements OnInit {
     );
   }
 
+  public cancel() {
+    this.location.back();
+  }
 }

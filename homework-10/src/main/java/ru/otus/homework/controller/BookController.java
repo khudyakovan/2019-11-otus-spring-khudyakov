@@ -19,7 +19,6 @@ import ru.otus.homework.service.GenreService;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping({"/api"})
 @RequiredArgsConstructor
@@ -44,14 +43,13 @@ public class BookController {
     }
 
 
-    @PostMapping("/books/add")
+    @PostMapping("/books")
     public Book addBook(@RequestBody Book book) {
         return bookService.save(book);
     }
 
-    @PutMapping(value = {"/books/{uid}"})
-    public Book updateBook(@RequestBody Book book, @PathVariable long uid) {
-        book.setUid(uid);
+    @PutMapping(value = {"/books"})
+    public Book updateBook(@RequestBody Book book) {
         return bookService.save(book);
     }
 

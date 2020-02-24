@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Book} from "../model/book";
 import {ApiService} from "../../shared/api.service";
 
@@ -13,7 +13,9 @@ export class BookDetailsComponent implements OnInit {
   book: Book;
   uid: string;
 
-  constructor(private activatedRoute:ActivatedRoute, private apiService: ApiService) { }
+  constructor(private activatedRoute:ActivatedRoute,
+              private apiService: ApiService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
@@ -32,4 +34,16 @@ export class BookDetailsComponent implements OnInit {
       }
     );
   }
+
+  public deleteBook(){
+    this.apiService.deleteBook(this.book).subscribe(
+      res => {
+        this.router.navigate(["/"]);
+      },
+      err =>{
+        alert("An Error Has Occurred!");
+      }
+    );
+  }
+
 }

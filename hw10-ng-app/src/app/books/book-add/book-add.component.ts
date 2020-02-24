@@ -4,6 +4,7 @@ import {ApiService} from "../../shared/api.service";
 import {Router} from "@angular/router";
 import {Author} from "../../authors/model/author";
 import {Genre} from "../../genres/model/genre";
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-book-add',
@@ -16,7 +17,9 @@ export class BookAddComponent implements OnInit {
   authors: Author[] = [];
   genres: Genre[] = [];
 
-  constructor(private router: Router, private apiService: ApiService) {
+  constructor(private router: Router,
+              private apiService: ApiService,
+              private location: Location) {
   }
 
   ngOnInit(): void {
@@ -56,6 +59,10 @@ export class BookAddComponent implements OnInit {
         alert("An error has occurred!");
       }
     )
+  }
+
+  public cancel() {
+    this.location.back();
   }
 
 }

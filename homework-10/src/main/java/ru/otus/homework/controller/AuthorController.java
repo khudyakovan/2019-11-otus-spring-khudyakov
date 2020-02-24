@@ -13,7 +13,6 @@ import ru.otus.homework.service.AuthorService;
 
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping({"/api"})
 @RequiredArgsConstructor
