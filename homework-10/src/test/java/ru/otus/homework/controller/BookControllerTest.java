@@ -43,7 +43,7 @@ class BookControllerTest {
     @MockBean
     private CommentService commentService;
 
-    private static final String BASE_URL = "/api/v1/";
+    private static final String BASE_URL = "/api/v1/books";
     private static final String DETAILS_URL = "/api/v1/books/15";
     private static final String MODIFY_BOOK_URL = "/api/v1/books";
     private static final long TEST_BOOK_UID = 15L;

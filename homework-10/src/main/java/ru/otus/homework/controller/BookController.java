@@ -11,10 +11,8 @@ import ru.otus.homework.dto.CommentDto;
 import ru.otus.homework.dto.CommentatorDto;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Comment;
-import ru.otus.homework.service.AuthorService;
 import ru.otus.homework.service.BookService;
 import ru.otus.homework.service.CommentService;
-import ru.otus.homework.service.GenreService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +28,7 @@ public class BookController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @GetMapping(value = {"/api/v1/", "/api/v1/books"})
+    @GetMapping(value = {"/api/v1/books"})
     public List<Book> getBookList() {
         return bookService.findAll();
     }
