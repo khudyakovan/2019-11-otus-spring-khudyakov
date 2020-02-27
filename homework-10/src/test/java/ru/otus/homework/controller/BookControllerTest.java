@@ -3,7 +3,6 @@ package ru.otus.homework.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -19,9 +18,6 @@ import ru.otus.homework.service.BookService;
 import ru.otus.homework.service.CommentService;
 import ru.otus.homework.service.GenreService;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +25,8 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(value = BookController.class)
@@ -45,9 +43,9 @@ class BookControllerTest {
     @MockBean
     private CommentService commentService;
 
-    private static final String INDEX_URL = "/api/";
-    private static final String DETAILS_URL = "/api/books/15";
-    private static final String MODIFY_BOOK_URL = "/api/books";
+    private static final String BASE_URL = "/api/v1/";
+    private static final String DETAILS_URL = "/api/v1/books/15";
+    private static final String MODIFY_BOOK_URL = "/api/v1/books";
     private static final long TEST_BOOK_UID = 15L;
     private static final String TEST_BOOK_TITLE_0 = "Test book title 0";
     private static final String TEST_BOOK_TITLE_1 = "Test book title 1";
@@ -76,8 +74,13 @@ class BookControllerTest {
     }
 
     @Test
-    void shouldGetIndexView() throws Exception {
-        mvc.perform(get(INDEX_URL)
+    void shouldGetBooks() throws Exception {
+        mvc.perform(get(BASE_URL)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+
+        mvc.perform(get(MODIFY_BOOK_URL)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)));

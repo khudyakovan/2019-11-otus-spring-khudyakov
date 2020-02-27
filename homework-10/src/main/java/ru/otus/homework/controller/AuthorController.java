@@ -14,15 +14,14 @@ import ru.otus.homework.service.AuthorService;
 import java.util.List;
 
 @RestController
-@RequestMapping({"/api"})
 @RequiredArgsConstructor
 public class AuthorController {
 
     @Autowired
     private final AuthorService authorService;
 
-    @GetMapping("/authors/all")
-    public List<Author> authorsPage() {
+    @GetMapping("/api/v1/authors")
+    public List<Author> getAuthors() {
         return authorService.findAll();
     }
 }

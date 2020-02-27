@@ -12,7 +12,6 @@ import ru.otus.homework.service.GenreService;
 import java.util.List;
 
 @RestController
-@RequestMapping({"/api"})
 @RequiredArgsConstructor
 public class GenreController {
 
@@ -20,8 +19,8 @@ public class GenreController {
     @Autowired
     private final GenreService genreService;
 
-    @GetMapping("/genres/all")
-    public List<Genre> genresPage() {
+    @GetMapping("/api/v1/genres")
+    public List<Genre> getGenres() {
         return genreService.findAll();
     }
 }

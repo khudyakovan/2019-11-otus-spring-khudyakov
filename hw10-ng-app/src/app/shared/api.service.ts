@@ -11,12 +11,12 @@ import {Book} from "../books/model/book";
 export class ApiService {
 
   //private BASE_URL = "http://localhost:8080/api";
-  private BASE_URL = "/api";
+  private BASE_URL = "/api/v1";
   private ALL_BOOKS_URL = `${this.BASE_URL}/`;
   private BOOK_DETAILS_URL = `${this.BASE_URL}/books/`;
   private MODIFY_BOOK_URL = `${this.BASE_URL}/books`;
-  private ALL_AUTHORS_URL = `${this.BASE_URL}/authors/all`;
-  private ALL_GENRES_URL = `${this.BASE_URL}/genres/all`;
+  private ALL_AUTHORS_URL = `${this.BASE_URL}/authors`;
+  private ALL_GENRES_URL = `${this.BASE_URL}/genres`;
 
 
   constructor(private http: HttpClient) {

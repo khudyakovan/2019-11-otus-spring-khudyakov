@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping({"/api"})
 @RequiredArgsConstructor
 public class BookController {
 
@@ -31,29 +30,28 @@ public class BookController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @GetMapping(value = {"/"})
+    @GetMapping(value = {"/api/v1/", "/api/v1/books"})
     public List<Book> getBookList() {
         return bookService.findAll();
     }
 
-    @GetMapping(path = "/books/{uid}")
+    @GetMapping(path = "/api/v1/books/{uid}")
     public BookDto getBookDetails(@PathVariable("uid") long uid) {
         Book book = bookService.findByUid(uid);
         return this.bookMapper(book);
     }
 
-
-    @PostMapping("/books")
+    @PostMapping("/api/v1/books")
     public Book addBook(@RequestBody Book book) {
         return bookService.save(book);
     }
 
-    @PutMapping(value = {"/books"})
+    @PutMapping(value = {"/api/v1/books"})
     public Book updateBook(@RequestBody Book book) {
         return bookService.save(book);
     }
 
-    @DeleteMapping(value = {"/books/{uid}"})
+    @DeleteMapping(value = {"/api/v1/books/{uid}"})
     public void deleteBookByUid(@PathVariable long uid) {
         bookService.deleteByUid(uid);
     }
