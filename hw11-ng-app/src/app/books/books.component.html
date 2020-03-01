@@ -1,0 +1,44 @@
+<div class="container">
+
+  <div class="row" style="margin-top:12px;">
+    <div class="col-sm-12">
+      <button type="buton"
+              routerLink="/books/add"
+              class="btn btn-info pull-right"
+              style="margin-left:12px;"><i class="fa fa-plus"></i> Новая книга
+      </button>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top: 12px;">
+    <div class="row">
+      <!-- Author list -->
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th scope="col">Название книги</th>
+          <th scope="col">Год публикации</th>
+          <th scope="col">Авторы</th>
+          <th scope="col">Жанры</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let book of books">
+          <td><a [routerLink]="['/book-details', book.id]">{{ book.title }}</a></td>
+          <td>{{ book.publicationYear }}</td>
+          <td>
+            <ul class="list-unstyled">
+              <li *ngFor="let author of book.authors">{{ author.fullName }}</li>
+            </ul>
+          </td>
+          <td>
+            <ul class="list-unstyled">
+              <li *ngFor="let genre of book.genres">{{ genre.name }}</li>
+            </ul>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
