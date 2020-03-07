@@ -1,13 +1,14 @@
 package ru.otus.homework.repositories;
 
+import com.mongodb.client.result.UpdateResult;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import reactor.core.publisher.Mono;
 import ru.otus.homework.models.Book;
 
 @RequiredArgsConstructor
@@ -17,25 +18,25 @@ public class BookRepositoryImpl implements BookRepositoryCustom {
     private final ReactiveMongoTemplate mongoTemplate;
 
     @Override
-    public void deleteAuthorFromBooksByAuthorId(String id) {
+    public Mono<UpdateResult> deleteAuthorFromBooksByAuthorId(String id) {
 
         val query = Query.query(Criteria.where("$id").is(id));
         val update = new Update().pull("authors", query);
-        mongoTemplate.updateMulti(new Query(), update, Book.class).subscribe();
+        return mongoTemplate.updateMulti(new Query(), update, Book.class);
     }
 
     @Override
-    public void deleteGenreFromBooksByGenreId(String id) {
+    public Mono<UpdateResult> deleteGenreFromBooksByGenreId(String id) {
 
         val query = Query.query(Criteria.where("$id").is(id));
         val update = new Update().pull("genres", query);
-        mongoTemplate.updateMulti(new Query(), update, Book.class).subscribe();
+        return mongoTemplate.updateMulti(new Query(), update, Book.class);
     }
 
     @Override
-    public void deleteCommentsFromBooksWhereCommentatorId(String id) {
+    public Mono<UpdateResult> deleteCommentsFromBooksWhereCommentatorId(String id) {
         val query = Query.query(Criteria.where("commentator._id").is(id));
         val update = new Update().pull("comments", query);
-        mongoTemplate.updateMulti(new Query(), update, Book.class).subscribe();
+        return mongoTemplate.updateMulti(new Query(), update, Book.class);
     }
 }

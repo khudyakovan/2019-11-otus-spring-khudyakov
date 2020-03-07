@@ -1,10 +1,13 @@
 package ru.otus.homework.repositories;
 
+import com.mongodb.client.result.UpdateResult;
+import reactor.core.publisher.Mono;
+
 public interface BookRepositoryCustom {
 
-    void deleteAuthorFromBooksByAuthorId(String id);
+    Mono<UpdateResult> deleteAuthorFromBooksByAuthorId(String id);
 
-    void deleteGenreFromBooksByGenreId(String id);
+    Mono<UpdateResult> deleteGenreFromBooksByGenreId(String id);
 
-    void deleteCommentsFromBooksWhereCommentatorId(String id);
+    Mono<UpdateResult> deleteCommentsFromBooksWhereCommentatorId(String id);
 }

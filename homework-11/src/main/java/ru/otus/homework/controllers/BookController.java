@@ -40,7 +40,7 @@ public class BookController {
     }
 
     @DeleteMapping(value = {"/api/v1/books/{uid}"})
-    public void deleteBookByUid(@PathVariable("uid") String uid) {
-        bookRepository.deleteById(uid).subscribe();
+    public Mono<Void> deleteBookByUid(@PathVariable("uid") String uid) {
+        return bookRepository.deleteById(uid);
     }
 }
