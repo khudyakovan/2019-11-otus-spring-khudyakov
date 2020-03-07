@@ -1,0 +1,16 @@
+application:
+  language: ru
+  country: RU
+  object-not-found-message: "Object with Uid=%s not found!"
+  anonymous-comments-only: true
+  anonymous-login: anonymous
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost
+      port: 27017
+      database: library
+logging:
+  level:
+    root: ERROR
