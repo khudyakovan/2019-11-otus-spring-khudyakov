@@ -1,0 +1,20 @@
+<tr th:if="${book.uid}">
+    <td>ID</td>
+    <td>:</td>
+    <td th:utext="${book.uid}">...</td>
+</tr>
+<tr>
+    <td th:text="#{view.book.header.title}">Title</td>
+    <td>:</td>
+    <td><input type="text" th:field="*{title}"/></td>
+</tr>
+<tr>
+    <td th:text="#{view.book.header.isbn}">ISBN</td>
+    <td>:</td>
+    <td><input type="text" th:field="*{isbn}"/></td>
+</tr>
+<tr>
+    <td th:text="#{view.book.header.publishing.year}">Publishing Year</td>
+    <td>:</td>
+    <td><input type="text" th:field="*{publicationYear}"/></td>
+</tr>
