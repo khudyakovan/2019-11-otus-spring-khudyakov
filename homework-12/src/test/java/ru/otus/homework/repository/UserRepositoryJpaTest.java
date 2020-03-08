@@ -25,7 +25,7 @@ class UserRepositoryJpaTest {
 
     private static final long UID = 1L;
     private static final String NEW_LOGIN = "login";
-    private static final String LOGIN = "ac1";
+    private static final String LOGIN = "admin";
     private static final String PASSWORD = "password";
     private static final String NEW_PASSWORD = "new_password";
     private static final String FIRST_NAME = "First Name";
@@ -33,7 +33,7 @@ class UserRepositoryJpaTest {
 
     @DisplayName("...должен сохранить запись")
     @Test
-    void shouldSaveAuthor() {
+    void shouldSave() {
         long countBefore = userRepository.count();
         User user = new User(NEW_LOGIN,
                 PASSWORD,
@@ -45,7 +45,7 @@ class UserRepositoryJpaTest {
 
     @DisplayName("...должен отредактировать запись")
     @Test
-    void shouldEditAuthor(){
+    void shouldEdit() {
         User user = userRepository.findById(UID).orElse(null);
         user.setUsername(NEW_LOGIN);
         user.setPassword(NEW_PASSWORD);
@@ -63,14 +63,19 @@ class UserRepositoryJpaTest {
         long countBefore = users.size();
 
         userRepository.deleteById(UID);
-        assertThat(userRepository.count()).isEqualTo(countBefore-1);
+        assertThat(userRepository.count()).isEqualTo(countBefore - 1);
     }
 
     @DisplayName("...должен найти запись по ее Uid")
     @Test
     void shouldFindByUid() {
-
         assertThat(userRepository.findById(UID)).isNotNull();
+    }
+
+    @DisplayName("...должен извлечь все записи")
+    @Test
+    void shouldFindAll() {
+        assertThat(userRepository.findAll()).isNotNull().hasSizeGreaterThan(0);
     }
 
     @DisplayName("...должен найти запись по логину")
@@ -79,11 +84,9 @@ class UserRepositoryJpaTest {
         assertThat(userRepository.findByUsername(LOGIN)).isNotNull();
     }
 
-    @DisplayName("...должен извлечь все записи")
+    @DisplayName("...должен извлечь роли")
     @Test
-    void shouldFindAll() {
-
-        assertThat(userRepository.findAll()).isNotNull().hasSizeGreaterThan(0);
+    void shouldGetRoles() {
+        assertThat(userRepository.findByUsername(LOGIN).get().getRoles()).isNotNull().hasSizeGreaterThan(0);
     }
-
 }

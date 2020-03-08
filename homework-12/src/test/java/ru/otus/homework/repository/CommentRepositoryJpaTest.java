@@ -4,8 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.homework.config.ApplicationProperties;
 import ru.otus.homework.entity.Comment;
 import ru.otus.homework.entity.User;
@@ -18,11 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Репозиторий Jpa для работы с комментариями...")
 @DataJpaTest
-@Import(ApplicationProperties.class)
 class CommentRepositoryJpaTest {
-
-    @Autowired
-    TestEntityManager em;
 
     @Autowired
     CommentRepository commentRepository;
@@ -33,8 +28,11 @@ class CommentRepositoryJpaTest {
     @Autowired
     BookRepository bookRepository;
 
+    @MockBean
+    ApplicationProperties applicationProperties;
+
     private static final long COMMENTATOR_UID = 1;
-    private static final long COMMENT_UID = 1;
+    private static final long COMMENT_UID = 14;
     private static final String COMMENT_TEXT = "Comment Text";
     private static final long BOOK_UID = 14;
 

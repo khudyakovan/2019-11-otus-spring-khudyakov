@@ -12,10 +12,7 @@ import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Comment;
 import ru.otus.homework.entity.Genre;
-import ru.otus.homework.service.AuthorService;
-import ru.otus.homework.service.BookService;
-import ru.otus.homework.service.CommentService;
-import ru.otus.homework.service.GenreService;
+import ru.otus.homework.service.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +30,10 @@ class BookControllerTest {
 
     @Autowired
     private MockMvc mvc;
+    @MockBean
+    private UserDetailsServiceImpl userDetailsService;
+    @MockBean
+    private UserService userService;
     @MockBean
     private BookService bookService;
     @MockBean
@@ -57,15 +58,18 @@ class BookControllerTest {
     private static final String TEST_BOOK_TITLE_1 = "Test book title 1";
     private static final String TEST_BOOK_ISBN = "1234567891013";
     private static final String TEST_BOOK_PUBLISHING_YEAR = "2020";
+    private static final String USERNAME = "admin";
+    private static final String ROLE_1 = "USER";
+    private static final String ROLE_2 = "ADMIN";
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         List<Book> books = new ArrayList<>();
         List<Author> authors = new ArrayList<>();
         List<Genre> genres = new ArrayList<>();
         List<Comment> comments = new ArrayList<>();
         genres.add(new Genre(100500, ""));
-        authors.add(new Author(100500,"",""));
+        authors.add(new Author(100500, "", ""));
         Book book = new Book(TEST_BOOK_UID,
                 TEST_BOOK_TITLE_0,
                 Long.parseLong(TEST_BOOK_ISBN),
@@ -84,6 +88,11 @@ class BookControllerTest {
         given(bookService.save(any())).willReturn(book);
     }
 
+
+    @WithMockUser(
+            username = USERNAME,
+            roles = {ROLE_1, ROLE_2}
+    )
     @Order(0)
     @Test
     void shouldGetIndexView() throws Exception {
@@ -92,6 +101,10 @@ class BookControllerTest {
                 .andExpect(view().name(INDEX));
     }
 
+    @WithMockUser(
+            username = USERNAME,
+            roles = {ROLE_1, ROLE_2}
+    )
     @Order(1)
     @Test
     void shouldShowIndexPage() throws Exception {
@@ -101,7 +114,8 @@ class BookControllerTest {
     }
 
     @WithMockUser(
-            authorities = {"ROLE_ANONYMOUS"}
+            username = USERNAME,
+            roles = {ROLE_1, ROLE_2}
     )
     @Order(2)
     @Test
@@ -111,6 +125,10 @@ class BookControllerTest {
                 .andExpect(content().string(containsString(TEST_BOOK_TITLE_0)));
     }
 
+    @WithMockUser(
+            username = USERNAME,
+            roles = {ROLE_1, ROLE_2}
+    )
     @Order(3)
     @Test
     void shouldAddNewBook() throws Exception {
@@ -121,6 +139,10 @@ class BookControllerTest {
                 .andExpect(view().name(EXPECTED_VIEW_AFTER_ADD));
     }
 
+    @WithMockUser(
+            username = USERNAME,
+            roles = {ROLE_1, ROLE_2}
+    )
     @Order(4)
     @Test
     void shouldEditExistingBook() throws Exception {
@@ -131,6 +153,10 @@ class BookControllerTest {
                 .andExpect(view().name(EXPECTED_VIEW_AFTER_EDIT));
     }
 
+    @WithMockUser(
+            username = USERNAME,
+            roles = {ROLE_1, ROLE_2}
+    )
     @Order(5)
     @Test
     void shouldShowDeleteView() throws Exception {
@@ -139,6 +165,10 @@ class BookControllerTest {
                 .andExpect(view().name(DETAILS));
     }
 
+    @WithMockUser(
+            username = USERNAME,
+            roles = {ROLE_1, ROLE_2}
+    )
     @Order(6)
     @Test
     void shouldDeleteExistingBook() throws Exception {

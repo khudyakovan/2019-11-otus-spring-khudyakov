@@ -1,3 +1,17 @@
+drop table tbl_book_author if exists;
+drop table tbl_book_genre if exists;
+drop table tbl_book_comment if exists;
+drop table tbl_user_role if exists;
+
+drop table tbl_comments if exists;
+drop table tbl_users if exists;
+drop table tbl_roles if exists;
+
+
+drop table tbl_authors if exists;
+drop table tbl_books if exists;
+drop table tbl_genres if exists;
+
 create table tbl_authors
 (
     uid       bigint auto_increment

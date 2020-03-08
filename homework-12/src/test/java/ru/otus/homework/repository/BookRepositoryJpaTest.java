@@ -9,7 +9,6 @@ import ru.otus.homework.config.ApplicationProperties;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Genre;
-import ru.otus.homework.service.TranslationService;
 
 import java.util.List;
 
@@ -27,9 +26,6 @@ class BookRepositoryJpaTest {
     private static final String EXPECTED_BOOK_TITLE = "The Catcher in the Rye";
     private static final long AUTHOR_UID = 44;
     private static final long GENRE_UID = 1;
-
-    @MockBean
-    TranslationService translationService;
 
     @MockBean
     ApplicationProperties applicationProperties;

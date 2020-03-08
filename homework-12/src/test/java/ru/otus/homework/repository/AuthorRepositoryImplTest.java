@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.homework.config.ApplicationProperties;
 import ru.otus.homework.entity.Author;
 
@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Репозиторий Jpa для работы с авторами...")
 @DataJpaTest
-@Import(ApplicationProperties.class)
 class AuthorRepositoryImplTest {
 
     @Autowired
@@ -24,6 +23,9 @@ class AuthorRepositoryImplTest {
 
     @Autowired
     AuthorRepository authorRepository;
+
+    @MockBean
+    ApplicationProperties applicationProperties;
 
     private static final long BOOK_UID = 15;
     private static final long NEW_AUTHOR_UID = 0;
