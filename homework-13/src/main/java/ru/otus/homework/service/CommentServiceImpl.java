@@ -33,7 +33,7 @@ public class CommentServiceImpl implements CommentService {
     public Comment save(Comment comment) {
         if(applicationProperties.isAnonymousCommentsOnly()) {
             User user = userService.findByUsername("anonymous");
-            if(user.getUid() == 0){
+            if(user.getId() == 0){
                 user.setUsername(ANONYMOUS_LOGIN);
                 user.setPassword(ANONYMOUS_PASSWORD);
                 user = userService.save(user);

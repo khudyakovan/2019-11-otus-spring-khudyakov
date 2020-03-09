@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    @Query("select b from Book b join b.genres g where g.uid = :genreUid")
-    List<Book> findBooksByGenreUid(@Param("genreUid") long genreUid);
+    @Query("select b from Book b join b.genres g where g.id = :genreUid")
+    List<Book> findBooksByGenreId(@Param("genreUid") long genreUid);
 
     @Query("select b from Book b join b.authors a where a.uid = :authorUid")
     List<Book> findBooksByAuthorUid(@Param("authorUid") long authorUid);

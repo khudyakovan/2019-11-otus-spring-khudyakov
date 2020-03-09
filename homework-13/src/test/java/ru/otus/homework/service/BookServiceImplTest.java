@@ -61,7 +61,7 @@ class BookServiceImplTest {
         given(bookRepository.findById(anyLong())).willReturn(Optional.ofNullable(book));
         given(bookRepository.findAll()).willReturn(books);
         given(bookRepository.findBooksByAuthorUid(anyLong())).willReturn(books);
-        given(bookRepository.findBooksByGenreUid(anyLong())).willReturn(books);
+        given(bookRepository.findBooksByGenreId(anyLong())).willReturn(books);
         given(bookRepository.count()).willReturn(EXPECTED_BOOKS_COUNT);
     }
 
@@ -98,7 +98,7 @@ class BookServiceImplTest {
     @DisplayName("... должен вернуть книги определенного жанра")
     @Test
     void shouldGetBooksByGenreUid() {
-        List<Book> books = bookRepository.findBooksByGenreUid(GENRE_UID);
+        List<Book> books = bookRepository.findBooksByGenreId(GENRE_UID);
         assertThat(books).isNotNull().hasSizeGreaterThan(0);
     }
 

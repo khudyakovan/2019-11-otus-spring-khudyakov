@@ -51,7 +51,7 @@ class GenreRepositoryJpaTest {
     void shouldDeleteByUid() {
         List<Genre> genres = genreRepository.findAll();
         long countBefore = genres.size();
-        genreRepository.deleteById(genres.get(0).getUid());
+        genreRepository.deleteById(genres.get(0).getId());
         assertThat(genreRepository.count()).isEqualTo(countBefore-1);
     }
 

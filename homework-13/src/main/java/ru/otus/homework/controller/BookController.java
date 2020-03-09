@@ -55,6 +55,7 @@ public class BookController {
         Book book = new Book();
         model.addAttribute("add", true);
         model.addAttribute("book", book);
+        model.addAttribute("errorMessage", "");
         model.addAttribute("authors", authorService.findAll());
         model.addAttribute("genres", genreService.findAll());
 

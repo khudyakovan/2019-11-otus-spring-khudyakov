@@ -41,7 +41,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> findBooksByGenreUid(long genreUid) {
-        return bookRepository.findBooksByGenreUid(genreUid);
+        return bookRepository.findBooksByGenreId(genreUid);
     }
 
     @Override

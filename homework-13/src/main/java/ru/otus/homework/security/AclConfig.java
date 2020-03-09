@@ -25,7 +25,7 @@ import java.util.Objects;
 public class AclConfig {
 
     @Autowired
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
     private static final String DEFAULT_ROLE = "ROLE_EDITOR";
     private static final String ACL_CACHE = "aclCache";

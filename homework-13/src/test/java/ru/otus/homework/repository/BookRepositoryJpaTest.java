@@ -99,7 +99,7 @@ class BookRepositoryJpaTest {
     @DisplayName("... должен вернуть книги определенного жанра")
     @Test
     void shouldGetBooksByGenreUid() {
-        List<Book> books = bookRepository.findBooksByGenreUid(GENRE_UID);
+        List<Book> books = bookRepository.findBooksByGenreId(GENRE_UID);
         assertThat(!books.isEmpty());
         assertThat(books.size()).isGreaterThan(0);
     }

@@ -31,7 +31,7 @@
                         <select class="form-control" size="5" th:field="${book.genres}" multiple="multiple">
                             <option th:each="genre : ${genres}"
                                     th:field="${book.genres}"
-                                    th:value="${genre.uid}"
+                                    th:value="${genre.id}"
                                     th:text="${genre.name}">
                             </option>
                         </select>

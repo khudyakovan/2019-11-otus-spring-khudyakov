@@ -66,8 +66,8 @@ INSERT INTO tbl_genres (uid, name) VALUES (23, 'Crime');
 INSERT INTO tbl_genres (uid, name) VALUES (24, 'Scandinavian noir');
 INSERT INTO tbl_genres (uid, name) VALUES (25, 'War');
 INSERT INTO tbl_genres (uid, name) VALUES (26, 'Adventure');
-INSERT INTO tbl_roles (uid, name) VALUES (1, 'ADMIN');
-INSERT INTO tbl_roles (uid, name) VALUES (2, 'USER');
+INSERT INTO tbl_roles (uid, name) VALUES (1, 'ROLE_ADMIN');
+INSERT INTO tbl_roles (uid, name) VALUES (2, 'ROLE_USER');
 INSERT INTO tbl_users (uid, username, password, first_name, last_name) VALUES (1, 'ac1', 'strongpassword', '1 Angry', 'Commentator');
 INSERT INTO tbl_users (uid, username, password, first_name, last_name) VALUES (2, 'ac2', 'strongpassword', '2 Angry', 'Commentator');
 INSERT INTO tbl_users (uid, username, password, first_name, last_name) VALUES (3, 'ac3', 'strongpassword', '3 Angry', 'Commentator');
@@ -108,9 +108,6 @@ INSERT INTO tbl_comments (uid, book_uid, user_uid, comment_text, comment_date) V
 INSERT INTO tbl_comments (uid, book_uid, user_uid, comment_text, comment_date) VALUES (38, 14, 12, 'An angry comment 2', '2020-01-11 22:29:00');
 INSERT INTO tbl_comments (uid, book_uid, user_uid, comment_text, comment_date) VALUES (39, 15, 12, 'An angry comment 2', '2020-01-11 22:29:00');
 
-INSERT INTO tbl_user_role (uid, user_uid, role_uid) VALUES (1, 3, 2);
-INSERT INTO tbl_user_role (uid, user_uid, role_uid) VALUES (2, 13, 1);
-INSERT INTO tbl_user_role (uid, user_uid, role_uid) VALUES (3, 13, 2);
 INSERT INTO tbl_book_author (uid, book_uid, author_uid) VALUES (38, 15, 45);
 INSERT INTO tbl_book_author (uid, book_uid, author_uid) VALUES (39, 4, 33);
 INSERT INTO tbl_book_author (uid, book_uid, author_uid) VALUES (40, 18, 55);
@@ -185,17 +182,81 @@ INSERT INTO tbl_book_genre (uid, book_uid, genre_uid) VALUES (138, 3, 26);
 INSERT INTO tbl_book_genre (uid, book_uid, genre_uid) VALUES (139, 19, 26);
 INSERT INTO tbl_book_genre (uid, book_uid, genre_uid) VALUES (140, 22, 26);
 
+
+INSERT INTO tbl_user_role (uid, user_uid, role_uid) VALUES (1, 1, 2);
+INSERT INTO tbl_user_role (uid, user_uid, role_uid) VALUES (2, 2, 2);
+INSERT INTO tbl_user_role (uid, user_uid, role_uid) VALUES (3, 3, 2);
+INSERT INTO tbl_user_role (uid, user_uid, role_uid) VALUES (4, 4, 2);
+INSERT INTO tbl_user_role (uid, user_uid, role_uid) VALUES (5, 5, 2);
+INSERT INTO tbl_user_role (uid, user_uid, role_uid) VALUES (6, 6, 2);
+INSERT INTO tbl_user_role (uid, user_uid, role_uid) VALUES (7, 7, 2);
+INSERT INTO tbl_user_role (uid, user_uid, role_uid) VALUES (8, 8, 2);
+INSERT INTO tbl_user_role (uid, user_uid, role_uid) VALUES (9, 9, 2);
+INSERT INTO tbl_user_role (uid, user_uid, role_uid) VALUES (10, 10, 2);
+INSERT INTO tbl_user_role (uid, user_uid, role_uid) VALUES (11, 11, 2);
+INSERT INTO tbl_user_role (uid, user_uid, role_uid) VALUES (12, 12, 2);
+INSERT INTO tbl_user_role (uid, user_uid, role_uid) VALUES (13, 13, 1);
+INSERT INTO tbl_user_role (uid, user_uid, role_uid) VALUES (14, 13, 2);
+
 INSERT INTO acl_sid (id, principal, sid) VALUES
+(1, 1, 'ac1'),
+(2, 1, 'ac2'),
+(3, 1, 'ac3'),
+(4, 1, 'ac4'),
+(5, 1, 'ac5'),
+(6, 1, 'ac6'),
+(7, 1, 'ac7'),
+(8, 1, 'ac8'),
+(9, 1, 'ac9'),
+(10, 1, 'ac10'),
+(11, 1, 'ac11'),
+(12, 1, 'ac12'),
 (13, 1, 'admin'),
-(2, 1, 'user'),
-(3, 0, 'ROLE_ADMIN'),
-(4, 0, 'ROLE_USER');
+(14, 0, 'ROLE_USER'),
+(15, 0, 'ROLE_ADMIN');
+
 
 INSERT INTO acl_class (id, class) VALUES
 (1, 'ru.otus.homework.entity.User');
 
 INSERT INTO acl_object_identity (id, object_id_class, object_id_identity, parent_object, owner_sid, entries_inheriting) VALUES
-(1, 1, 1, NULL, 3, 0);
+(1, 1, 1, NULL, 13, 0),
+(2, 1, 2, NULL, 13, 0),
+(3, 1, 3, NULL, 13, 0),
+(4, 1, 4, NULL, 13, 0),
+(5, 1, 5, NULL, 13, 0),
+(6, 1, 6, NULL, 13, 0),
+(7, 1, 7, NULL, 13, 0),
+(8, 1, 8, NULL, 13, 0),
+(9, 1, 9, NULL, 13, 0),
+(10, 1, 10, NULL, 13, 0),
+(11, 1, 11, NULL, 13, 0),
+(12, 1, 12, NULL, 13, 0),
+(13, 1, 13, NULL, 13, 0);
 
 INSERT INTO acl_entry (id, acl_object_identity, ace_order, sid, mask, granting, audit_success, audit_failure) VALUES
-(1, 1, 1, 13, 1, 1, 1, 1);
+(1, 1, 1, 13, 1, 1, 1, 1),
+(2, 2, 1, 13, 1, 1, 1, 1),
+(3, 3, 1, 13, 1, 1, 1, 1),
+(4, 4, 1, 13, 1, 1, 1, 1),
+(5, 5, 1, 13, 1, 1, 1, 1),
+(6, 6, 1, 13, 1, 1, 1, 1),
+(7, 7, 1, 13, 1, 1, 1, 1),
+(8, 8, 1, 13, 1, 1, 1, 1),
+(9, 9, 1, 13, 1, 1, 1, 1),
+(10, 10, 1, 13, 1, 1, 1, 1),
+(11, 11, 1, 13, 1, 1, 1, 1),
+(12, 12, 1, 13, 1, 1, 1, 1),
+(13, 13, 1, 13, 1, 1, 1, 1),
+(14, 1, 2, 1, 1, 1, 1, 1),
+(15, 2, 2, 2, 1, 1, 1, 1),
+(16, 3, 2, 3, 1, 1, 1, 1),
+(17, 4, 2, 4, 1, 1, 1, 1),
+(18, 5, 2, 5, 1, 1, 1, 1),
+(19, 6, 2, 6, 1, 1, 1, 1),
+(20, 7, 2, 7, 1, 1, 1, 1),
+(21, 8, 2, 8, 1, 1, 1, 1),
+(22, 9, 2, 9, 1, 1, 1, 1),
+(23, 10, 2, 10, 1, 1, 1, 1),
+(24, 11, 2, 11, 1, 1, 1, 1),
+(25, 12, 2, 12, 1, 1, 1, 1);

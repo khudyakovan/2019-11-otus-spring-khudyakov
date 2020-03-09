@@ -19,8 +19,9 @@ import java.util.List;
 @Table(name = "tbl_users")
 public class User {
     @Id
+    @Column(name = "uid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long uid;
+    private long id;
     @Column(name = "username", nullable = false, unique = true)
     private String username;
     @Column(name = "password", nullable = false, unique = true)

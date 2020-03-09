@@ -13,6 +13,10 @@ body {
    grid-area: sidebar;
  }
 
+ .regular{
+     color: darkblue;
+ }
+
  .content {
    grid-area: content;
    position: relative;
