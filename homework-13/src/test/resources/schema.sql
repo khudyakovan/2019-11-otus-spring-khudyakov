@@ -87,7 +87,7 @@ create table tbl_users
     uid        bigint auto_increment
         primary key,
     username   varchar(50)  not null,
-    password   varchar(20)  null,
+    password   varchar(100)  null,
     first_name varchar(100) null,
     last_name  varchar(100) null,
     constraint UN_tbl_commentators

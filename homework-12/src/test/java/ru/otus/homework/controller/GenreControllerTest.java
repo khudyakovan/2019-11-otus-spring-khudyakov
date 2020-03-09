@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.homework.service.GenreService;
@@ -19,7 +20,7 @@ public class GenreControllerTest {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private UserDetailsServiceImpl userDetailsService;
+    private UserDetailsService userDetailsService;
     @MockBean
     private UserService userService;
     @MockBean

@@ -21,7 +21,6 @@ import static org.mockito.BDDMockito.given;
 
 @DisplayName("Сервис для работы с жанрами...")
 @SpringBootTest
-@Import({GenreServiceImpl.class})
 class GenreServiceImplTest {
 
     @MockBean

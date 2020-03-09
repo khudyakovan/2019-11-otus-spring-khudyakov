@@ -20,7 +20,6 @@ import static org.mockito.BDDMockito.given;
 
 @DisplayName("Сервис для работы с авторами...")
 @SpringBootTest
-@Import({AuthorServiceImpl.class})
 class AuthorServiceImplTest {
 
     @MockBean

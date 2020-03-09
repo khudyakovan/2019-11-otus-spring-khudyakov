@@ -23,7 +23,6 @@ import static org.mockito.BDDMockito.given;
 
 @DisplayName("Сервис для работы с комментариями...")
 @SpringBootTest
-@Import({CommentServiceImpl.class})
 class CommentServiceImplTest {
 
     @MockBean

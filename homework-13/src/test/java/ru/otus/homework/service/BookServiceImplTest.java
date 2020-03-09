@@ -23,14 +23,13 @@ import static org.mockito.BDDMockito.given;
 
 @DisplayName("Сервис для работы с книгами...")
 @SpringBootTest
-//@Import({BookServiceImpl.class})
 class BookServiceImplTest {
 
     @MockBean
     BookRepository bookRepository;
 
     @Autowired
-    BookServiceImpl bookService;
+    BookService bookService;
 
     private static final long EXPECTED_BOOKS_COUNT = 20;
     private static final long TEST_BOOK_UID = 10;

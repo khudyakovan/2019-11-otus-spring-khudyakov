@@ -19,14 +19,13 @@ import static org.mockito.BDDMockito.given;
 
 @DisplayName("Сервис для работы с авторами...")
 @SpringBootTest
-//@Import({AuthorServiceImpl.class})
 class AuthorServiceImplTest {
 
     @MockBean
     AuthorRepository authorRepository;
 
     @Autowired
-    AuthorServiceImpl authorService;
+    AuthorService authorService;
 
     private static final long BOOK_UID = 15;
     private static final long NEW_AUTHOR_UID = 100500;

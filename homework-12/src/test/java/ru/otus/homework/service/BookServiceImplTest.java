@@ -24,7 +24,6 @@ import static org.mockito.BDDMockito.given;
 
 @DisplayName("Сервис для работы с книгами...")
 @SpringBootTest
-@Import({BookServiceImpl.class})
 class BookServiceImplTest {
 
     @MockBean

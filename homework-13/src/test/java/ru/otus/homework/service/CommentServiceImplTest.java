@@ -22,14 +22,13 @@ import static org.mockito.BDDMockito.given;
 
 @DisplayName("Сервис для работы с комментариями...")
 @SpringBootTest
-//@Import({CommentServiceImpl.class})
 class CommentServiceImplTest {
 
     @MockBean
     CommentRepository commentRepository;
 
     @Autowired
-    CommentServiceImpl commentService;
+    CommentService commentService;
 
     private static final String COMMENTATOR_LOGIN = "anonymous";
     private static final String COMMENTATOR_PASSWORD = "strongpassword";

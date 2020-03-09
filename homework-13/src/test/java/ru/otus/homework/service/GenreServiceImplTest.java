@@ -20,14 +20,13 @@ import static org.mockito.BDDMockito.given;
 
 @DisplayName("Сервис для работы с жанрами...")
 @SpringBootTest
-//@Import({GenreServiceImpl.class})
 class GenreServiceImplTest {
 
     @MockBean
     GenreRepository genreRepository;
 
     @Autowired
-    GenreServiceImpl genreService;
+    GenreService genreService;
 
     private static final long NEW_GENRE_UID = 100500;
     private static final String NEW_GENRE_NAME = "Test Genre Name";

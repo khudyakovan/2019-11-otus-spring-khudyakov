@@ -28,8 +28,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = this.userService.findByUsername(s);
-        List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
-        return this.convertUserForAuthentication(user, authorities);
+        if (user == null){
+            throw new UsernameNotFoundException("Invalid user: " + s);
+        }else {
+            List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
+            return this.convertUserForAuthentication(user, authorities);
+        }
     }
 
     private UserDetails convertUserForAuthentication(User user, List<GrantedAuthority> authorities) {
