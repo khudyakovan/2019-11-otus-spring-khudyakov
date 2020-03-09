@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<th:block th:include="snippets/head"></th:block>
+
+<body>
+<div class="wrapper">
+	<div th:text="#{view.header}" class="box header">Homework #09</div>
+	<th:block th:include="snippets/sidebar"></th:block>
+	<div class="box content">
+		<table class="contentTable">
+			<thead>
+				<tr>
+					<th th:text="#{view.author.header.id}">ID</th>
+					<th th:text="#{view.author.header.full.name}">Full Name</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="author : ${authors}">
+					<td th:text="${author.uid}">ID</td>
+					<td th:text="${author.fullName}">Full Name</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</body>
+</html>

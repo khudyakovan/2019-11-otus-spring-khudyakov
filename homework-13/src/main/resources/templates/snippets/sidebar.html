@@ -1,0 +1,19 @@
+<div class="box sidebar">
+    <nav class="navigation">
+        <ul class="mainmenu">
+            <li>
+                <a th:text="#{view.sidebar.links.books}" th:href="@{/}" href="index.html">List of books</a>
+                <ul class="submenu">
+                    <li><a th:text="#{view.sidebar.links.books.add.new.book}" th:href="@{/books/add}" href="addNewBook.html">New book</a></li>
+                </ul>
+            </li>
+            <li><a th:text="#{view.sidebar.links.authors}" th:href="@{/authors}" href="authors.html">List of authors</a></li>
+            <li><a th:text="#{view.sidebar.links.genres}" th:href="@{/genres}" href="genres.html">List of genres</a></li>
+            <li>&nbsp;</li>
+            <li><a th:text="#{view.sidebar.links.users}" th:href="@{/users}" href="users.html">List of users</a></li>
+            <li>&nbsp;</li>
+            <li><a th:text="#{view.sidebar.links.login}" th:href="@{/login}" href="/logout">Login</a></li>
+            <li><a th:text="#{view.sidebar.links.logout}" th:href="@{/logout}" href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+</div>
