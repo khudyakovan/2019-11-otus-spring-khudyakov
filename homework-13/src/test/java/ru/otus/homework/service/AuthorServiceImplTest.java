@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.repository.AuthorRepository;
 
@@ -20,7 +19,7 @@ import static org.mockito.BDDMockito.given;
 
 @DisplayName("Сервис для работы с авторами...")
 @SpringBootTest
-@Import({AuthorServiceImpl.class})
+//@Import({AuthorServiceImpl.class})
 class AuthorServiceImplTest {
 
     @MockBean

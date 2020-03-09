@@ -33,9 +33,10 @@ public class GenreControllerTest {
 
 
     @Test
-    void shouldRedirectToLogin() throws Exception {
+    void shouldNotRedirectToLogin() throws Exception {
         mvc.perform(get(GENRES_URL))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk())
+                .andExpect(view().name(GENRES_VIEW));
     }
 
     @WithMockUser(

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import ru.otus.homework.entity.Comment;
 import ru.otus.homework.entity.User;
 import ru.otus.homework.repository.CommentRepository;
@@ -23,7 +22,7 @@ import static org.mockito.BDDMockito.given;
 
 @DisplayName("Сервис для работы с комментариями...")
 @SpringBootTest
-@Import({CommentServiceImpl.class})
+//@Import({CommentServiceImpl.class})
 class CommentServiceImplTest {
 
     @MockBean

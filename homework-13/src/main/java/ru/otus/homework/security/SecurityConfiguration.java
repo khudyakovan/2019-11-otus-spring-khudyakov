@@ -14,7 +14,6 @@ import ru.otus.homework.service.UserDetailsServiceImpl;
 @RequiredArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     private final UserDetailsServiceImpl userDetailsService;
 
     @Override

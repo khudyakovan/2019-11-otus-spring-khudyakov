@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import ru.otus.homework.entity.Genre;
 import ru.otus.homework.repository.GenreRepository;
 
@@ -21,7 +20,7 @@ import static org.mockito.BDDMockito.given;
 
 @DisplayName("Сервис для работы с жанрами...")
 @SpringBootTest
-@Import({GenreServiceImpl.class})
+//@Import({GenreServiceImpl.class})
 class GenreServiceImplTest {
 
     @MockBean

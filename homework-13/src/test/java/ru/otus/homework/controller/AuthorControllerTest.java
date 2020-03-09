@@ -33,9 +33,10 @@ public class AuthorControllerTest {
     private static final String ROLE_2 = "ADMIN";
 
     @Test
-    void shouldRedirectToLogin() throws Exception {
+    void shouldNotRedirectToLogin() throws Exception {
         mvc.perform(get(AUTHORS_URL))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk())
+                .andExpect(view().name(AUTHORS_VIEW));
     }
 
     @WithMockUser(
