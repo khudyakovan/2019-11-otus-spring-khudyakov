@@ -16,5 +16,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @PostFilter("hasPermission(filterObject, 'READ')")
     List<User> findAll();
-
 }
