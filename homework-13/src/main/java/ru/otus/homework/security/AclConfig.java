@@ -1,7 +1,6 @@
 package ru.otus.homework.security;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.ehcache.EhCacheFactoryBean;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +23,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class AclConfig {
 
-    @Autowired
     private final DataSource dataSource;
 
     private static final String DEFAULT_ROLE = "ROLE_EDITOR";

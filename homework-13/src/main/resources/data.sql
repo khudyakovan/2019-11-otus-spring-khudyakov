@@ -1,4 +1,4 @@
-INSERT INTO tbl_authors (uid, full_name, pen_name) VALUES (31, 'Suzanne Collins', null);
+ INSERT INTO tbl_authors (uid, full_name, pen_name) VALUES (31, 'Suzanne Collins', null);
 INSERT INTO tbl_authors (uid, full_name, pen_name) VALUES (32, 'Joanne Rowling', null);
 INSERT INTO tbl_authors (uid, full_name, pen_name) VALUES (33, ' Mary GrandPré', null);
 INSERT INTO tbl_authors (uid, full_name, pen_name) VALUES (34, 'Stephenie Meyer', null);

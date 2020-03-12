@@ -1,7 +1,10 @@
 package ru.otus.homework.controller;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,8 +30,7 @@ public class SecurityTest {
     private static final String ADMIN_USER = "admin";
     private static final String ROLE_1 = "USER";
     private static final String ROLE_2 = "ADMIN";
-    private static final String COMMON_USER_1 = "ac1";
-    private static final String COMMON_USER_3 = "ac3";
+    private static final String COMMON_USER = "ac1";
 
     //Проверка авторизации на уровне доменных сущностей
 
@@ -42,18 +44,20 @@ public class SecurityTest {
         mvc.perform(get(USERS_URL))
                 .andExpect(status().isOk())
                 .andExpect(view().name(USERS_VIEW))
-                .andExpect(content().string(containsStringIgnoringCase(ROLE_2)));
+                .andExpect(content().string(containsStringIgnoringCase(ADMIN_USER)))
+                .andExpect(content().string(containsStringIgnoringCase(COMMON_USER)));
     }
 
     @DisplayName("Показать страницу пользователей под текущим пользователем. Должен вернуть только текущего пользователя")
     @WithMockUser(
-            username = COMMON_USER_3
+            username = COMMON_USER
     )
     @Test
-    void shouldNotGetUsersPage() throws Exception{
+    void shouldNotGetUsersPage() throws Exception {
         mvc.perform(get(USERS_URL))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsStringIgnoringCase(COMMON_USER_3)));
+                .andExpect(content().string(containsStringIgnoringCase(COMMON_USER)))
+                .andExpect(content().string(Matchers.not(containsStringIgnoringCase(ADMIN_USER))));
     }
 
     //Проверка на уровне URL
@@ -64,91 +68,32 @@ public class SecurityTest {
             username = ADMIN_USER,
             roles = {ROLE_1, ROLE_2}
     )
-    @Test
-    void shouldGetAddBookPage() throws Exception{
+    @ParameterizedTest
+    @ValueSource(strings = {ADD_BOOK_URL, EDIT_BOOK_URL, DELETE_BOOK_URL})
+    void shouldShowProtectedPages(String url) throws Exception {
         mvc
-                .perform(get(ADD_BOOK_URL))
+                .perform(get(url))
                 .andExpect(status().isOk());
     }
 
     @DisplayName("Доступ запрещен не админу")
     @WithMockUser(
-            username = COMMON_USER_3
+            username = COMMON_USER
     )
-    @Test
-    void shouldDenyAddBookPage() throws Exception{
+    @ParameterizedTest
+    @ValueSource(strings = {ADD_BOOK_URL, EDIT_BOOK_URL, DELETE_BOOK_URL})
+    void shouldNotShowForbiddenPages(String url) throws Exception {
         mvc
-                .perform(get(ADD_BOOK_URL))
+                .perform(get(url))
                 .andExpect(status().isForbidden());
     }
 
-    @DisplayName("Добавление книги - редирект")
-    @Test
-    void shouldNotGetAddBookPageAndRedirectToLogin() throws Exception{
+    @DisplayName("Вход на защищенные страницы - редирект на авторизацию")
+    @ParameterizedTest
+    @ValueSource(strings = {ADD_BOOK_URL, EDIT_BOOK_URL, DELETE_BOOK_URL})
+    void shouldNotShowForbiddenPagesAndRedirectToLogin(String url) throws Exception {
         mvc
-                .perform(get(ADD_BOOK_URL))
-                .andExpect(status().is3xxRedirection());
-    }
-
-    @DisplayName("Показать страницу редактирования книги под админом")
-    @WithMockUser(
-            username = ADMIN_USER,
-            roles = {ROLE_1, ROLE_2}
-    )
-    @Test
-    void shouldGetEditBookPage() throws Exception{
-        mvc
-                .perform(get(EDIT_BOOK_URL))
-                .andExpect(status().isOk());
-    }
-
-    @DisplayName("Доступ запрещен не админу")
-    @WithMockUser(
-            username = COMMON_USER_3
-    )
-    @Test
-    void shouldDenyEditBookPage() throws Exception{
-        mvc
-                .perform(get(EDIT_BOOK_URL))
-                .andExpect(status().isForbidden());
-    }
-    
-    @DisplayName("Редактирование книги - редирект")
-    @Test
-    void shouldNotGetEditBookPageAndRedirectToLogin() throws Exception{
-        mvc
-                .perform(get(EDIT_BOOK_URL))
-                .andExpect(status().is3xxRedirection());
-    }
-
-    @DisplayName("Показать страницу удаления книги под админом")
-    @WithMockUser(
-            username = ADMIN_USER,
-            roles = {ROLE_1, ROLE_2}
-    )
-    @Test
-    void shouldGetDeleteBookPage() throws Exception{
-        mvc
-                .perform(get(DELETE_BOOK_URL))
-                .andExpect(status().isOk());
-    }
-
-    @DisplayName("Доступ запрещен не админу")
-    @WithMockUser(
-            username = COMMON_USER_3
-    )
-    @Test
-    void shouldDenyDeleteBookPage() throws Exception{
-        mvc
-                .perform(get(DELETE_BOOK_URL))
-                .andExpect(status().isForbidden());
-    }
-    
-    @DisplayName("Удаление книги - редирект")
-    @Test
-    void shouldNotGetDeleteBookPageAndRedirectToLogin() throws Exception{
-        mvc
-                .perform(get(DELETE_BOOK_URL))
+                .perform(get(url))
                 .andExpect(status().is3xxRedirection());
     }
 }

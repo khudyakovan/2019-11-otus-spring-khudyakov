@@ -1,7 +1,6 @@
 package ru.otus.homework.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.config.ApplicationProperties;
@@ -16,9 +15,7 @@ import java.util.List;
 @Transactional
 public class AuthorServiceImpl implements AuthorService {
 
-    @Autowired
     private final AuthorRepository authorRepository;
-    @Autowired
     private final ApplicationProperties applicationProperties;
 
     @Override
