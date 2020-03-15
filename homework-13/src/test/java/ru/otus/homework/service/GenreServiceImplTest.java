@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import ru.otus.homework.entity.Genre;
 import ru.otus.homework.repository.GenreRepository;
 
@@ -27,7 +26,7 @@ class GenreServiceImplTest {
     GenreRepository genreRepository;
 
     @Autowired
-    GenreServiceImpl genreService;
+    GenreService genreService;
 
     private static final long NEW_GENRE_UID = 100500;
     private static final String NEW_GENRE_NAME = "Test Genre Name";

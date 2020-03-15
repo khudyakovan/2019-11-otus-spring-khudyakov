@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.repository.AuthorRepository;
 
@@ -26,7 +25,7 @@ class AuthorServiceImplTest {
     AuthorRepository authorRepository;
 
     @Autowired
-    AuthorServiceImpl authorService;
+    AuthorService authorService;
 
     private static final long BOOK_UID = 15;
     private static final long NEW_AUTHOR_UID = 100500;

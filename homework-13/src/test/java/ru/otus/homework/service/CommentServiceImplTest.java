@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import ru.otus.homework.entity.Comment;
 import ru.otus.homework.entity.User;
 import ru.otus.homework.repository.CommentRepository;
@@ -29,7 +28,7 @@ class CommentServiceImplTest {
     CommentRepository commentRepository;
 
     @Autowired
-    CommentServiceImpl commentService;
+    CommentService commentService;
 
     private static final String COMMENTATOR_LOGIN = "anonymous";
     private static final String COMMENTATOR_PASSWORD = "strongpassword";

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<th:block th:include="snippets/head"></th:block>
+
+<body>
+<div>
+    <p th:text="#{view.error}">Error</p>
+    <p>Error code <span th:text="${status}"/></p>
+    <a class="regular" href="/" th:text="#{view.sidebar.links.books}">Go Home</a>
+</div>
+</body>
+</html>

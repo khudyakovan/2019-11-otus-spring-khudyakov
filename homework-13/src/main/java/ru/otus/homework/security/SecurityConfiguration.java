@@ -1,8 +1,7 @@
-package ru.otus.homework.config;
+package ru.otus.homework.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,7 +20,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/**").authenticated()
+                .authorizeRequests()
+                .antMatchers("/books/add", "/books/*/edit", "/books/*/delete").hasRole("ADMIN")
+                .antMatchers("/**").permitAll()
                 .and()
                 .formLogin()
                 .and()
@@ -37,10 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-
-    public PasswordEncoder passwordEncoder(){
-
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

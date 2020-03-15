@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import ru.otus.homework.entity.Author;
 import ru.otus.homework.entity.Book;
 import ru.otus.homework.entity.Comment;
@@ -30,7 +29,7 @@ class BookServiceImplTest {
     BookRepository bookRepository;
 
     @Autowired
-    BookServiceImpl bookService;
+    BookService bookService;
 
     private static final long EXPECTED_BOOKS_COUNT = 20;
     private static final long TEST_BOOK_UID = 10;
@@ -60,7 +59,7 @@ class BookServiceImplTest {
         given(bookRepository.findById(anyLong())).willReturn(Optional.ofNullable(book));
         given(bookRepository.findAll()).willReturn(books);
         given(bookRepository.findBooksByAuthorUid(anyLong())).willReturn(books);
-        given(bookRepository.findBooksByGenreUid(anyLong())).willReturn(books);
+        given(bookRepository.findBooksByGenreId(anyLong())).willReturn(books);
         given(bookRepository.count()).willReturn(EXPECTED_BOOKS_COUNT);
     }
 
@@ -97,7 +96,7 @@ class BookServiceImplTest {
     @DisplayName("... должен вернуть книги определенного жанра")
     @Test
     void shouldGetBooksByGenreUid() {
-        List<Book> books = bookRepository.findBooksByGenreUid(GENRE_UID);
+        List<Book> books = bookRepository.findBooksByGenreId(GENRE_UID);
         assertThat(books).isNotNull().hasSizeGreaterThan(0);
     }
 

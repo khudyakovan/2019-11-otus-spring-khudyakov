@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Service
+@Service("userDetailsService")
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -28,8 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = this.userService.findByUsername(s);
-
-        if (user == null) {
+        if (user == null){
             throw new UsernameNotFoundException("Invalid user: " + s);
         }else {
             List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
