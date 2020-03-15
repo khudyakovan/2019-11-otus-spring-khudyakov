@@ -29,8 +29,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = this.userService.findByUsername(s);
 
-        if(user == null) {
-            throw new UsernameNotFoundException("Invalid User");
+        if (user == null) {
+            throw new UsernameNotFoundException("Invalid user: " + s);
         }else {
             List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
             return this.convertUserForAuthentication(user, authorities);

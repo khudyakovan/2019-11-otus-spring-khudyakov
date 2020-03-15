@@ -68,6 +68,7 @@ INSERT INTO tbl_genres (uid, name) VALUES (25, 'War');
 INSERT INTO tbl_genres (uid, name) VALUES (26, 'Adventure');
 INSERT INTO tbl_roles (uid, name) VALUES (1, 'ADMIN');
 INSERT INTO tbl_roles (uid, name) VALUES (2, 'USER');
+
 INSERT INTO tbl_users (uid, username, password, first_name, last_name) VALUES (1, 'ac1', '$2a$04$oT48FfqTQkUeFca4Rh6y6O6ugG1KUBl9OcYK1S.wgu5XJ15heXAwe', '1 Angry', 'Commentator');
 INSERT INTO tbl_users (uid, username, password, first_name, last_name) VALUES (2, 'ac2', '$2a$04$oT48FfqTQkUeFca4Rh6y6O6ugG1KUBl9OcYK1S.wgu5XJ15heXAwe', '2 Angry', 'Commentator');
 INSERT INTO tbl_users (uid, username, password, first_name, last_name) VALUES (3, 'ac3', '$2a$04$oT48FfqTQkUeFca4Rh6y6O6ugG1KUBl9OcYK1S.wgu5XJ15heXAwe', '3 Angry', 'Commentator');
@@ -81,6 +82,7 @@ INSERT INTO tbl_users (uid, username, password, first_name, last_name) VALUES (1
 INSERT INTO tbl_users (uid, username, password, first_name, last_name) VALUES (11, 'ac11', '$2a$04$oT48FfqTQkUeFca4Rh6y6O6ugG1KUBl9OcYK1S.wgu5XJ15heXAwe', '11 Angry', 'Commentator');
 INSERT INTO tbl_users (uid, username, password, first_name, last_name) VALUES (12, 'ac12', '$2a$04$oT48FfqTQkUeFca4Rh6y6O6ugG1KUBl9OcYK1S.wgu5XJ15heXAwe', '12 Angry', 'Commentator');
 INSERT INTO tbl_users (uid, username, password, first_name, last_name) VALUES (13, 'admin', '$2a$04$VxUd4i1vzoIhpT13EMGyae.qO52ty61MIoPON1Jx8oDdyX99qS4XK', 'Angry', 'Administrator');
+
 INSERT INTO tbl_comments (uid, book_uid, user_uid, comment_text, comment_date) VALUES (14, 3, 1, 'An angry comment', '2020-01-11 22:29:00');
 INSERT INTO tbl_comments (uid, book_uid, user_uid, comment_text, comment_date) VALUES (15, 4, 2, 'An angry comment', '2020-01-11 22:29:00');
 INSERT INTO tbl_comments (uid, book_uid, user_uid, comment_text, comment_date) VALUES (16, 5, 3, 'An angry comment', '2020-01-11 22:29:00');
