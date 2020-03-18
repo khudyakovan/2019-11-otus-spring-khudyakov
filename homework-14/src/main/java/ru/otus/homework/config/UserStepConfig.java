@@ -31,21 +31,33 @@ public class UserStepConfig {
 
     @Bean
     public ItemProcessor<User, UserMongo> userProcessor(UserService userService) {
+
         return userService::transform;
     }
 
-    @Bean(name = "usersStep")
-    public Step syncUsersStep(ItemProcessor userProcessor) {
+    @Bean
+    public RepositoryItemReader<User> userReader() {
         RepositoryItemReader<User> reader = new RepositoryItemReader<>();
         reader.setRepository(userRepositoryMySQL);
         reader.setMethodName(READ_METHOD);
         Map<String, Sort.Direction> sort = new HashMap<>();
         sort.put("id", Sort.Direction.ASC);
         reader.setSort(sort);
+        return reader;
+    }
 
+    @Bean
+    public RepositoryItemWriter<UserMongo> userWriter() {
         RepositoryItemWriter<UserMongo> writer = new RepositoryItemWriter<>();
         writer.setRepository(userRepositoryMongo);
         writer.setMethodName(WRITE_METHOD);
+        return writer;
+    }
+
+    @Bean(name = "usersStep")
+    public Step syncUsersStep(ItemProcessor userProcessor,
+                              RepositoryItemReader<User> reader,
+                              RepositoryItemWriter<UserMongo> writer) {
         return stepBuilderFactory.get("syncUsersStep")
                 .chunk(CHUNK_SIZE)
                 .reader(reader)

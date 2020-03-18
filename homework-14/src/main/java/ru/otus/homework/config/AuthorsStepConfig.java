@@ -34,19 +34,31 @@ public class AuthorsStepConfig {
         return authorService::transform;
     }
 
-    @Bean(name="authorsStep")
-    public Step syncAuthorsStep(ItemProcessor authorsProcessor) {
+    @Bean
+    public RepositoryItemReader<Author> authorReader(){
         RepositoryItemReader<Author> reader = new RepositoryItemReader<>();
         reader.setRepository(authorRepositoryMysql);
         reader.setMethodName(READ_METHOD);
         Map<String, Sort.Direction> sort = new HashMap<>();
         sort.put("uid", Sort.Direction.ASC);
         reader.setSort(sort);
+        return reader;
+    }
 
-
+    @Bean
+    public RepositoryItemWriter<AuthorMongo> authorWriter(){
         RepositoryItemWriter<AuthorMongo> writer = new RepositoryItemWriter<>();
         writer.setRepository(authorRepositoryMongo);
         writer.setMethodName(WRITE_METHOD);
+        return writer;
+    }
+
+
+    @Bean(name="authorsStep")
+    public Step syncAuthorsStep(ItemProcessor authorsProcessor,
+                                RepositoryItemReader<Author> reader,
+                                RepositoryItemWriter<AuthorMongo> writer) {
+
         return stepBuilderFactory.get("syncAuthorsStep")
                 .chunk(CHUNK_SIZE)
                 .reader(reader)

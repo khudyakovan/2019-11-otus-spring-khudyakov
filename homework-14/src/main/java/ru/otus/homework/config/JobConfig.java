@@ -1,8 +1,6 @@
 package ru.otus.homework.config;
 
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -15,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class JobConfig {
 
-    private final Logger logger = LoggerFactory.getLogger("Batch");
     private final JobBuilderFactory jobBuilderFactory;
     private final static String JOB_NAME = "migrationJob";
 
@@ -26,9 +23,7 @@ public class JobConfig {
                    @Qualifier("booksStep") Step booksStep) {
         return jobBuilderFactory.get(JOB_NAME)
                 .incrementer(new RunIdIncrementer())
-                .start(authorsStep)
-                .next(genresStep)
-                .next(usersStep)
+                .start(usersStep)
                 .next(booksStep)
                 .build();
     }

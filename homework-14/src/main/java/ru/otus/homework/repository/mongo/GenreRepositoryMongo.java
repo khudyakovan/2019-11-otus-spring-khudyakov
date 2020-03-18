@@ -5,4 +5,5 @@ import ru.otus.homework.entity.mongo.GenreMongo;
 
 public interface GenreRepositoryMongo extends MongoRepository<GenreMongo, String>{
 
+    GenreMongo findByName(String genreName);
 }

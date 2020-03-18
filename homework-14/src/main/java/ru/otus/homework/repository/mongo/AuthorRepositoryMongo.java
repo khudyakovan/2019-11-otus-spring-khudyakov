@@ -5,4 +5,5 @@ import ru.otus.homework.entity.mongo.AuthorMongo;
 
 public interface AuthorRepositoryMongo extends MongoRepository<AuthorMongo, String>{
 
+    AuthorMongo findByFullName(String fullName);
 }

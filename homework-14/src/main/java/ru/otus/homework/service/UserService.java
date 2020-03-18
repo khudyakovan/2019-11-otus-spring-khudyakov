@@ -1,14 +1,12 @@
 package ru.otus.homework.service;
 
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
-import ru.otus.homework.entity.mongo.CommentMongo;
 import ru.otus.homework.entity.mongo.RoleMongo;
 import ru.otus.homework.entity.mongo.UserMongo;
-import ru.otus.homework.entity.mysql.Comment;
 import ru.otus.homework.entity.mysql.Role;
 import ru.otus.homework.entity.mysql.User;
-import ru.otus.homework.repository.mysql.CommentRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,29 +15,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService implements GenericService<UserMongo, User> {
 
-    private final CommentRepository commentRepository;
-    private final CommentService commentService;
     private final RoleService roleService;
 
     @Override
     public UserMongo transform(User entity) {
-        Long id = entity.getId();
-
-        return new UserMongo(String.valueOf(id),
+        return new UserMongo(String.valueOf(new ObjectId()),
                 entity.getUsername(),
                 entity.getPassword(),
                 entity.getFirstName(),
                 entity.getLastName(),
-                this.populateComments(commentRepository.findCommentByUserId(entity.getId())),
                 this.populateRoles(entity.getRoles()));
-    }
-
-    private List<CommentMongo> populateComments(List<Comment> comments) {
-        List<CommentMongo> cm = new ArrayList<>();
-        comments.forEach(comment -> {
-            cm.add(commentService.transform(comment));
-        });
-        return cm;
     }
 
     private List<RoleMongo> populateRoles(List<Role> roles){

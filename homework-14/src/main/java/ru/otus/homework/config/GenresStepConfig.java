@@ -34,19 +34,29 @@ public class GenresStepConfig {
         return genreService::transform;
     }
 
-    @Bean(name = "genresStep")
-    public Step syncGenresStep(ItemProcessor genreItemProcessor){
+    @Bean
+    public RepositoryItemReader<Genre> genreReader(){
         RepositoryItemReader<Genre> reader = new RepositoryItemReader<>();
         reader.setRepository(genreRepositoryMysql);
         reader.setMethodName(READ_METHOD);
         Map<String, Sort.Direction> sort = new HashMap<>();
         sort.put("id", Sort.Direction.ASC);
         reader.setSort(sort);
+        return reader;
+    }
 
+    @Bean
+    public RepositoryItemWriter<GenreMongo> writer() {
         RepositoryItemWriter<GenreMongo> writer = new RepositoryItemWriter<>();
         writer.setRepository(genreRepositoryMongo);
         writer.setMethodName(WRITE_METHOD);
+        return writer;
+    }
 
+    @Bean(name = "genresStep")
+    public Step syncGenresStep(ItemProcessor genreItemProcessor,
+                               RepositoryItemReader<Genre> reader,
+                               RepositoryItemWriter<GenreMongo> writer){
         return stepBuilderFactory.get("syncGenresStep")
                 .chunk(CHUNK_SIZE)
                 .reader(reader)
