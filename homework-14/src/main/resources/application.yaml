@@ -1,0 +1,34 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost
+      port: 27017
+      database: homework14
+
+  datasource:
+    url: jdbc:mysql://localhost/library?serverTimezone=Europe/Moscow
+    username: otus
+    password: javaclub
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initialization-mode: always
+    schema: classpath:schema.sql
+    data: classpath:data.sql
+
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+
+  messages:
+    basename: messages
+    encoding: UTF-8
+
+  batch:
+    initialize-schema: embedded
+    job:
+      enabled: false
+
+logging:
+  level:
+    root: ERROR
