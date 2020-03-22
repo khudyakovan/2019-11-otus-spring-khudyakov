@@ -1,0 +1,18 @@
+config:
+  poller:
+    fixed-rate: 60000
+    max-messages-per-poll: 100
+  feeds:
+    bbc: http://feeds.bbci.co.uk/news/world/rss.xml
+    cnn: http://rss.cnn.com/rss/edition_world.rss
+    dw: https://rss.dw.com/rdf/rss-en-all
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost
+      port: 27017
+      database: news
+logging:
+  level:
+    root: ERROR
