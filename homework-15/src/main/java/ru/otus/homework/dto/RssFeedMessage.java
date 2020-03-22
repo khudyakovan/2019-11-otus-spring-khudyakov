@@ -1,12 +1,11 @@
 package ru.otus.homework.dto;
 
 import lombok.Data;
-
-import java.util.UUID;
+import org.bson.types.ObjectId;
 
 @Data
 public class RssFeedMessage  {
-    private UUID id = UUID.randomUUID();
+    private String id = new ObjectId().toString();
     private String title;
     private String description;
     private boolean isAboutCoronavirus = false;
