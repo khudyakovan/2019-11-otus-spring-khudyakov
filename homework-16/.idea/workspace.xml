@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="5c2d3f94-87df-49d0-85ac-b4fe9c67ffc6" name="Default Changelist" comment="Домашнее задание #16&#10;&#10;Использовать метрики, healthchecks и logfile к приложению Цель: Цель: реализовать production-grade мониторинг и прозрачность в приложении Результат: приложение с применением Spring Boot Actuator Данное задание выполняется на основе одного из реализованных Web-приложений&#10;&#10;Подключить Spring Boot Actuator в приложение метрики.&#10;Включить метрики, healthchecks и logfile.&#10;Реализовать свой собственный HealthCheck индикатор&#10;UI для данных от Spring Boot Actuator реализовывать не нужно.&#10;Опционально: переписать приложение на HATEOAS принципах с помощью Spring Data REST Repository">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__antlr_antlr_2_7_7.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_classic_1_2_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_core_1_2_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_jayway_jsonpath_json_path_2_4_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_vaadin_external_google_android_json_0_0_20131108_vaadin1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_8_0_18.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_minidev_accessors_smart_1_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__net_minidev_json_smart_2_3.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_lang3_3_9.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_dom4j_dom4j_2_1_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_objenesis_objenesis_2_6.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_ow2_asm_asm_5_0_4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_projectlombok_lombok_1_18_10.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_skyscreamer_jsonassert_1_5_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/homework-16.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/config/ApplicationProperties.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/config/AuthorsServiceHealthIndicator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/config/GenresServiceHealthIndicator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/controller/AuthorController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/controller/BookController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/controller/GenreController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/controller/NotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/controller/scratch.http" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/dto/BookDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/dto/CommentDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/dto/CommentatorDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/entity/Author.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/entity/Book.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/entity/Comment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/entity/Commentator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/entity/Genre.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/repository/AuthorRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/repository/AuthorRepositoryCustom.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/repository/AuthorRepositoryImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/repository/BookRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/repository/CommentRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/repository/CommentatorRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/repository/GenreRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/repository/GenreRepositoryCustom.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/repository/GenreRepositoryImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/repository/ObjectNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/service/AuthorService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/service/AuthorServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/service/BookService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/service/BookServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/service/CommentService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/service/CommentServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/service/CommentatorService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/service/CommentatorServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/service/GenreService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ru/otus/homework/service/GenreServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/application.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/data.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/schema.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ru/otus/homework/controller/ActuatorIntegrationTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ru/otus/homework/controller/AuthorControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ru/otus/homework/controller/BookControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ru/otus/homework/controller/GenreControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ru/otus/homework/repository/AuthorRepositoryImplTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ru/otus/homework/repository/BookRepositoryJpaTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ru/otus/homework/repository/CommentRepositoryJpaTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ru/otus/homework/repository/CommentatorRepositoryJpaTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ru/otus/homework/repository/GenreRepositoryJpaTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ru/otus/homework/service/AuthorServiceImplTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ru/otus/homework/service/BookServiceImplTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ru/otus/homework/service/CommentServiceImplTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/ru/otus/homework/service/GenreServiceImplTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/application.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/data.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/schema.sql" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1a7Dn5n27uZEutF8okCgyosTemg" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="project.propCompiler" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="ru.otus.homework.controller" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.HW #16">
+    <configuration name="HW #16" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="ru.otus.homework.Main" />
+      <module name="homework-16" />
+      <option name="VM_PARAMETERS" value="-XX:+UnlockCommercialFeatures" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ActuatorIntegrationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="homework-16" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.otus.homework.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ru.otus.homework.controller" />
+      <option name="MAIN_CLASS_NAME" value="ru.otus.homework.controller.ActuatorIntegrationTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ActuatorIntegrationTest.shouldTestIfAuthorHealthServiceUp" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="homework-16" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.otus.homework.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ru.otus.homework.controller" />
+      <option name="MAIN_CLASS_NAME" value="ru.otus.homework.controller.ActuatorIntegrationTest" />
+      <option name="METHOD_NAME" value="shouldTestIfAuthorHealthServiceUp" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ActuatorIntegrationTest.shouldTestIfLogfileIsAvailable" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="homework-16" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.otus.homework.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ru.otus.homework.controller" />
+      <option name="MAIN_CLASS_NAME" value="ru.otus.homework.controller.ActuatorIntegrationTest" />
+      <option name="METHOD_NAME" value="shouldTestIfLogfileIsAvailable" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ActuatorIntegrationTest.shouldTestIfMetricsAreAvailable" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="homework-16" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.otus.homework.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ru.otus.homework.controller" />
+      <option name="MAIN_CLASS_NAME" value="ru.otus.homework.controller.ActuatorIntegrationTest" />
+      <option name="METHOD_NAME" value="shouldTestIfMetricsAreAvailable" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.ActuatorIntegrationTest" />
+        <item itemvalue="JUnit.ActuatorIntegrationTest.shouldTestIfLogfileIsAvailable" />
+        <item itemvalue="JUnit.ActuatorIntegrationTest.shouldTestIfMetricsAreAvailable" />
+        <item itemvalue="JUnit.ActuatorIntegrationTest.shouldTestIfAuthorHealthServiceUp" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5c2d3f94-87df-49d0-85ac-b4fe9c67ffc6" name="Default Changelist" comment="" />
+      <created>1586077903810</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1586077903810</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="733" y="296" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586098307356">
+      <screen x="46" y="27" width="1874" height="1053" />
+    </state>
+    <state x="733" y="296" key="#com.intellij.execution.impl.EditConfigurationsDialog/46.27.1874.1053@46.27.1874.1053" timestamp="1586098307356" />
+    <state x="791" y="266" width="374" height="582" key="#com.intellij.ide.util.MemberChooser" timestamp="1586112856930">
+      <screen x="46" y="27" width="1874" height="1053" />
+    </state>
+    <state x="791" y="266" width="374" height="582" key="#com.intellij.ide.util.MemberChooser/46.27.1874.1053@46.27.1874.1053" timestamp="1586112856930" />
+    <state x="715" y="339" width="525" height="435" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1586078105278">
+      <screen x="46" y="27" width="1874" height="1053" />
+    </state>
+    <state x="715" y="339" width="525" height="435" key="#com.intellij.ide.util.TreeClassChooserDialog/46.27.1874.1053@46.27.1874.1053" timestamp="1586078105278" />
+    <state x="726" y="414" width="514" height="297" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1586109822027">
+      <screen x="46" y="27" width="1874" height="1053" />
+    </state>
+    <state x="726" y="414" width="514" height="297" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/46.27.1874.1053@46.27.1874.1053" timestamp="1586109822027" />
+    <state x="505" y="152" width="946" height="810" key="CommitChangelistDialog2" timestamp="1586115866666">
+      <screen x="46" y="27" width="1874" height="1053" />
+    </state>
+    <state x="505" y="152" width="946" height="810" key="CommitChangelistDialog2/46.27.1874.1053@46.27.1874.1053" timestamp="1586115866666" />
+    <state x="761" y="315" width="424" height="491" key="FileChooserDialogImpl" timestamp="1586096555366">
+      <screen x="46" y="27" width="1874" height="1053" />
+    </state>
+    <state x="761" y="315" width="424" height="491" key="FileChooserDialogImpl/46.27.1874.1053@46.27.1874.1053" timestamp="1586096555366" />
+    <state width="1828" height="275" key="GridCell.Tab.0.bottom" timestamp="1586115866704">
+      <screen x="46" y="27" width="1874" height="1053" />
+    </state>
+    <state width="1828" height="275" key="GridCell.Tab.0.bottom/46.27.1874.1053@46.27.1874.1053" timestamp="1586115866704" />
+    <state width="1828" height="275" key="GridCell.Tab.0.center" timestamp="1586115866704">
+      <screen x="46" y="27" width="1874" height="1053" />
+    </state>
+    <state width="1828" height="275" key="GridCell.Tab.0.center/46.27.1874.1053@46.27.1874.1053" timestamp="1586115866704" />
+    <state width="1828" height="275" key="GridCell.Tab.0.left" timestamp="1586115866704">
+      <screen x="46" y="27" width="1874" height="1053" />
+    </state>
+    <state width="1828" height="275" key="GridCell.Tab.0.left/46.27.1874.1053@46.27.1874.1053" timestamp="1586115866704" />
+    <state width="1828" height="275" key="GridCell.Tab.0.right" timestamp="1586115866704">
+      <screen x="46" y="27" width="1874" height="1053" />
+    </state>
+    <state width="1828" height="275" key="GridCell.Tab.0.right/46.27.1874.1053@46.27.1874.1053" timestamp="1586115866704" />
+    <state width="1828" height="340" key="GridCell.Tab.1.bottom" timestamp="1586112596782">
+      <screen x="46" y="27" width="1874" height="1053" />
+    </state>
+    <state width="1828" height="340" key="GridCell.Tab.1.bottom/46.27.1874.1053@46.27.1874.1053" timestamp="1586112596782" />
+    <state width="1828" height="340" key="GridCell.Tab.1.center" timestamp="1586112596782">
+      <screen x="46" y="27" width="1874" height="1053" />
+    </state>
+    <state width="1828" height="340" key="GridCell.Tab.1.center/46.27.1874.1053@46.27.1874.1053" timestamp="1586112596782" />
+    <state width="1828" height="340" key="GridCell.Tab.1.left" timestamp="1586112596782">
+      <screen x="46" y="27" width="1874" height="1053" />
+    </state>
+    <state width="1828" height="340" key="GridCell.Tab.1.left/46.27.1874.1053@46.27.1874.1053" timestamp="1586112596782" />
+    <state width="1828" height="340" key="GridCell.Tab.1.right" timestamp="1586112596782">
+      <screen x="46" y="27" width="1874" height="1053" />
+    </state>
+    <state width="1828" height="340" key="GridCell.Tab.1.right/46.27.1874.1053@46.27.1874.1053" timestamp="1586112596782" />
+    <state x="516" y="211" width="924" height="691" key="Maven.ArtifactSearchDialog" timestamp="1586109569288">
+      <screen x="46" y="27" width="1874" height="1053" />
+    </state>
+    <state x="516" y="211" width="924" height="691" key="Maven.ArtifactSearchDialog/46.27.1874.1053@46.27.1874.1053" timestamp="1586109569288" />
+    <state x="653" y="266" width="649" height="581" key="RollbackChangesDialog" timestamp="1586099630853">
+      <screen x="46" y="27" width="1874" height="1053" />
+    </state>
+    <state x="653" y="266" width="649" height="581" key="RollbackChangesDialog/46.27.1874.1053@46.27.1874.1053" timestamp="1586099630853" />
+    <state x="466" y="131" width="1024" height="852" key="SettingsEditor" timestamp="1586114348409">
+      <screen x="46" y="27" width="1874" height="1053" />
+    </state>
+    <state x="466" y="131" width="1024" height="852" key="SettingsEditor/46.27.1874.1053@46.27.1874.1053" timestamp="1586114348409" />
+    <state x="646" y="259" key="search.everywhere.popup" timestamp="1586105575497">
+      <screen x="46" y="27" width="1874" height="1053" />
+    </state>
+    <state x="646" y="259" key="search.everywhere.popup/46.27.1874.1053@46.27.1874.1053" timestamp="1586105575497" />
+  </component>
+</project>
