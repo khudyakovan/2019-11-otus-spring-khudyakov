@@ -1,0 +1,43 @@
+application:
+  language: ru
+  country: RU
+  object-not-found-message: "Object with Uid=%s not found!"
+  anonymous-comments-only: true
+
+spring:
+  jmx:
+    enabled: true
+  datasource:
+    url: jdbc:mysql://localhost/library?serverTimezone=Europe/Moscow
+    username: otus
+    password: javaclub
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initialization-mode: always
+    #initialization-mode: never
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    open-in-view: true
+  messages:
+    basename: messages
+    encoding: UTF-8
+  data:
+    rest:
+      basePath: /api/v2
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: metrics, health, logfile
+
+logging:
+  level:
+    root: INFO
+  file:
+    name: application.log
