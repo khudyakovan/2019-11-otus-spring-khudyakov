@@ -18,7 +18,7 @@ services:
         backend:
                 container_name: hw17-backend
                 build: backend/
-                command: java -jar ./target/homework-10-1.0.jar
+                command: java -jar ./target/hw17-backend.jar
                 ports:
                         - 8080:8080
                 environment:

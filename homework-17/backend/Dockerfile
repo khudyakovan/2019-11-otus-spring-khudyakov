@@ -23,3 +23,4 @@ RUN rm -Rf ./homework-10 && rm -Rf ./.git
 RUN mvn dependency:resolve
 RUN mvn package -DskipTests
 
+RUN mv ./target/homework-*.jar ./target/hw17-backend.jar
