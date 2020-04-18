@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: books-microservice
+  cloud:
+    config:
+      fail-fast: true
+
+feign:
+  hystrix:
+    enabled: true
