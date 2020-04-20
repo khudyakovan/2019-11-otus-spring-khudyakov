@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.homework.microservices.books.dto.BookDto;
 import ru.otus.homework.microservices.books.dto.CommentDto;
@@ -18,9 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookController {
 
-    @Autowired
     private final BookService bookService;
-    @Autowired
     private final CommentService commentService;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

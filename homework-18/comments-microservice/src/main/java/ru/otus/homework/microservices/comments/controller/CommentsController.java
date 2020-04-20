@@ -3,7 +3,6 @@ package ru.otus.homework.microservices.comments.controller;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.homework.microservices.comments.dto.CommentDto;
 import ru.otus.homework.microservices.comments.entity.Comment;
@@ -17,11 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentsController {
 
-    @Autowired
     private final CommentatorService commentatorService;
-    @Autowired
     private final CommentService commentService;
-
     private static final String URI = "/api/v1/comments";
 
     @GetMapping(value = URI)

@@ -1,7 +1,6 @@
 package ru.otus.homework.microservices.comments.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.homework.microservices.comments.config.ApplicationProperties;
@@ -16,14 +15,11 @@ import java.util.List;
 @Transactional
 public class CommentatorServiceImpl implements CommentatorService {
 
-    @Autowired
     private final CommentatorRepository commentatorRepository;
-    @Autowired
-    ApplicationProperties applicationProperties;
+    private final ApplicationProperties applicationProperties;
 
     @Override
     public Commentator save(Commentator commentator) {
-
         return commentatorRepository.save(commentator);
     }
 

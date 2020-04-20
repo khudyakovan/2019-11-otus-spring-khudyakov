@@ -9,17 +9,9 @@ zuul:
   debug:
     request: true
   routes:
-    books:
-      path: /api/v1/books/**
+    api:
+      path: /api/v1/**
       serviceId: books-microservice
-      strip-prefix: false
-    genres:
-      path: /api/v1/genres/**
-      serviceId: genres-microservice
-      strip-prefix: false
-    authors:
-      path: /api/v1/authors/**
-      serviceId: authors-microservice
       strip-prefix: false
     hystrix:
       path: /hystrix/**

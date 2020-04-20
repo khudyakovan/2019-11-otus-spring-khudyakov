@@ -13,8 +13,6 @@
     <modules>
         <module>config-server</module>
         <module>service-discovery-server</module>
-        <module>genres-microservice</module>
-        <module>authors-microservice</module>
         <module>books-microservice</module>
         <module>comments-microservice</module>
         <module>gateway</module>
