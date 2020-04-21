@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: comments-microservice
+  cloud:
+    config:
+      fail-fast: true
