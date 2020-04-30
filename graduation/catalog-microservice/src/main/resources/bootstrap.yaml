@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: catalog-microservice
+  cloud:
+    config:
+      fail-fast: true
+
+logging:
+  level:
+    root: INFO

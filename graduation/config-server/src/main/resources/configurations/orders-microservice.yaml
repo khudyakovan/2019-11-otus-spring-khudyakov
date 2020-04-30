@@ -1,0 +1,31 @@
+server:
+  port: 8083
+
+eureka:
+  client:
+    fetch-registry: true
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: orders-microservice
+      username: otus
+      password: javaclub
+      authentication-database: admin
+  rabbitmq:
+    username: otus
+    password: javaclub
+logging:
+  level:
+    root: INFO
+
+application:
+  rabbit:
+    exchange: "main.exchange"
+    queues:
+      levels:
+        orders: "master.levels.orders"
+      prices:
+        orders: "master.prices.orders"

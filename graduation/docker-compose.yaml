@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  mongodb_container:
+    image: mongo:latest
+    container_name: stub-ms-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: otus
+      MONGO_INITDB_ROOT_PASSWORD: javaclub
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/data/db
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: integration
+#    build: rabbitmq/
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER:-otus}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS:-javaclub}
+#      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbitmq_management load_definitions "/tmp/definitions.json"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data_container:/var/lib/rabbitmq/mnesia/
+
+volumes:
+  mongodb_data_container:
+  rabbitmq_data_container:

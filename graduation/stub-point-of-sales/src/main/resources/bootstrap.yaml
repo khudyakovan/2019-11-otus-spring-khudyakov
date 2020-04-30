@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: stub-point-of-sale
+  cloud:
+    config:
+      fail-fast: true
+
+logging:
+  level:
+    root: INFO

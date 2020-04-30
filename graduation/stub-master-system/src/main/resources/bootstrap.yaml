@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: stub-master-system
+  cloud:
+    config:
+      fail-fast: true
+
+logging:
+  level:
+    root: INFO

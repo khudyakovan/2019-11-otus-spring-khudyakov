@@ -1,0 +1,38 @@
+server:
+  port: 8081
+
+eureka:
+  client:
+    fetch-registry: true
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost
+      port: 27017
+      database: master-catalog
+      username: otus
+      password: javaclub
+      host: localhost
+  rabbitmq:
+    username: otus
+    password: javaclub
+logging:
+  level:
+    root: INFO
+
+application:
+  rabbit:
+    exchange: "main.exchange"
+    queues:
+      levels:
+        catalog: "master.levels.catalog"
+        orders: "master.levels.orders"
+        pos: "master.levels.pos"
+      prices:
+        catalog: "master.prices.catalog"
+        orders: "master.prices.orders"
+        pos: "master.prices.pos"
+      users:
+        catalog: "users.stocks.catalog"
+        orders: "users.stocks.orders"

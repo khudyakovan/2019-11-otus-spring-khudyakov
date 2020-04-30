@@ -1,0 +1,26 @@
+eureka:
+  client:
+    fetch-registry: true
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: pos-catalog
+      username: otus
+      password: javaclub
+      authentication-database: admin
+  rabbitmq:
+    username: otus
+    password: javaclub
+logging:
+  level:
+    root: INFO
+
+application:
+  rabbit:
+    exchange: "main.exchange"
+    queues:
+      prices:
+        pos: "master.prices.pos"
