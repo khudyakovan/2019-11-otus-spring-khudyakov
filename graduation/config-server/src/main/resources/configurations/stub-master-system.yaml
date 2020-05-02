@@ -10,7 +10,7 @@ spring:
     mongodb:
       uri: mongodb://localhost
       port: 27017
-      database: master-catalog
+      database: stub-master-system
       username: otus
       password: javaclub
       host: localhost
@@ -23,16 +23,17 @@ logging:
 
 application:
   rabbit:
-    exchange: "main.exchange"
+    exchanges:
+      main: "main.topic"
+      status: "status.broadcast"
     queues:
       levels:
         catalog: "master.levels.catalog"
         orders: "master.levels.orders"
-        pos: "master.levels.pos"
+#        pos: "master.levels.pos"
       prices:
         catalog: "master.prices.catalog"
         orders: "master.prices.orders"
         pos: "master.prices.pos"
       users:
-        catalog: "users.stocks.catalog"
-        orders: "users.stocks.orders"
+        main: "users"

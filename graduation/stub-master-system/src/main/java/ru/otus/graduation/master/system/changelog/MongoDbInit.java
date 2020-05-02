@@ -8,9 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import ru.otus.graduation.master.system.model.Level;
-import ru.otus.graduation.master.system.model.ParentLevel;
-import ru.otus.graduation.master.system.model.Price;
+import ru.otus.graduation.model.Level;
+import ru.otus.graduation.model.ParentLevel;
+import ru.otus.graduation.model.Price;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

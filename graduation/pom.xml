@@ -17,6 +17,8 @@
         <module>catalog-microservice</module>
         <module>stub-point-of-sales</module>
         <module>orders-microservice</module>
+        <module>users-microservice</module>
+        <module>core-module</module>
     </modules>
 
 </project>

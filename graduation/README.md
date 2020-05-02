@@ -20,3 +20,7 @@ port: 8082
 ### Orders Microservice
 name: orders-microservice
 port: 8083
+
+### Users Microservice
+name: users-microservice
+port: 8084

@@ -23,7 +23,9 @@ logging:
 
 application:
   rabbit:
-    exchange: "main.exchange"
+    exchanges:
+      main: "main.topic"
+      status: "status.broadcast"
     queues:
       levels:
         orders: "master.levels.orders"

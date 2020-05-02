@@ -1,0 +1,31 @@
+server:
+  port: 8084
+
+eureka:
+  client:
+    fetch-registry: true
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: users-microservice
+      username: otus
+      password: javaclub
+      authentication-database: admin
+  rabbitmq:
+    username: otus
+    password: javaclub
+logging:
+  level:
+    root: INFO
+
+application:
+  rabbit:
+    exchanges:
+      main: "main.topic"
+      status: "status.broadcast"
+    queues:
+      users:
+        main: "users"
