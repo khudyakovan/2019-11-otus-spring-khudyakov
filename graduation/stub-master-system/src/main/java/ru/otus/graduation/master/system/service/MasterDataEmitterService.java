@@ -9,10 +9,10 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.otus.graduation.config.ApplicationConfig;
-import ru.otus.graduation.master.system.repository.LevelRepository;
-import ru.otus.graduation.master.system.repository.PriceRepository;
 import ru.otus.graduation.model.Level;
-import ru.otus.graduation.model.Price;
+import ru.otus.graduation.model.Product;
+import ru.otus.graduation.repository.LevelRepository;
+import ru.otus.graduation.repository.ProductRepository;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +22,7 @@ import java.util.Map;
 public class MasterDataEmitterService {
 
     private final LevelRepository levelRepository;
-    private final PriceRepository priceRepository;
+    private final ProductRepository productRepository;
     private final RabbitTemplate rabbitTemplate;
     private final ApplicationConfig config;
     private final ObjectMapper objectMapper;
@@ -54,12 +54,12 @@ public class MasterDataEmitterService {
     @Scheduled(cron = " 0 0 * * * ?")
     public void emitPrices(){
         Map<String, String> queueNames = config.getQueues().get(PRICES_QUEUES);
-        List<Price> prices = priceRepository.findAll();
+        List<Product> products = productRepository.findAll();
         queueNames.forEach((key, value) -> {
             try {
                 rabbitTemplate.convertAndSend(config.getExchanges().get(MAIN_EXCHANGE),
                         value,
-                        objectMapper.writeValueAsString(prices)
+                        objectMapper.writeValueAsString(products)
                 );
             } catch (JsonProcessingException e) {
                 LOGGER.info(e.getLocalizedMessage());

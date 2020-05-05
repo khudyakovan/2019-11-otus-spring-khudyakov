@@ -24,3 +24,7 @@ port: 8083
 ### Users Microservice
 name: users-microservice
 port: 8084
+
+### Images Microservice
+name: images-microservice
+port: 8085

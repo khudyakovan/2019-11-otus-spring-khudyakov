@@ -10,7 +10,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import ru.otus.graduation.model.Level;
 import ru.otus.graduation.model.ParentLevel;
-import ru.otus.graduation.model.Price;
+import ru.otus.graduation.model.Product;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -58,7 +58,7 @@ public class MongoDbInit {
         try (BufferedReader br = new BufferedReader(new FileReader(PLU_AND_STOCK.getFile()))) {
             while ((nextLine = br.readLine()) != null){
                 String[] array = nextLine.split(SEPARATOR, -1);
-                Price plu = new Price(
+                Product plu = new Product(
                         array[2],
                         array[3],
                         new ParentLevel(array[0], array[1]),

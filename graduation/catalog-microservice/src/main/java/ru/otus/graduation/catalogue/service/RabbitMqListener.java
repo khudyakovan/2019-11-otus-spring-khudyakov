@@ -8,10 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
-import ru.otus.graduation.catalogue.repository.LevelRepository;
-import ru.otus.graduation.catalogue.repository.PriceRepository;
 import ru.otus.graduation.model.Level;
-import ru.otus.graduation.model.Price;
+import ru.otus.graduation.model.Product;
+import ru.otus.graduation.repository.LevelRepository;
+import ru.otus.graduation.repository.ProductRepository;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import java.util.List;
 public class RabbitMqListener {
 
     private final LevelRepository levelRepository;
-    private final PriceRepository priceRepository;
+    private final ProductRepository productRepository;
     private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMqListener.class);
     private final ObjectMapper objectMapper;
 
@@ -33,8 +33,8 @@ public class RabbitMqListener {
 
     @RabbitListener(queues = "${application.rabbit.queues.prices.catalog}")
     public void processPricesAndStocks(String message) throws JsonProcessingException {
-        List<Price> prices = objectMapper.readValue(message, new TypeReference<List<Price>>(){});
-        priceRepository.saveAll(prices);
+        List<Product> products = objectMapper.readValue(message, new TypeReference<List<Product>>(){});
+        productRepository.saveAll(products);
         LOGGER.info("MASTER DATA RECEIVED AND SAVED: Prices And Stocks");
     }
 }

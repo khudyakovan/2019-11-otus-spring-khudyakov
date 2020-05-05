@@ -19,6 +19,8 @@
         <module>orders-microservice</module>
         <module>users-microservice</module>
         <module>core-module</module>
+        <module>images-microservice</module>
+        <module>gateway-server</module>
     </modules>
 
 </project>

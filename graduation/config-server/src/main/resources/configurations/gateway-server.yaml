@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    fetch-registry: true
+
+zuul:
+  debug:
+    request: true
+  routes:
+    api:
+      path: /api/v1/**
+      serviceId: catalog-microservice
+      strip-prefix: false
+    images:
+      path: /images/**
+      serviceId: images-microservice
+      strip-prefix: false
+#    hystrix:
+#      path: /hystrix/**
+#      url: http://localhost:8081/hystrix
