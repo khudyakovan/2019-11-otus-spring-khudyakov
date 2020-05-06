@@ -22,6 +22,7 @@ logging:
     root: INFO
 
 application:
+  shop-id: 1001
   rabbit:
     exchanges:
       main: "main.topic"
