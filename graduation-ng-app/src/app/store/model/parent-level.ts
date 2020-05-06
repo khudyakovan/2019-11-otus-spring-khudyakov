@@ -1,4 +1,4 @@
-export class ParentLevel {
+export interface ParentLevel {
   id: string;
   name: string;
 }

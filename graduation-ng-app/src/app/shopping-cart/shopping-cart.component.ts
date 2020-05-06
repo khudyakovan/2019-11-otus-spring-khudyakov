@@ -3,36 +3,37 @@ import {GlobalConstants} from "../common/global-constants";
 import {ApiService} from "../shared/api.service";
 import {DataService} from "../shared/data.service";
 import {CartItem} from "../shared/cart-item";
-import {User} from "./model/user";
-import {CheckoutItem} from "./model/checkout-item";
 
 @Component({
-    selector: 'app-checkout',
-    templateUrl: './checkout.component.html',
-    styleUrls: ['./checkout.component.css']
+    selector: 'app-shopping-cart',
+    templateUrl: './shopping-cart.component.html',
+    styleUrls: ['./shopping-cart.component.css']
 })
-export class CheckoutComponent implements OnInit {
+export class ShoppingCartComponent implements OnInit {
 
     shopId: string = GlobalConstants.shopId;
     shoppingCartItems = localStorage.getItem(this.shopId) ? JSON.parse(localStorage.getItem(this.shopId)) : [];
-    badge:string;
     summary: number;
     totalSummary: number;
-    checkoutItem: CheckoutItem = new CheckoutItem();
-    user: User = new User();
 
     constructor(private apiService: ApiService, private data: DataService) {
     }
 
     ngOnInit(): void {
-        this.data.itemsInCart.subscribe(message => this.badge = message)
         this.itemsCountInShoppingCart();
+    }
+
+    public itemsCountInShoppingCart() {
+        let count = this.shoppingCartItems.reduce((accumulator, item) => accumulator + item.quantity, 0);
+        localStorage.setItem(this.shopId, JSON.stringify(this.shoppingCartItems));
+        this.data.emitItemsChange(count);
         this.setTotalSummary();
     }
 
-    public itemsCountInShoppingCart(){
-        let count = this.shoppingCartItems.reduce((accumulator, item) => accumulator + item.quantity, 0);
-        this.data.emitItemsChange(count);
+    public deleteItemFromShoppingCart(item: CartItem){
+        let index = this.shoppingCartItems.indexOf(item);
+        this.shoppingCartItems.splice(index, 1);
+        this.itemsCountInShoppingCart();
     }
 
     public getItemSummary(item: CartItem) {
@@ -41,15 +42,5 @@ export class CheckoutComponent implements OnInit {
 
     private setTotalSummary() {
         this.totalSummary = this.shoppingCartItems.reduce((accumulator, item) => accumulator + (item.quantity * item.product.price), 0);
-    }
-
-    public doCheckout(){
-        let items = this.shoppingCartItems.map(val => ({
-            [val.product.id]: val.quantity
-        }));
-        this.checkoutItem.user = this.user;
-        this.checkoutItem.items = items;
-        console.log(this.checkoutItem);
-
     }
 }

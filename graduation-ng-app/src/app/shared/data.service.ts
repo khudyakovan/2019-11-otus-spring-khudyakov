@@ -9,11 +9,11 @@ import {BehaviorSubject} from "rxjs";
 export class DataService {
 
   private messageSource = new BehaviorSubject('0');
-  currentMessage = this.messageSource.asObservable();
+  itemsInCart = this.messageSource.asObservable();
 
   constructor() { }
 
-  changeMessage(message: string) {
+  emitItemsChange(message: string) {
     this.messageSource.next(message)
   }
 }

@@ -13,7 +13,7 @@ export class NavigationComponent implements OnInit {
   constructor(private data: DataService) { }
 
   ngOnInit(): void {
-    this.data.currentMessage.subscribe(message => this.badge = message)
+    this.data.itemsInCart.subscribe(message => this.badge = message)
   }
 
 }

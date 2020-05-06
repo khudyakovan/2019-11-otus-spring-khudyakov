@@ -1,6 +1,6 @@
 import { ParentLevel } from './parent-level';
 
-export class Level {
+export interface Level {
   id: string;
   name: string;
   parent: ParentLevel;

@@ -44,7 +44,7 @@ export class StoreComponent implements OnInit {
 
   private itemsCountInShoppingCart(){
     let count = this.shoppingCartItems.reduce((accumulator, item) => accumulator + item.quantity, 0);
-    this.data.changeMessage(count);
+    this.data.emitItemsChange(count);
   }
 
   public onLevelClick(currentLevel : Level){
