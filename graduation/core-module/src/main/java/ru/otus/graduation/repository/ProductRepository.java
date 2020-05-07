@@ -9,4 +9,5 @@ public interface ProductRepository extends MongoRepository<Product, String>, Pro
 
     List<Product> findByParentId(String parentId);
     List<Product> findByParentIdStartingWith(String level);
+    List<Product> findByIdIsIn(List<String> ids);
 }

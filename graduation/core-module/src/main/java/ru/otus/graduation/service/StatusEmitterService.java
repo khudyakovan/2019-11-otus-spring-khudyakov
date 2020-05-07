@@ -21,7 +21,7 @@ public class StatusEmitterService {
     private final RabbitTemplate rabbitTemplate;
     private static final String STATUS_MESSAGE_SENT = "Status message sent. Status: ";
 
-    public void emitStatus(StatusMessage message) {
+    public void emitStatusBroadcast(StatusMessage message) {
         try {
             rabbitTemplate.convertAndSend(config.getExchanges().get(STATUS_EXCHANGE),
                     objectMapper.writeValueAsString(message)
@@ -30,5 +30,17 @@ public class StatusEmitterService {
             LOGGER.info(e.getLocalizedMessage());
         }
         LOGGER.info(String.format("%s %s", STATUS_MESSAGE_SENT, message.getStatus()));
+    }
+
+    public void emitStatusToSpecificQueue(String exchangeName, String queueGroup, String queue, StatusMessage message){
+        String queueName = config.getQueues().get(queueGroup).get(queue);
+        try {
+            rabbitTemplate.convertAndSend(config.getExchanges().get(exchangeName),
+                    queueName,
+                    objectMapper.writeValueAsString(message)
+            );
+        } catch (JsonProcessingException e) {
+            LOGGER.info(e.getLocalizedMessage());
+        }
     }
 }

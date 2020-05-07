@@ -10,8 +10,11 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import ru.otus.graduation.model.Level;
 import ru.otus.graduation.model.Product;
+import ru.otus.graduation.model.Proposal;
+import ru.otus.graduation.model.StatusMessage;
 import ru.otus.graduation.repository.LevelRepository;
 import ru.otus.graduation.repository.ProductRepository;
+import ru.otus.graduation.repository.ProposalRepository;
 
 import java.util.List;
 
@@ -21,20 +24,37 @@ public class RabbitMqListener {
 
     private final LevelRepository levelRepository;
     private final ProductRepository productRepository;
-    private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMqListener.class);
+    private final ProposalRepository proposalRepository;
     private final ObjectMapper objectMapper;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMqListener.class);
+
+    private static final String LEVELS_HANDLED = "MASTER DATA RECEIVED AND SAVED: Hierarchy Levels";
+    private static final String PRICES_AND_STOCK_HANDLED = "MASTER DATA RECEIVED AND SAVED: Prices And Stocks";
+    private static final String STATUS_CHANGED_TO = "PROPOSAL/ORDER (%s/%s) status changed to: %s";
 
     @RabbitListener(queues = "${application.rabbit.queues.levels.catalog}")
     public void processLevels(String message) throws JsonProcessingException {
         List<Level> levels = objectMapper.readValue(message, new TypeReference<List<Level>>(){});
         levelRepository.saveAll(levels);
-        LOGGER.info("MASTER DATA RECEIVED AND SAVED: Hierarchy Levels");
+        LOGGER.info(LEVELS_HANDLED);
     }
 
     @RabbitListener(queues = "${application.rabbit.queues.prices.catalog}")
     public void processPricesAndStocks(String message) throws JsonProcessingException {
         List<Product> products = objectMapper.readValue(message, new TypeReference<List<Product>>(){});
         productRepository.saveAll(products);
-        LOGGER.info("MASTER DATA RECEIVED AND SAVED: Prices And Stocks");
+        LOGGER.info(PRICES_AND_STOCK_HANDLED);
+    }
+
+    @RabbitListener(queues = "${application.rabbit.queues.products.order}")
+    public void processOrderStatus(String message) throws JsonProcessingException {
+        StatusMessage statusMessage = objectMapper.readValue(message, new TypeReference<StatusMessage>(){});
+        Proposal proposal = proposalRepository.findByProposalNumber(statusMessage.getProposalNumber());
+        proposal.setStatus(statusMessage.getStatus());
+        proposalRepository.save(proposal);
+        LOGGER.info(String.format(STATUS_CHANGED_TO,
+                statusMessage.getProposalNumber(),
+                statusMessage.getOrderNumber(),
+                statusMessage.getStatus()));
     }
 }

@@ -7,18 +7,12 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "users")
-public class User {
+@Document(collection = "orders")
+public class Order extends AbstractProposal{
     @Id
     private ObjectId id;
-    private String mobilePhone;
-    private String firstName;
-    private String email;
-    private String password;
-    private Date registrationDate;
+    private long orderNumber;
 }

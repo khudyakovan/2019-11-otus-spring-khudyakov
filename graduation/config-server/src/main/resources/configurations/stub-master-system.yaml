@@ -38,3 +38,6 @@ application:
         pos: "master.prices.pos"
       users:
         main: "users"
+      products:
+        proposal: "proposal.order"
+        order: "order.proposal"

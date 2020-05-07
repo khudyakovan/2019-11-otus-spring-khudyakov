@@ -10,7 +10,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import ru.otus.graduation.model.StatusMessage;
 import ru.otus.graduation.model.User;
-import ru.otus.graduation.users.repository.UserRepository;
+import ru.otus.graduation.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor

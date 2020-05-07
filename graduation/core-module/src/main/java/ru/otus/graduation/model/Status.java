@@ -5,6 +5,7 @@ public enum Status {
     COMPLETED,
     DELETED,
     INIT,
+    PROPOSAL,
     QUEUED,
     READY
 }

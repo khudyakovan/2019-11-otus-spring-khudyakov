@@ -13,18 +13,18 @@ public class ProductRepositoryTest {
 
     @Autowired
     ProductRepository productRepository;
-    private static final String FULL_LEVEL_ID="FD0219000";
-    private static final String TRANSFORMED_LEVEL_ID="FD0219";
+    private static final String FULL_LEVEL_ID = "FD0219000";
+    private static final String TRANSFORMED_LEVEL_ID = "FD0219";
     @Autowired
     HelperService helperService;
 
     @Test
-    void getGoodsByLevelId(){
+    void getGoodsByLevelId() {
         String beginning = helperService.getBeginningOfLevel(FULL_LEVEL_ID);
         assertAll(
-                ()->assertEquals(TRANSFORMED_LEVEL_ID, helperService.getBeginningOfLevel(FULL_LEVEL_ID)),
-                ()->assertNotEquals(0, productRepository.findByParentIdStartingWith(beginning)),
-                ()->assertNotEquals(0, productRepository.findByParentIdStartingWith(FULL_LEVEL_ID))
+                () -> assertEquals(TRANSFORMED_LEVEL_ID, helperService.getBeginningOfLevel(FULL_LEVEL_ID)),
+                () -> assertNotEquals(0, productRepository.findByParentIdStartingWith(beginning)),
+                () -> assertNotEquals(0, productRepository.findByParentIdStartingWith(FULL_LEVEL_ID))
         );
         System.out.println(beginning);
     }

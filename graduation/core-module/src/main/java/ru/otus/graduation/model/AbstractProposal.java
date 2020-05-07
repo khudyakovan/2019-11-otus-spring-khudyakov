@@ -5,15 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StatusMessage {
-    private Sender sender;
+public class AbstractProposal {
     private long proposalNumber;
-    private long orderNumber;
-    private String mobileNumber;
-    private Status status;
+    private String mobilePhone;
     private Date currentDate;
+    private Status status;
+    private Map<String, Integer> proposalDetails;
 }

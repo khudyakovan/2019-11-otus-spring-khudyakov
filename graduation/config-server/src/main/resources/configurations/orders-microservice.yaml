@@ -32,3 +32,6 @@ application:
         orders: "master.levels.orders"
       prices:
         orders: "master.prices.orders"
+      products:
+        proposal: "proposal.order"
+        order: "order.proposal"

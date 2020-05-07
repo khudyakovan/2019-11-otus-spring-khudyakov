@@ -18,6 +18,6 @@ public class StartUpInit {
 
     @PostConstruct
     public void init() {
-        service.emitStatus(new StatusMessage(Sender.POS,-1,-1,"", Status.INIT, new Date()));
+        service.emitStatusBroadcast(new StatusMessage(Sender.POS,-1,-1,"", Status.INIT, new Date()));
     }
 }

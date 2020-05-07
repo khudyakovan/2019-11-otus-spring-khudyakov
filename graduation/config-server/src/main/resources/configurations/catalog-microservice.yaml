@@ -32,3 +32,8 @@ application:
         catalog: "master.levels.catalog"
       prices:
         catalog: "master.prices.catalog"
+      users:
+        main: "users"
+      products:
+        proposal: "proposal.order"
+        order: "order.proposal"
