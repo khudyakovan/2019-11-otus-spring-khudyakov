@@ -50,9 +50,7 @@ export class CheckoutComponent implements OnInit {
         let items = this.shoppingCartItems.map(val => ({
             [val.product.id]: val.quantity
         }));
-        console.log(items);
         this.checkoutItem.user = this.user;
-        //this.checkoutItem.items = JSON.stringify(items);
         this.checkoutItem.items = items;
         this.handleCheckout();
     }

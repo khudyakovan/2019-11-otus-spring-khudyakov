@@ -10,13 +10,13 @@ import {CheckoutItem} from "../checkout/model/checkout-item";
 })
 export class ApiService {
 
-  private BASE_URL = '/api/v1';
-  private SHOP_ID_URL = `${this.BASE_URL}/shop/id`;
-  private ALL_LEVELS_URL = `${this.BASE_URL}/levels`;
-  private CHILD_LEVELS_URL = `${this.BASE_URL}/levels/parent/`;
-  private SHOWCASE_URL =  `${this.BASE_URL}/goods/showcase`;
-  private GOODS_URL =  `${this.BASE_URL}/goods/`;
-  private HANDLE_CHECKOUT_URL =  `${this.BASE_URL}/checkout`;
+  private BASE_CATALOG_URL = '/api/v1/catalog';
+  private SHOP_ID_URL = `${this.BASE_CATALOG_URL}/shop/id`;
+  private ALL_LEVELS_URL = `${this.BASE_CATALOG_URL}/levels`;
+  private CHILD_LEVELS_URL = `${this.BASE_CATALOG_URL}/levels/parent/`;
+  private SHOWCASE_URL =  `${this.BASE_CATALOG_URL}/goods/showcase`;
+  private GOODS_URL =  `${this.BASE_CATALOG_URL}/goods/`;
+  private HANDLE_CHECKOUT_URL =  `${this.BASE_CATALOG_URL}/checkout`;
 
   constructor(private http: HttpClient) { }
 
