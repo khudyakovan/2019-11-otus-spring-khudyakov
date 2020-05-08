@@ -36,8 +36,9 @@ application:
         catalog: "master.prices.catalog"
         orders: "master.prices.orders"
         pos: "master.prices.pos"
-      users:
-        main: "users"
       products:
         proposal: "proposal.order"
         order: "order.proposal"
+      users:
+        main: "users"
+        name: "order.user.name"

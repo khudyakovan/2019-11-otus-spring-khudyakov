@@ -35,3 +35,11 @@ application:
       products:
         proposal: "proposal.order"
         order: "order.proposal"
+      users:
+        main: "users"
+        name: "order.user.name"
+
+jwt:
+  token:
+    secret: d05Ht304W=xoL8e
+    expired: 3600000

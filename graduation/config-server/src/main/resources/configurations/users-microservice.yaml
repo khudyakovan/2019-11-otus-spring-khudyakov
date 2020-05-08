@@ -30,3 +30,4 @@ application:
     queues:
       users:
         main: "users"
+        name: "order.user.name"

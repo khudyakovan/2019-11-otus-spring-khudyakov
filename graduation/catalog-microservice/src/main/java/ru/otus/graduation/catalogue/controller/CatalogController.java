@@ -5,15 +5,13 @@ import org.springframework.web.bind.annotation.*;
 import ru.otus.graduation.catalogue.dto.CheckoutItemDto;
 import ru.otus.graduation.catalogue.service.CheckoutEmitterService;
 import ru.otus.graduation.config.ApplicationConfig;
-import ru.otus.graduation.model.Level;
-import ru.otus.graduation.model.Product;
-import ru.otus.graduation.model.Proposal;
-import ru.otus.graduation.model.Status;
+import ru.otus.graduation.model.*;
 import ru.otus.graduation.repository.LevelRepository;
 import ru.otus.graduation.repository.ProductRepository;
 import ru.otus.graduation.repository.ProposalRepository;
 import ru.otus.graduation.service.HelperService;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +25,8 @@ public class CatalogController {
     private final ProposalRepository proposalRepository;
     private final HelperService helperService;
     private final CheckoutEmitterService checkoutEmitterService;
-    private static final String API_PREFIX = "/api/v1";
+    private static final String API_PREFIX = "/api/v1/catalog";
+    private static final String NEW_USER_ROLE = "ROLE_CUSTOMER";
 
     @GetMapping(value = {API_PREFIX + "/shop/id"})
     public String getShopId() {
@@ -60,16 +59,35 @@ public class CatalogController {
         return productRepository.getRandomProducts();
     }
 
-    @PostMapping("/api/v1/checkout")
+
+    /*TODO выделить методы, убрать простыню*/
+    @PostMapping(API_PREFIX + "/checkout")
     public void handleCheckout(@RequestBody CheckoutItemDto dto) {
         System.out.println(dto);
         //Сохранение заявки (корзины)
         Proposal proposal = proposalRepository.save(this.generateNewProposal(dto));
-        checkoutEmitterService.emitUser(dto.getUser());
         //Добавление к заявке списка позиций и заказанного количества
         //Отправка данных в систему формирования заказов
         proposal.setProposalDetails(dto.getProposalDetails());
         checkoutEmitterService.emitProposal(proposal);
+        //Отправка пользователя
+
+        String temporaryPassword = "";
+        if (!proposal.getMobilePhone().isEmpty()) {
+            temporaryPassword = String.format("%s%s",
+                    proposal.getMobilePhone().substring(proposal.getMobilePhone().length() - 4),
+                    proposal.getProposalNumber());
+        }else {
+            temporaryPassword = String.format("%s%s",
+                    dto.getUser().getEmail().substring(proposal.getMobilePhone().length() - 4),
+                    proposal.getProposalNumber());
+        }
+        User user = dto.getUser();
+        user.setPassword(temporaryPassword);
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role(NEW_USER_ROLE));
+        user.setRoles(roles);
+        checkoutEmitterService.emitUser(user);
     }
 
     private Proposal generateNewProposal(CheckoutItemDto dto) {

@@ -9,8 +9,16 @@ zuul:
   debug:
     request: true
   routes:
+    auth:
+      path: /api/v1/auth/**
+      serviceId: orders-microservice
+      strip-prefix: false
+    orders:
+      path: /api/v1/orders/**
+      serviceId: orders-microservice
+      strip-prefix: false
     api:
-      path: /api/v1/**
+      path: /api/v1/catalog/**
       serviceId: catalog-microservice
       strip-prefix: false
     images:
