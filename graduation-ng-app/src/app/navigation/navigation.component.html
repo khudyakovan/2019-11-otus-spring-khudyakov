@@ -5,10 +5,19 @@
   <div class="collapse navbar-collapse" id="navbarColor01">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" routerLink="/cart">Корзина <span class="badge badge-secondary">{{badge}}</span></a>
+        <a class="nav-link" *ngIf="apiService.currentRole !='ROLE_STAFF'" routerLink="/cart">Корзина <span class="badge badge-secondary">{{badge}}</span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" routerLink="/login">Вход</a>
+        <a class="nav-link" *ngIf="apiService.currentRole =='ROLE_STAFF'" routerLink="/orders">Заказы покупателей</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" *ngIf="apiService.currentRole =='ROLE_CUSTOMER'" routerLink="/proposals">Просмотреть заказы</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" *ngIf="!apiService.loggedIn" routerLink="/login">Вход</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" (click)="logout()" href="#" *ngIf="apiService.loggedIn">Выход</a>
       </li>
     </ul>
   </div>

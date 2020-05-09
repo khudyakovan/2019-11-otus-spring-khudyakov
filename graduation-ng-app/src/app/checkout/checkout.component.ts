@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {GlobalConstants} from "../common/global-constants";
+import {GlobalConstants} from "../shared/global-constants";
 import {ApiService} from "../shared/api.service";
 import {DataService} from "../shared/data.service";
 import {CartItem} from "../shared/cart-item";

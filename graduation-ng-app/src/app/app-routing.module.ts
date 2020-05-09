@@ -1,10 +1,14 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {NotFoundComponent} from './not-found/not-found.component';
 import {StoreComponent} from './store/store.component'
 import {CheckoutComponent} from "./checkout/checkout.component";
 import {ShoppingCartComponent} from "./shopping-cart/shopping-cart.component";
+import {LoginComponent} from "./login/login.component";
+import {OrdersComponent} from "./orders/orders.component";
+import {AuthGuard} from "./shared/auth.guard";
+import {ProposalComponent} from "./proposal/proposal.component";
 
 const routes: Routes = [
   {
@@ -19,6 +23,18 @@ const routes: Routes = [
   {
     path: 'checkout',
     component: CheckoutComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
+    path: 'proposals',
+    component: ProposalComponent,canActivate: [AuthGuard]
+  },
+  {
+    path: 'orders',
+    component: OrdersComponent,canActivate: [AuthGuard]
   },
   {
     path: '**',

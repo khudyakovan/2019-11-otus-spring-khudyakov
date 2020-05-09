@@ -3,8 +3,9 @@ import {Level} from './model/level';
 import {ApiService} from '../shared/api.service';
 import {Product} from "./model/product";
 import {DataService} from "../shared/data.service";
-import {GlobalConstants} from "../common/global-constants";
+import {GlobalConstants} from "../shared/global-constants";
 import {CartItem} from "../shared/cart-item";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-store',
@@ -20,7 +21,9 @@ export class StoreComponent implements OnInit {
   currentLevel: Level;
   shoppingCartItems = localStorage.getItem(this.shopId) ? JSON.parse(localStorage.getItem(this.shopId)) : [];
 
-  constructor(private apiService: ApiService, private data: DataService) { }
+  constructor(private apiService: ApiService,
+              private data: DataService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.getAllLevels();
@@ -115,4 +118,8 @@ export class StoreComponent implements OnInit {
     );
   }
 
+  logout() {
+    this.apiService.logout();
+    this.router.navigate(['login']);
+  }
 }

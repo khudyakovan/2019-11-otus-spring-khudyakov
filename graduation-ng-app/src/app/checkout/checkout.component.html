@@ -1,7 +1,7 @@
 <div class="container">
     <div class="py-5 text-center">
         <h2>Оформление заказа</h2>
-        <p class="lead">Заполните, пожалуйста, данные</p>
+        <p class="lead">Заполните, пожалуйста, данные и сохраните заказ</p>
     </div>
 
     <div class="row">
@@ -78,6 +78,21 @@
                             Your username is required.
                         </div>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="time">Время самовывоза <span class="text-muted"></span></label>
+                        <input type="text"
+                               class="form-control"
+                               id="time"
+                               placeholder="21:00"
+                               name="time"
+                               [(ngModel)]="checkoutItem.time"
+                               required>
+                        <div class="invalid-feedback">
+                            Please enter a valid email address for shipping updates.
+                        </div>
+                    </div>
+
                 </div>
                 <hr class="mb-4">
                 <button class="btn btn-primary btn-lg btn-block" type="submit">Сохранить</button>

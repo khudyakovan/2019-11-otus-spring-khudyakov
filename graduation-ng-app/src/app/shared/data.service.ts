@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject} from "rxjs";
 
 @Injectable({
@@ -8,12 +8,20 @@ import {BehaviorSubject} from "rxjs";
 @Injectable()
 export class DataService {
 
-  private messageSource = new BehaviorSubject('0');
-  itemsInCart = this.messageSource.asObservable();
+  private itemsMessageSource = new BehaviorSubject('0');
+  private rolesMessageSource = new BehaviorSubject(null);
+
+  itemsInCart = this.itemsMessageSource.asObservable();
+
+  currentRole = this.rolesMessageSource.asObservable();
 
   constructor() { }
 
   emitItemsChange(message: string) {
-    this.messageSource.next(message)
+    this.itemsMessageSource.next(message)
+  }
+
+  emitRoleChange(message: string){
+    this.rolesMessageSource.next(message);
   }
 }
