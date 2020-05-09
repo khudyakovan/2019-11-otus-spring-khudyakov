@@ -60,18 +60,20 @@ public class CatalogController {
     }
 
 
-    /*TODO выделить методы, убрать простыню*/
     @PostMapping(API_PREFIX + "/checkout")
     public void handleCheckout(@RequestBody CheckoutItemDto dto) {
         System.out.println(dto);
         //Сохранение заявки (корзины)
-        Proposal proposal = proposalRepository.save(this.generateNewProposal(dto));
+        Proposal proposal = proposalRepository.save(this.createNewProposal(dto));
         //Добавление к заявке списка позиций и заказанного количества
         //Отправка данных в систему формирования заказов
         proposal.setProposalDetails(dto.getProposalDetails());
         checkoutEmitterService.emitProposal(proposal);
         //Отправка пользователя
+        checkoutEmitterService.emitUser(this.createNewUser(dto, proposal));
+    }
 
+    private User createNewUser(CheckoutItemDto dto, Proposal proposal){
         String temporaryPassword = "";
         if (!proposal.getMobilePhone().isEmpty()) {
             temporaryPassword = String.format("%s%s",
@@ -87,13 +89,14 @@ public class CatalogController {
         List<Role> roles = new ArrayList<>();
         roles.add(new Role(NEW_USER_ROLE));
         user.setRoles(roles);
-        checkoutEmitterService.emitUser(user);
+        return user;
     }
 
-    private Proposal generateNewProposal(CheckoutItemDto dto) {
+    private Proposal createNewProposal(CheckoutItemDto dto) {
         Proposal proposal = new Proposal();
         proposal.setProposalNumber(proposalRepository.findMaxProposalNumber() + 1);
         proposal.setMobilePhone(dto.getUser().getMobilePhone());
+        proposal.setTime(dto.getTime());
         proposal.setCurrentDate(new Date());
         proposal.setStatus(Status.PROPOSAL);
         return proposal;

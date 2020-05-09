@@ -14,6 +14,7 @@ public class AbstractProposal {
     private long proposalNumber;
     private String mobilePhone;
     private Date currentDate;
+    private String time;
     private Status status;
     private Map<String, Integer> proposalDetails;
 }

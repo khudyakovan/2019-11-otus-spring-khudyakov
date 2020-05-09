@@ -10,4 +10,4 @@ logging:
     root: INFO
     org:
       springframework:
-        security: TRACE
+        security: INFO

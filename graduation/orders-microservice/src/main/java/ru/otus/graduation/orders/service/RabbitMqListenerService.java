@@ -10,11 +10,9 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import ru.otus.graduation.model.*;
 import ru.otus.graduation.repository.LevelRepository;
-import ru.otus.graduation.repository.OrderRepository;
 import ru.otus.graduation.repository.ProductRepository;
 import ru.otus.graduation.service.StatusEmitterService;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,7 +21,8 @@ public class RabbitMqListenerService {
 
     private final LevelRepository levelRepository;
     private final ProductRepository productRepository;
-    private final OrderRepository orderRepository;
+    //private final OrderRepository orderRepository;
+    private final OrderService orderService;
     private final ObjectMapper objectMapper;
     private final StatusEmitterService statusEmitterService;
     private static final Logger LOGGER = LoggerFactory.getLogger(RabbitMqListenerService.class);
@@ -54,30 +53,20 @@ public class RabbitMqListenerService {
     public void processProposal(String message) throws JsonProcessingException {
         Proposal proposal = objectMapper.readValue(message, new TypeReference<Proposal>() {
         });
-        Order order = new Order();
-        order.setOrderNumber(orderRepository.findMaxOrderNumber() + 1);
-        order.setProposalNumber(proposal.getProposalNumber());
-        order.setMobilePhone(proposal.getMobilePhone());
-        order.setProposalDetails(proposal.getProposalDetails());
-        order.setStatus(Status.QUEUED);
-        order = orderRepository.save(order);
-
-        this.emitStatus(order);
+        Order order = this.createNewOrder(proposal);
+        orderService.emitOrderStatus(order);
         LOGGER.info(String.format(PROPOSAL_HANDLED, order.getProposalNumber(), order.getOrderNumber()));
     }
 
-    private void emitStatus(Order order){
-        StatusMessage message = new StatusMessage();
-        message.setSender(Sender.ORDERS);
-        message.setProposalNumber(order.getProposalNumber());
-        message.setOrderNumber(order.getOrderNumber());
-        message.setMobileNumber(order.getMobilePhone());
-        message.setStatus(order.getStatus());
-        message.setCurrentDate(new Date());
-        statusEmitterService.emitStatusToSpecificQueue(
-                MAIN_EXCHANGE,
-                PRODUCT_QUEUES,
-                ORDER_QUEUE,
-                message);
+    private Order createNewOrder(Proposal proposal){
+        Order order = new Order();
+        order.setOrderNumber(orderService.findMaxOrderNumber() + 1);
+        order.setProposalNumber(proposal.getProposalNumber());
+        order.setMobilePhone(proposal.getMobilePhone());
+        order.setTime(proposal.getTime());
+        order.setProposalDetails(proposal.getProposalDetails());
+        order.setStatus(Status.QUEUED);
+        return orderService.save(order);
     }
+
 }

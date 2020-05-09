@@ -15,8 +15,8 @@ import ru.otus.graduation.orders.security.JwtTokenProvider;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String LOGIN_ENDPOINT = "/api/v1/auth/login**";
-    private static final String BASE_ENDPOINT = "/api/v1/orders/**";
-    private static final String ORDERS_ENDPOINT = "/api/v1/orders/management/**";
+    private static final String ORDERS_ENDPOINT = "/api/v1/orders/**";
+    private static final String PROPOSAL_ENDPOINT = "/api/v1/proposals/**";
     private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
@@ -34,8 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(LOGIN_ENDPOINT).permitAll()
-                .antMatchers(BASE_ENDPOINT).hasRole("CUSTOMER")
                 .antMatchers(ORDERS_ENDPOINT).hasRole("STAFF")
+                .antMatchers(PROPOSAL_ENDPOINT).hasRole("CUSTOMER")
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));

@@ -15,6 +15,7 @@ import java.util.Map;
 public class CheckoutItemDto {
     private User user;
     private List<Map<String, Integer>> items;
+    private String time;
 
     public Map<String, Integer> getProposalDetails() {
         Map<String, Integer> total = new HashMap<>();
