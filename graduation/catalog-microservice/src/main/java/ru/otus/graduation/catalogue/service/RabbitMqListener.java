@@ -12,9 +12,9 @@ import ru.otus.graduation.model.Level;
 import ru.otus.graduation.model.Product;
 import ru.otus.graduation.model.Proposal;
 import ru.otus.graduation.model.StatusMessage;
-import ru.otus.graduation.repository.LevelRepository;
-import ru.otus.graduation.repository.ProductRepository;
-import ru.otus.graduation.repository.ProposalRepository;
+import ru.otus.graduation.repository.master.LevelRepository;
+import ru.otus.graduation.repository.master.ProductRepository;
+import ru.otus.graduation.repository.proposal.ProposalRepository;
 
 import java.util.List;
 
@@ -51,6 +51,7 @@ public class RabbitMqListener {
         StatusMessage statusMessage = objectMapper.readValue(message, new TypeReference<StatusMessage>(){});
         Proposal proposal = proposalRepository.findByProposalNumber(statusMessage.getProposalNumber());
         proposal.setStatus(statusMessage.getStatus());
+        proposal.setCurrentDate(statusMessage.getCurrentDate());
         proposalRepository.save(proposal);
         LOGGER.info(String.format(STATUS_CHANGED_TO,
                 statusMessage.getProposalNumber(),

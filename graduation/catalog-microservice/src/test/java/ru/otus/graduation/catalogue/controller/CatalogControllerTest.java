@@ -8,8 +8,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.otus.graduation.config.ApplicationConfig;
-import ru.otus.graduation.repository.LevelRepository;
-import ru.otus.graduation.repository.ProductRepository;
+import ru.otus.graduation.repository.master.LevelRepository;
+import ru.otus.graduation.repository.master.ProductRepository;
 import ru.otus.graduation.service.HelperService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

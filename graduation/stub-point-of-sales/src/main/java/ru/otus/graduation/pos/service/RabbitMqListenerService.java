@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import ru.otus.graduation.model.Product;
-import ru.otus.graduation.repository.ProductRepository;
+import ru.otus.graduation.repository.master.ProductRepository;
 
 import java.util.List;
 

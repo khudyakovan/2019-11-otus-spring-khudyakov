@@ -3,6 +3,10 @@ package ru.otus.graduation.orders.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import ru.otus.graduation.model.Order;
+import ru.otus.graduation.orders.dto.OrderDetailsDto;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -26,9 +30,20 @@ class OrderServiceImplTest {
 
     @Test
     void findActiveOrders() {
+        List<Order> orders = orderService.findActiveOrders();
         assertAll(
-                () -> assertNotNull(orderService.findActiveOrders()),
-                () -> assertNotEquals(0, orderService.findActiveOrders())
+                () -> assertNotNull(orders),
+                () -> assertNotEquals(0, orders)
         );
+    }
+
+    @Test
+    void getOrderDetailsDto() {
+        OrderDetailsDto dto = orderService.getOrderDetailsDto(ORDER_NUMBER);
+        assertAll(
+                () -> assertNotNull(dto.getOrderItems()),
+                () -> assertNotEquals(0, dto.getOrderItems())
+        );
+        System.out.println(dto);
     }
 }

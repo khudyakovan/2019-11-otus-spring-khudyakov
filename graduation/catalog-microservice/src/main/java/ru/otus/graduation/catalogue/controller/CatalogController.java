@@ -6,9 +6,9 @@ import ru.otus.graduation.catalogue.dto.CheckoutItemDto;
 import ru.otus.graduation.catalogue.service.CheckoutEmitterService;
 import ru.otus.graduation.config.ApplicationConfig;
 import ru.otus.graduation.model.*;
-import ru.otus.graduation.repository.LevelRepository;
-import ru.otus.graduation.repository.ProductRepository;
-import ru.otus.graduation.repository.ProposalRepository;
+import ru.otus.graduation.repository.master.LevelRepository;
+import ru.otus.graduation.repository.master.ProductRepository;
+import ru.otus.graduation.repository.proposal.ProposalRepository;
 import ru.otus.graduation.service.HelperService;
 
 import java.util.ArrayList;
@@ -62,12 +62,11 @@ public class CatalogController {
 
     @PostMapping(API_PREFIX + "/checkout")
     public void handleCheckout(@RequestBody CheckoutItemDto dto) {
-        System.out.println(dto);
         //Сохранение заявки (корзины)
         Proposal proposal = proposalRepository.save(this.createNewProposal(dto));
         //Добавление к заявке списка позиций и заказанного количества
         //Отправка данных в систему формирования заказов
-        proposal.setProposalDetails(dto.getProposalDetails());
+        proposal.setDetails(dto.getProposalDetails());
         checkoutEmitterService.emitProposal(proposal);
         //Отправка пользователя
         checkoutEmitterService.emitUser(this.createNewUser(dto, proposal));

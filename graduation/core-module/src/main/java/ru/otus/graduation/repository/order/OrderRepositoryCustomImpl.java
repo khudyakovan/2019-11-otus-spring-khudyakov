@@ -1,4 +1,4 @@
-package ru.otus.graduation.repository;
+package ru.otus.graduation.repository.order;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

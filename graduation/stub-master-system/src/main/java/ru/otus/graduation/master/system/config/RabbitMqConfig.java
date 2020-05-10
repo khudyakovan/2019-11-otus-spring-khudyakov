@@ -34,6 +34,7 @@ public class RabbitMqConfig {
                 Queue queue = new Queue(entry.getValue());
                 d.add(queue);
                 d.add(BindingBuilder.bind(queue).to(topicExchange).with(entry.getValue()));
+                d.add(BindingBuilder.bind(queue).to(topicExchange).with(entry.getValue()+".*"));
             }
         }
 

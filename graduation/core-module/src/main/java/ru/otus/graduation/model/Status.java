@@ -1,6 +1,7 @@
 package ru.otus.graduation.model;
 
 public enum Status {
+    DELETED,
     CANCELLED,
     COMPLETED,
     INIT,

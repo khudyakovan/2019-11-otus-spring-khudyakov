@@ -42,4 +42,4 @@ application:
 jwt:
   token:
     secret: d05Ht304W=xoL8e
-    expired: 3600000
+    expired: 86400000

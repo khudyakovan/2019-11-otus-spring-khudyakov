@@ -1,12 +1,14 @@
 package ru.otus.graduation.orders.service;
 
-import org.bson.types.ObjectId;
 import ru.otus.graduation.model.Order;
-import ru.otus.graduation.model.Status;
+import ru.otus.graduation.orders.dto.OrderDetailsDto;
 
 import java.util.List;
 
 public interface OrderService {
+
+    Order findById(String id);
+
     Order findByOrderNumber(long orderNumber);
 
     Order findByProposalNumber(long proposalNumber);
@@ -17,11 +19,13 @@ public interface OrderService {
 
     List<Order> findActiveOrders();
 
-    Order changeStatus(ObjectId orderId, Status status);
-
     void emitOrderStatus(Order order);
 
     long findMaxOrderNumber();
 
     Order save(Order order);
+
+    Order save(OrderDetailsDto orderDetailsDto);
+
+    OrderDetailsDto getOrderDetailsDto(long orderNumber);
 }

@@ -1,4 +1,4 @@
-package ru.otus.graduation.repository;
+package ru.otus.graduation.repository.master;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;

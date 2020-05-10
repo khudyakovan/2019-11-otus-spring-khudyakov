@@ -1,4 +1,4 @@
-package ru.otus.graduation.repository;
+package ru.otus.graduation.repository.order;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import ru.otus.graduation.model.Order;

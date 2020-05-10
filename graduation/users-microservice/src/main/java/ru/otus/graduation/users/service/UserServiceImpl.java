@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.otus.graduation.model.User;
-import ru.otus.graduation.repository.UserRepository;
+import ru.otus.graduation.repository.user.UserRepository;
 
 @Service
 @RequiredArgsConstructor

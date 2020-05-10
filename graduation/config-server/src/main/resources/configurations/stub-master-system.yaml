@@ -31,7 +31,6 @@ application:
       levels:
         catalog: "master.levels.catalog"
         orders: "master.levels.orders"
-#        pos: "master.levels.pos"
       prices:
         catalog: "master.prices.catalog"
         orders: "master.prices.orders"
@@ -42,3 +41,7 @@ application:
       users:
         main: "users"
         name: "order.user.name"
+      sales:
+        sales-to-master: "sales.orders"
+        sales-to-catalog: "sales.catalog"
+        sales-to-orders: "sales.orders"

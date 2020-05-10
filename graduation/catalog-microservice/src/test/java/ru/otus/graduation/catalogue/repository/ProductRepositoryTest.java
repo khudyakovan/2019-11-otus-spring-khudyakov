@@ -3,7 +3,7 @@ package ru.otus.graduation.catalogue.repository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.otus.graduation.repository.ProductRepository;
+import ru.otus.graduation.repository.master.ProductRepository;
 import ru.otus.graduation.service.HelperService;
 
 import static org.junit.jupiter.api.Assertions.*;

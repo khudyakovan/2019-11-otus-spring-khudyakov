@@ -3,10 +3,11 @@ package ru.otus.graduation.orders.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.graduation.model.Order;
-import ru.otus.graduation.model.Status;
+import ru.otus.graduation.orders.dto.OrderDetailsDto;
 import ru.otus.graduation.orders.service.OrderService;
 import ru.otus.graduation.service.StatusEmitterService;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -37,8 +38,8 @@ public class OrderController {
 
     @RequestMapping(path = {BASE_ORDER_URI, BASE_PROPOSALS_URI},
             params = "order-number")
-    public Order findAOrdersByNumber(@RequestParam(name = "order-number") long orderNumber) {
-        return orderService.findByOrderNumber(orderNumber);
+    public OrderDetailsDto findAOrdersByNumber(@RequestParam(name = "order-number") long orderNumber) {
+        return orderService.getOrderDetailsDto(orderNumber);
     }
 
     @RequestMapping(path = {BASE_ORDER_URI},
@@ -48,11 +49,21 @@ public class OrderController {
     }
 
     @PutMapping(path = {BASE_PROPOSALS_URI})
-    public void orderCancellation(@RequestBody Order order) {
-        if (order != null) {
-            Order o = orderService.changeStatus(order.getId(), Status.CANCELLED);
-            orderService.emitOrderStatus(o);
+    public void save(@RequestBody Order dto) {
+        if (dto != null) {
+            Order order = orderService.findByOrderNumber(dto.getOrderNumber());
+            dto.setId(order.getId());
+            dto.setCurrentDate(new Date());
+            order = orderService.save(dto);
+            orderService.emitOrderStatus(order);
         }
     }
 
+    @PutMapping(path = {BASE_ORDER_URI})
+    public void save(@RequestBody OrderDetailsDto dto) {
+        if (dto != null) {
+            Order order = orderService.save(dto);
+            orderService.emitOrderStatus(order);
+        }
+    }
 }

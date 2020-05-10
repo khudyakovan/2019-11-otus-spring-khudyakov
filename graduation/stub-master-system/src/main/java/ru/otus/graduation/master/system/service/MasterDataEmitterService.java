@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import ru.otus.graduation.config.ApplicationConfig;
 import ru.otus.graduation.model.Level;
 import ru.otus.graduation.model.Product;
-import ru.otus.graduation.repository.LevelRepository;
-import ru.otus.graduation.repository.ProductRepository;
+import ru.otus.graduation.repository.master.LevelRepository;
+import ru.otus.graduation.repository.master.ProductRepository;
 
 import java.util.List;
 import java.util.Map;

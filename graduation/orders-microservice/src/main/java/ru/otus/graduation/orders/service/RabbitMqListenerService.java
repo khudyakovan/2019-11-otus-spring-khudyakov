@@ -9,10 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import ru.otus.graduation.model.*;
-import ru.otus.graduation.repository.LevelRepository;
-import ru.otus.graduation.repository.ProductRepository;
+import ru.otus.graduation.repository.master.LevelRepository;
+import ru.otus.graduation.repository.master.ProductRepository;
 import ru.otus.graduation.service.StatusEmitterService;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -63,8 +64,9 @@ public class RabbitMqListenerService {
         order.setOrderNumber(orderService.findMaxOrderNumber() + 1);
         order.setProposalNumber(proposal.getProposalNumber());
         order.setMobilePhone(proposal.getMobilePhone());
+        order.setCurrentDate(new Date());
         order.setTime(proposal.getTime());
-        order.setProposalDetails(proposal.getProposalDetails());
+        order.setDetails(proposal.getDetails());
         order.setStatus(Status.QUEUED);
         return orderService.save(order);
     }

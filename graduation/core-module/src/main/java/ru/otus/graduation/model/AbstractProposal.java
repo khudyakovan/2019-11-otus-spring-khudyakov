@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @Data
@@ -16,5 +17,5 @@ public class AbstractProposal {
     private Date currentDate;
     private String time;
     private Status status;
-    private Map<String, Integer> proposalDetails;
+    private Map<String, Integer> details = new HashMap<>();
 }
