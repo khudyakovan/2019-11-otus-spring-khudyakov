@@ -17,6 +17,8 @@ import {OrdersComponent} from './orders/orders.component';
 import {AuthInterceptor} from "./shared/auth.interceptor";
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ProposalComponent} from './proposal/proposal.component';
+import {OrderDetailsComponent} from './orders/order-details/order-details.component';
+import {PrintBillComponent} from './orders/print-bill/print-bill.component';
 
 export function tokenGetter() {
     return localStorage.getItem('access_token');
@@ -32,7 +34,9 @@ export function tokenGetter() {
         ShoppingCartComponent,
         LoginComponent,
         OrdersComponent,
-        ProposalComponent
+        ProposalComponent,
+        OrderDetailsComponent,
+        PrintBillComponent
     ],
     imports: [
         BrowserModule,

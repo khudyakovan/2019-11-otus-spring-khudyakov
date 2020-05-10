@@ -6,6 +6,7 @@
                 <th scope="col">Номер заказа</th>
                 <th scope="col">Номер заявки</th>
                 <th scope="col">Номер телефона</th>
+                <th scope="col">Дата заказа</th>
                 <th scope="col">Время визита</th>
                 <th scope="col">Статус</th>
             </tr>
@@ -13,12 +14,18 @@
             <tbody>
             <tr *ngFor="let order of orders">
                 <td>{{ order.orderNumber }}</td>
-                <td><a [routerLink]="['/order-details', order.id]">{{ order.proposalNumber }}</a></td>
+                <td>{{ order.proposalNumber }}</td>
                 <td>{{ order.mobilePhone }}</td>
+                <td>{{order.currentDate | date: 'dd.MM.yy HH:MM'}}</td>
                 <td>{{order.time}}</td>
-                <td>
-                    <span *ngIf="order.status == 'QUEUED'">Ожидает комплектации</span>
-                    <span *ngIf="order.status == 'CANCELLED'">Отменен! Необходимо раскомплектовать</span>
+                <td [ngClass]="{'bg-red' : order.status == 'CANCELLED','bg-green' : order.status == 'READY'}">
+                    <a [routerLink]="['/order-details', order.orderNumber]">
+                        <span *ngIf="order.status == 'QUEUED'">Ожидает комплектации</span>
+                        <span *ngIf="order.status == 'CANCELLED'">Отменен! Необходимо раскомплектовать</span>
+                    </a>
+                    <a [routerLink]="['/print-bill', order.orderNumber]">
+                        <span *ngIf="order.status == 'READY'">Ожидает покупателя</span>
+                    </a>
                 </td>
             </tr>
             </tbody>

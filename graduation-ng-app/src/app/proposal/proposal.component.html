@@ -5,6 +5,7 @@
             <tr>
                 <th scope="col">Номер заказа</th>
                 <th scope="col">Номер телефона</th>
+                <th scope="col">Дата заказа</th>
                 <th scope="col">Время визита</th>
                 <th scope="col">Статус</th>
                 <th scope="col">&nbsp;</th>
@@ -14,11 +15,9 @@
             <tr *ngFor="let order of orders">
                 <td>{{ order.orderNumber }}</td>
                 <td>{{ order.mobilePhone }}</td>
+                <td>{{order.currentDate | date: 'dd.MM.yy HH:MM'}}</td>
                 <td>{{order.time}}</td>
-                <td>
-                    <span *ngIf="order.status == 'QUEUED'">Ожидает комплектации</span>
-                    <span *ngIf="order.status == 'CANCELLED'">Отменен</span>
-                </td>
+                <td>{{data.getStatusTranslation(order.status)}}</td>
                 <td>
                     <a class="btn btn-warning"
                        *ngIf="order.status != 'CANCELLED'"

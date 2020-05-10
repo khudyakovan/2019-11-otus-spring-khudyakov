@@ -9,6 +9,8 @@ import {LoginComponent} from "./login/login.component";
 import {OrdersComponent} from "./orders/orders.component";
 import {AuthGuard} from "./shared/auth.guard";
 import {ProposalComponent} from "./proposal/proposal.component";
+import {OrderDetailsComponent} from "./orders/order-details/order-details.component";
+import {PrintBillComponent} from "./orders/print-bill/print-bill.component";
 
 const routes: Routes = [
   {
@@ -35,6 +37,14 @@ const routes: Routes = [
   {
     path: 'orders',
     component: OrdersComponent,canActivate: [AuthGuard]
+  },
+  {
+    path: 'order-details/:orderNumber',
+    component: OrderDetailsComponent,canActivate: [AuthGuard]
+  },
+  {
+    path: 'print-bill/:orderNumber',
+    component: PrintBillComponent,canActivate: [AuthGuard]
   },
   {
     path: '**',
