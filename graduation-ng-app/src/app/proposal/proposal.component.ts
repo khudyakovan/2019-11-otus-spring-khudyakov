@@ -47,9 +47,15 @@ export class ProposalComponent implements OnInit {
         }
     }
 
-    private saveChanges(order: Order): void{
+    canShow(status: string): boolean {
+        return !(status === 'CANCELLED'
+            || status === 'DELETED'
+            || status === 'COMPLETED');
+    }
+
+    private saveChanges(order: Order): void {
         this.customerApiService.save(order).subscribe(
-            res=>{
+            res => {
                 this.router.navigate(["/proposals"]).then(value => {
                     this.getOrdersByPhone(this.currentUser);
                 });

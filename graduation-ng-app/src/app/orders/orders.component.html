@@ -16,7 +16,7 @@
                 <td>{{ order.orderNumber }}</td>
                 <td>{{ order.proposalNumber }}</td>
                 <td>{{ order.mobilePhone }}</td>
-                <td>{{order.currentDate | date: 'dd.MM.yy HH:MM'}}</td>
+                <td>{{order.currentDate | date: 'dd.MM.yy HH:mm'}}</td>
                 <td>{{order.time}}</td>
                 <td [ngClass]="{'bg-red' : order.status == 'CANCELLED','bg-green' : order.status == 'READY'}">
                     <a [routerLink]="['/order-details', order.orderNumber]">

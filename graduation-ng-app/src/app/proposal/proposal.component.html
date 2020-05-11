@@ -15,12 +15,12 @@
             <tr *ngFor="let order of orders">
                 <td>{{ order.orderNumber }}</td>
                 <td>{{ order.mobilePhone }}</td>
-                <td>{{order.currentDate | date: 'dd.MM.yy HH:MM'}}</td>
+                <td>{{order.currentDate | date: 'dd.MM.yy HH:mm'}}</td>
                 <td>{{order.time}}</td>
                 <td>{{data.getStatusTranslation(order.status)}}</td>
                 <td>
                     <a class="btn btn-warning"
-                       *ngIf="order.status != 'CANCELLED'"
+                       *ngIf="canShow(order.status)"
                        (click)="cancelOrder(order)"
                        aria-label="Delete">
                         <i class="fa fa-trash-o" aria-hidden="true"></i>
