@@ -34,21 +34,24 @@ public class RabbitMqListener {
 
     @RabbitListener(queues = "${application.rabbit.queues.levels.catalog}")
     public void processLevels(String message) throws JsonProcessingException {
-        List<Level> levels = objectMapper.readValue(message, new TypeReference<List<Level>>(){});
+        List<Level> levels = objectMapper.readValue(message, new TypeReference<List<Level>>() {
+        });
         levelRepository.saveAll(levels);
         LOGGER.info(LEVELS_HANDLED);
     }
 
     @RabbitListener(queues = "${application.rabbit.queues.prices.catalog}")
     public void processPricesAndStocks(String message) throws JsonProcessingException {
-        List<Product> products = objectMapper.readValue(message, new TypeReference<List<Product>>(){});
+        List<Product> products = objectMapper.readValue(message, new TypeReference<List<Product>>() {
+        });
         productRepository.saveAll(products);
         LOGGER.info(PRICES_AND_STOCK_HANDLED);
     }
 
-    @RabbitListener(queues = "${application.rabbit.queues.products.order}")
+    @RabbitListener(queues = {"${application.rabbit.queues.products.order}", "${application.rabbit.queues.sales.sales-to-catalog}"})
     public void processOrderStatus(String message) throws JsonProcessingException {
-        StatusMessage statusMessage = objectMapper.readValue(message, new TypeReference<StatusMessage>(){});
+        StatusMessage statusMessage = objectMapper.readValue(message, new TypeReference<StatusMessage>() {
+        });
         Proposal proposal = proposalRepository.findByProposalNumber(statusMessage.getProposalNumber());
         proposal.setStatus(statusMessage.getStatus());
         proposal.setCurrentDate(statusMessage.getCurrentDate());

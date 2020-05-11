@@ -38,10 +38,9 @@ application:
       products:
         proposal: "proposal.order"
         order: "order.proposal"
+        pos-get-order: "pos.order.number"
       users:
         main: "users"
         name: "order.user.name"
       sales:
-        sales-to-master: "sales.orders"
-        sales-to-catalog: "sales.catalog"
-        sales-to-orders: "sales.orders"
+        sales-to-master: "sales.master"

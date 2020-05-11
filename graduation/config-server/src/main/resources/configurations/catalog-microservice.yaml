@@ -37,3 +37,5 @@ application:
       products:
         proposal: "proposal.order"
         order: "order.proposal"
+      sales:
+        sales-to-catalog: "sales.catalog"

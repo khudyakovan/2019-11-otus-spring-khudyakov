@@ -27,3 +27,8 @@ application:
     queues:
       prices:
         pos: "master.prices.pos"
+      sales:
+        sales-to-catalog: "sales.catalog"
+        sales-to-orders: "sales.orders"
+      products:
+        pos-get-order: "pos.order.number"

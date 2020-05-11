@@ -35,9 +35,12 @@ application:
       products:
         proposal: "proposal.order"
         order: "order.proposal"
+        pos-get-order: "pos.order.number"
       users:
         main: "users"
         name: "order.user.name"
+      sales:
+        sales-to-orders: "sales.orders"
 
 jwt:
   token:
