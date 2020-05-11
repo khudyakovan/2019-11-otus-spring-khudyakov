@@ -58,7 +58,7 @@ export class CheckoutComponent implements OnInit {
     private handleCheckout(): void {
         this.apiService.handleCheckout(this.checkoutItem).subscribe(
             res => {
-                this.router.navigate(["/proposals"]).then();
+                this.router.navigate(["/"]).then();
             },
             err => {
                 alert("An error has occurred!");
