@@ -3,6 +3,7 @@ package ru.otus.graduation.orders.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.otus.graduation.dto.OrderItemDto;
 import ru.otus.graduation.model.Status;
 
 import java.util.List;

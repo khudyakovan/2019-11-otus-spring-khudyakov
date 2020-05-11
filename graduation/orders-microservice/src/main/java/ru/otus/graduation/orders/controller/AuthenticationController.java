@@ -1,6 +1,5 @@
 package ru.otus.graduation.orders.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.otus.graduation.model.User;
 import ru.otus.graduation.orders.dto.AuthenticationRequestDto;
 import ru.otus.graduation.orders.security.JwtTokenProvider;
-import ru.otus.graduation.orders.service.UserService;
+import ru.otus.graduation.service.UserService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +47,7 @@ public class AuthenticationController {
             response.put("token", token);
 
             return ResponseEntity.ok(response);
-        } catch (AuthenticationException | JsonProcessingException e) {
+        } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username or password");
         }
     }

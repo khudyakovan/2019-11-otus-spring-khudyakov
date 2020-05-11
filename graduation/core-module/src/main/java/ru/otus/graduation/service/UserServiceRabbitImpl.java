@@ -1,7 +1,8 @@
-package ru.otus.graduation.orders.service;
+package ru.otus.graduation.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import ru.otus.graduation.config.ApplicationConfig;
@@ -11,7 +12,7 @@ import ru.otus.graduation.model.User;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserServiceImpl implements UserService {
+public class UserServiceRabbitImpl implements UserService {
 
     private final ApplicationConfig config;
     private final RabbitTemplate rabbitTemplate;
@@ -25,8 +26,8 @@ public class UserServiceImpl implements UserService {
      */
 
     @Override
-    public User findByUsername(String username) {
-        if(username.isBlank()) {
+    public User findByUsername(@NotNull String username) {
+        if(username.isEmpty()) {
             log.warn(BLANK_USERNAME);
             return null;
         }

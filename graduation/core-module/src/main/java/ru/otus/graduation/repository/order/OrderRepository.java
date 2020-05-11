@@ -10,6 +10,6 @@ public interface OrderRepository extends MongoRepository<Order, String>, OrderRe
 
     Order findByOrderNumber(long orderNumber);
     Order findByProposalNumber(long proposalNumber);
-    List<Order> findByMobilePhone(String mobilePhone);
+    List<Order> findByMobilePhoneOrderByCurrentDateDesc(String mobilePhone);
     List<Order> findByStatusIsIn(List<Status> statuses);
 }

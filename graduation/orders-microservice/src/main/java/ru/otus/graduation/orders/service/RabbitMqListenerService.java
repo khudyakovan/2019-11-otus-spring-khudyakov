@@ -54,6 +54,7 @@ public class RabbitMqListenerService {
         });
         Order order = this.createNewOrder(proposal);
         orderService.emitOrderStatus(order);
+        orderService.emitOrderStatusMailMessage(order);
         log.info(String.format(PROPOSAL_HANDLED, order.getProposalNumber(), order.getOrderNumber()));
     }
 
@@ -71,6 +72,7 @@ public class RabbitMqListenerService {
         order.setOrderNumber(orderService.findMaxOrderNumber() + 1);
         order.setProposalNumber(proposal.getProposalNumber());
         order.setMobilePhone(proposal.getMobilePhone());
+        order.setEmail(proposal.getEmail());
         order.setCurrentDate(new Date());
         order.setTime(proposal.getTime());
         order.setDetails(proposal.getDetails());

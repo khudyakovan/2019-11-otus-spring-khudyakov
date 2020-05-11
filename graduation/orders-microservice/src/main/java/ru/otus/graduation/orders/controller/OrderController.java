@@ -1,5 +1,6 @@
 package ru.otus.graduation.orders.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.otus.graduation.model.Order;
@@ -49,21 +50,23 @@ public class OrderController {
     }
 
     @PutMapping(path = {BASE_PROPOSALS_URI})
-    public void save(@RequestBody Order dto) {
+    public void save(@RequestBody Order dto) throws JsonProcessingException {
         if (dto != null) {
             Order order = orderService.findByOrderNumber(dto.getOrderNumber());
             dto.setId(order.getId());
             dto.setCurrentDate(new Date());
             order = orderService.save(dto);
             orderService.emitOrderStatus(order);
+            orderService.emitOrderStatusMailMessage(order);
         }
     }
 
     @PutMapping(path = {BASE_ORDER_URI})
-    public void save(@RequestBody OrderDetailsDto dto) {
+    public void save(@RequestBody OrderDetailsDto dto) throws JsonProcessingException {
         if (dto != null) {
             Order order = orderService.save(dto);
             orderService.emitOrderStatus(order);
+            orderService.emitOrderStatusMailMessage(order);
         }
     }
 }

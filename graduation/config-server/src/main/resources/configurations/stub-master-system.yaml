@@ -39,6 +39,7 @@ application:
         proposal: "proposal.order"
         order: "order.proposal"
         pos-get-order: "pos.order.number"
+        orders-to-mail: "mail.status"
       users:
         main: "users"
         name: "order.user.name"

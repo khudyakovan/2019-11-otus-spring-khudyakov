@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import ru.otus.graduation.dto.SaleDto;
 import ru.otus.graduation.model.Order;
 import ru.otus.graduation.model.Product;
-import ru.otus.graduation.pos.service.ProductService;
+import ru.otus.graduation.service.master.ProductService;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

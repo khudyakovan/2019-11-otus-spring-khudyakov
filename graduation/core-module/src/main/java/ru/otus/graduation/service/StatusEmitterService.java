@@ -32,13 +32,13 @@ public class StatusEmitterService {
         LOGGER.info(String.format("%s %s", STATUS_MESSAGE_SENT, message.getStatus()));
     }
 
-    public void emitStatusToSpecificQueue(String exchangeName, String queueGroup, String queue, StatusMessage message){
+    public void emitStatusToSpecificQueue(String exchangeName, String queueGroup, String queue, Object message){
         String queueName = config.getQueues().get(queueGroup).get(queue);
         try {
             rabbitTemplate.convertAndSend(config.getExchanges().get(exchangeName),
                     queueName,
                     objectMapper.writeValueAsString(message)
-            );
+                    );
         } catch (JsonProcessingException e) {
             LOGGER.info(e.getLocalizedMessage());
         }

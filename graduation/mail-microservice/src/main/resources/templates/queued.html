@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+</head>
+<body>
+
+Заказ # <span th:text="${orderNumber}"></span> отправлен на комплектацию.
+<p>
+    Имя пользователя для входа в личный кабинет: <b>указанный при регистрации номер телефона.</b><br/>
+    Пароль для входа в личный кабинет: <b th:text="${password}" />.
+</p>
+
+<h3>Детали заказа</h3>
+<table>
+    <thead>
+    <tr>
+        <th>Наименование</th>
+        <th>Количество</th>
+        <th>Цена</th>
+        <th>Сумма</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${details}">
+        <td th:text="${item.name}">Name</td>
+        <td align="center" th:text="${item.quantity}">Quantity</td>
+        <td align="center" th:text="${item.price}">Price</td>
+        <td align="center" th:text="${item.summary}">Summary</td>
+    </tr>
+    </tbody>
+</table>
+<h3>Общая сумма заказа: <span th:text="${total}" /> рублей</h3>
+</body>
+</html>

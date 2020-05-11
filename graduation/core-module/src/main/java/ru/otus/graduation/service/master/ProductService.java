@@ -1,4 +1,4 @@
-package ru.otus.graduation.pos.service;
+package ru.otus.graduation.service.master;
 
 import ru.otus.graduation.model.Product;
 

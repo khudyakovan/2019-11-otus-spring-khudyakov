@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.otus.graduation.model.User;
 import ru.otus.graduation.orders.security.JwtUserFactory;
+import ru.otus.graduation.service.UserService;
 
 @Service
 @Slf4j

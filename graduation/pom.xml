@@ -21,6 +21,7 @@
         <module>core-module</module>
         <module>images-microservice</module>
         <module>gateway-server</module>
+        <module>mail-microservice</module>
     </modules>
 
 </project>

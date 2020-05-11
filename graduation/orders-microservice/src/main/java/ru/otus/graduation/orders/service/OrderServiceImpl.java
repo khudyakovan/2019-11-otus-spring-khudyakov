@@ -1,13 +1,16 @@
 package ru.otus.graduation.orders.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.otus.graduation.dto.MailMessageDto;
+import ru.otus.graduation.dto.OrderItemDto;
 import ru.otus.graduation.model.*;
 import ru.otus.graduation.orders.dto.OrderDetailsDto;
-import ru.otus.graduation.orders.dto.OrderItemDto;
-import ru.otus.graduation.repository.master.ProductRepository;
 import ru.otus.graduation.repository.order.OrderRepository;
 import ru.otus.graduation.service.StatusEmitterService;
+import ru.otus.graduation.service.UserService;
+import ru.otus.graduation.service.master.ProductService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,11 +23,13 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-    private final ProductRepository productRepository;
+    private final ProductService productService;
+    private final UserService userService;
     private final StatusEmitterService statusEmitterService;
     private static final String MAIN_EXCHANGE = "main";
     private static final String PRODUCT_QUEUES = "products";
     private static final String ORDER_QUEUE = "order";
+    private static final String MAIL_QUEUE = "orders-to-mail";
 
     @Override
     public Order findById(String id) {
@@ -64,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> findByMobilePhone(String mobilePhone) {
-        return orderRepository.findByMobilePhone(mobilePhone);
+        return orderRepository.findByMobilePhoneOrderByCurrentDateDesc(mobilePhone);
     }
 
     @Override
@@ -105,23 +110,53 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = orderRepository.findByOrderNumber(orderNumber);
         dto.setStatus(order.getStatus());
-        List<String> ids = new ArrayList<>(order.getDetails().keySet());
-        List<Product> products = productRepository.findByIdIsIn(ids);
+        List<OrderItemDto> orderItems = this.getOrderDetails(order);
 
-        List<OrderItemDto> orderItems = new ArrayList<>();
-        order.getDetails().entrySet().forEach(entry ->{
+        dto.setOrderItems(orderItems);
+        return dto;
+    }
+
+    @Override
+    public void emitOrderStatusMailMessage(Order order) throws JsonProcessingException {
+        statusEmitterService.emitStatusToSpecificQueue(
+                MAIN_EXCHANGE,
+                PRODUCT_QUEUES,
+                MAIL_QUEUE,
+                this.getMailMessageDto(order));
+    }
+
+    private MailMessageDto getMailMessageDto(Order order) throws JsonProcessingException {
+        MailMessageDto dto = new MailMessageDto();
+
+        dto.setOrderNumber(order.getOrderNumber());
+        dto.setProposalNumber(order.getProposalNumber());
+        dto.setMobileNumber(order.getMobilePhone());
+        dto.setEmail(order.getEmail());
+        dto.setPickupTime(order.getTime());
+        dto.setCurrentDate(new Date());
+        dto.setDetails(this.getOrderDetails(order));
+        dto.setStatus(order.getStatus());
+        return dto;
+    }
+
+    private List<OrderItemDto> getOrderDetails(Order order) {
+        List<String> ids = new ArrayList<>(order.getDetails().keySet());
+        List<Product> products = productService.findByIdIsIn(ids);
+        List<OrderItemDto> dtos = new ArrayList<>();
+
+        order.getDetails().entrySet().forEach(entry -> {
             OrderItemDto itemDto = new OrderItemDto();
             itemDto.setId(entry.getKey());
             Product product = products.stream()
                     .filter(p -> entry.getKey().equals(p.getId()))
-                    .findFirst().orElse(new Product());
+                    .findFirst().get();
+            itemDto.setPrice(product.getPrice());
             itemDto.setName(product.getName());
             itemDto.setQuantity(entry.getValue());
-            orderItems.add(itemDto);
-        } );
-
-        dto.setOrderItems(orderItems);
-        return dto;
+            itemDto.setSummary(product.getPrice() * entry.getValue());
+            dtos.add(itemDto);
+        });
+        return dtos;
     }
 
 }

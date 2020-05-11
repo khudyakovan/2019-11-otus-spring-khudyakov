@@ -62,14 +62,14 @@ public class CatalogController {
 
     @PostMapping(API_PREFIX + "/checkout")
     public void handleCheckout(@RequestBody CheckoutItemDto dto) {
-        //Сохранение заявки (корзины)
         Proposal proposal = proposalRepository.save(this.createNewProposal(dto));
+        //Отправка пользователя
+        checkoutEmitterService.emitUser(this.createNewUser(dto, proposal));
+        //Сохранение заявки (корзины)
         //Добавление к заявке списка позиций и заказанного количества
         //Отправка данных в систему формирования заказов
         proposal.setDetails(dto.getProposalDetails());
         checkoutEmitterService.emitProposal(proposal);
-        //Отправка пользователя
-        checkoutEmitterService.emitUser(this.createNewUser(dto, proposal));
     }
 
     private User createNewUser(CheckoutItemDto dto, Proposal proposal){
@@ -93,6 +93,7 @@ public class CatalogController {
 
     private Proposal createNewProposal(CheckoutItemDto dto) {
         Proposal proposal = new Proposal();
+        proposal.setEmail(dto.getUser().getEmail());
         proposal.setProposalNumber(proposalRepository.findMaxProposalNumber() + 1);
         proposal.setMobilePhone(dto.getUser().getMobilePhone());
         proposal.setTime(dto.getTime());

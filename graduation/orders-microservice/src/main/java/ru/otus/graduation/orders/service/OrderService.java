@@ -1,5 +1,6 @@
 package ru.otus.graduation.orders.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import ru.otus.graduation.model.Order;
 import ru.otus.graduation.orders.dto.OrderDetailsDto;
 
@@ -20,6 +21,8 @@ public interface OrderService {
     List<Order> findActiveOrders();
 
     void emitOrderStatus(Order order);
+
+    void emitOrderStatusMailMessage(Order order) throws JsonProcessingException;
 
     long findMaxOrderNumber();
 

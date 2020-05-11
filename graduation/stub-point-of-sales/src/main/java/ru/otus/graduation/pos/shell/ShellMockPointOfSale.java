@@ -12,6 +12,7 @@ import ru.otus.graduation.pos.service.OrderService;
 import ru.otus.graduation.pos.service.SaleService;
 import ru.otus.graduation.service.StatusEmitterService;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class ShellMockPointOfSale {
     private final InputReader inputReader;
     private final ShellHelper shellHelper;
     private static final String SUMMARY_MESSAGE = "Сумма к оплате: %s рублей. Пакет надо? ";
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     @ShellMethod("Загрузка данных")
     public void init() {
@@ -43,8 +45,10 @@ public class ShellMockPointOfSale {
         Order order = orderService.findByOrderNumber(Long.parseLong(orderNumber));
         List<SaleDto> details = shellHelper.getSaleDtoList(order);
         shellHelper.render(details, shellHelper.getTableHeader());
-        String userInput = inputReader.prompt(String.format(SUMMARY_MESSAGE, shellHelper.getTotal(details)), "0", true);
-        if (userInput.equals("Y")) {
+        String userInput = inputReader.prompt(
+                String.format(SUMMARY_MESSAGE,
+                        df.format(shellHelper.getTotal(details))), "0", true);
+        if (userInput.toUpperCase().equals("Y")) {
             saleService.sale(order.getOrderNumber(), details);
             order.setStatus(Status.COMPLETED);
             saleService.emitOrderStatus(order);

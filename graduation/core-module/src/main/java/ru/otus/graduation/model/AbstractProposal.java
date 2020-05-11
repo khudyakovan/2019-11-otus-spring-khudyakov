@@ -15,6 +15,7 @@ import java.util.Map;
 public class AbstractProposal implements Serializable {
     private long proposalNumber;
     private String mobilePhone;
+    private String email;
     private Date currentDate;
     private String time;
     private Status status;
