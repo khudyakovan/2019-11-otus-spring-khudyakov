@@ -8,7 +8,6 @@ import ru.otus.graduation.config.ApplicationConfig;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Configuration
 @RequiredArgsConstructor
@@ -25,21 +24,20 @@ public class RabbitMqConfig {
 
         //Main Exchange and Queues initialization
 
-        TopicExchange topicExchange = new TopicExchange(config.getExchanges().get(MAIN_EXCHANGE));
+        TopicExchange topicExchange = new TopicExchange(config.getExchangeByPropertyName(MAIN_EXCHANGE));
         d.add(topicExchange);
 
-        Map<String, Map<String, String>> services = config.getQueues();
-        for (Map.Entry<String, Map<String, String>> service : services.entrySet()) {
-            for (Map.Entry<String, String> entry : service.getValue().entrySet()) {
-                Queue queue = new Queue(entry.getValue());
+        config.getAllQueueGroups().forEach(groupName ->{
+            config.getAllQueueNamesByGroupName(groupName).forEach(queueName ->{
+                Queue queue = new Queue(queueName);
                 d.add(queue);
-                d.add(BindingBuilder.bind(queue).to(topicExchange).with(entry.getValue()));
-                d.add(BindingBuilder.bind(queue).to(topicExchange).with(entry.getValue()+".*"));
-            }
-        }
+                d.add(BindingBuilder.bind(queue).to(topicExchange).with(queueName));
+                d.add(BindingBuilder.bind(queue).to(topicExchange).with(queueName+".*"));
+            });
+        } );
 
         //Broadcast Status Exchange and Queues initialization
-        String name = config.getExchanges().get(STATUS_EXCHANGE);
+        String name = config.getExchangeByPropertyName(STATUS_EXCHANGE);
         FanoutExchange fanoutExchange = new FanoutExchange(name);
         d.add(fanoutExchange);
         Queue broadcastQueue = new Queue(name);

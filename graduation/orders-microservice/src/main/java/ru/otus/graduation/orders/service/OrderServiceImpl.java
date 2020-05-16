@@ -9,7 +9,6 @@ import ru.otus.graduation.model.*;
 import ru.otus.graduation.orders.dto.OrderDetailsDto;
 import ru.otus.graduation.repository.order.OrderRepository;
 import ru.otus.graduation.service.StatusEmitterService;
-import ru.otus.graduation.service.UserService;
 import ru.otus.graduation.service.master.ProductService;
 
 import java.util.ArrayList;
@@ -24,16 +23,16 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final ProductService productService;
-    private final UserService userService;
     private final StatusEmitterService statusEmitterService;
     private static final String MAIN_EXCHANGE = "main";
     private static final String PRODUCT_QUEUES = "products";
     private static final String ORDER_QUEUE = "order";
     private static final String MAIL_QUEUE = "orders-to-mail";
+    private static final String ORDER_NOT_FOUND = "Order with id %s not found!";
 
     @Override
-    public Order findById(String id) {
-        return orderRepository.findById(id).get();
+    public Order findById(String id) throws Exception {
+        return orderRepository.findById(id).orElseThrow(() -> new Exception(String.format(ORDER_NOT_FOUND, id)));
     }
 
     @Override

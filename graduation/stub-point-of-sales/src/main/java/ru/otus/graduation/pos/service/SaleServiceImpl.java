@@ -43,11 +43,11 @@ public class SaleServiceImpl implements SaleService {
         message.setMobileNumber(order.getMobilePhone());
         message.setStatus(order.getStatus());
         message.setCurrentDate(new Date());
-        config.getQueues().get(SALES_QUEUES).entrySet().forEach(entry -> {
+        config.getAllQueuePropertyNamesByGroupName(SALES_QUEUES).forEach(propertyName ->{
             statusEmitterService.emitStatusToSpecificQueue(
                     MAIN_EXCHANGE,
                     SALES_QUEUES,
-                    entry.getKey(),
+                    propertyName,
                     message);
         });
     }

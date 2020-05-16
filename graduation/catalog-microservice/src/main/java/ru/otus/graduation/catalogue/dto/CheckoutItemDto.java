@@ -19,11 +19,12 @@ public class CheckoutItemDto {
 
     public Map<String, Integer> getProposalDetails() {
         Map<String, Integer> total = new HashMap<>();
-        this.items.forEach(item -> {
-            item.entrySet().forEach(e -> {
-                total.put(e.getKey(), e.getValue());
-            });
-        });
+//        this.items.forEach(item -> {
+//            item.entrySet().forEach(e -> {
+//                total.put(e.getKey(), e.getValue());
+//            });
+//        });
+        this.items.forEach(item -> item.forEach(total::put));
         return total;
     }
 }

@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.otus.graduation.model.Order;
 import ru.otus.graduation.orders.dto.OrderDetailsDto;
 import ru.otus.graduation.orders.service.OrderService;
-import ru.otus.graduation.service.StatusEmitterService;
 
 import java.util.Date;
 import java.util.List;
@@ -16,16 +15,10 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
-    private final StatusEmitterService statusEmitterService;
     private static final String BASE_ORDER_URI = "/api/v1/orders";
     private static final String BASE_PROPOSALS_URI = "/api/v1/proposals";
 
     
-    @GetMapping
-    public List<Order> findAll() {
-        return orderService.findAll();
-    }
-
     @GetMapping(value = BASE_ORDER_URI + "/active")
     public List<Order> findActiveOrders() {
         return orderService.findActiveOrders();

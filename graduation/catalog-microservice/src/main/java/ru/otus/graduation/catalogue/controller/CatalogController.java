@@ -6,10 +6,10 @@ import ru.otus.graduation.catalogue.dto.CheckoutItemDto;
 import ru.otus.graduation.catalogue.service.CheckoutEmitterService;
 import ru.otus.graduation.config.ApplicationConfig;
 import ru.otus.graduation.model.*;
-import ru.otus.graduation.repository.master.LevelRepository;
-import ru.otus.graduation.repository.master.ProductRepository;
-import ru.otus.graduation.repository.proposal.ProposalRepository;
 import ru.otus.graduation.service.HelperService;
+import ru.otus.graduation.service.master.LevelService;
+import ru.otus.graduation.service.master.ProductService;
+import ru.otus.graduation.service.proposal.ProposalService;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,9 +20,9 @@ import java.util.List;
 public class CatalogController {
 
     private final ApplicationConfig applicationConfig;
-    private final LevelRepository levelRepository;
-    private final ProductRepository productRepository;
-    private final ProposalRepository proposalRepository;
+    private final LevelService levelService;
+    private final ProductService productService;
+    private final ProposalService proposalService;
     private final HelperService helperService;
     private final CheckoutEmitterService checkoutEmitterService;
     private static final String API_PREFIX = "/api/v1/catalog";
@@ -35,34 +35,34 @@ public class CatalogController {
 
     @GetMapping(value = {API_PREFIX + "/levels"})
     public List<Level> getHierarchyRootLevels() {
-        return levelRepository.findByParentId("null");
+        return levelService.findByParentId("null");
     }
 
     @GetMapping(value = {API_PREFIX + "/levels/{id}"})
     public Level getHierarchyLevelById(@PathVariable("id") String id) {
-        return levelRepository.findById(id).get();
+        return levelService.findById(id);
     }
 
     @GetMapping(value = {API_PREFIX + "/levels/parent/{parentId}"})
     public List<Level> getHierarchyLevelsByParentId(@PathVariable("parentId") String parentId) {
-        return levelRepository.findByParentId(parentId);
+        return levelService.findByParentId(parentId);
     }
 
     @GetMapping(value = {API_PREFIX + "/goods/{parentId}"})
     public List<Product> getGoodsByHierarchyLevel(@PathVariable("parentId") String parentId) {
         parentId = helperService.getBeginningOfLevel(parentId);
-        return productRepository.findByParentIdStartingWith(parentId);
+        return productService.findByParentIdStartingWith(parentId);
     }
 
     @GetMapping(value = {API_PREFIX + "/goods/showcase"})
     public List<Product> getShowcase() {
-        return productRepository.getRandomProducts();
+        return productService.getRandomProducts();
     }
 
 
     @PostMapping(API_PREFIX + "/checkout")
     public void handleCheckout(@RequestBody CheckoutItemDto dto) {
-        Proposal proposal = proposalRepository.save(this.createNewProposal(dto));
+        Proposal proposal = proposalService.save(this.createNewProposal(dto));
         //Отправка пользователя
         checkoutEmitterService.emitUser(this.createNewUser(dto, proposal));
         //Сохранение заявки (корзины)
@@ -94,7 +94,7 @@ public class CatalogController {
     private Proposal createNewProposal(CheckoutItemDto dto) {
         Proposal proposal = new Proposal();
         proposal.setEmail(dto.getUser().getEmail());
-        proposal.setProposalNumber(proposalRepository.findMaxProposalNumber() + 1);
+        proposal.setProposalNumber(proposalService.findMaxProposalNumber() + 1);
         proposal.setMobilePhone(dto.getUser().getMobilePhone());
         proposal.setTime(dto.getTime());
         proposal.setCurrentDate(new Date());

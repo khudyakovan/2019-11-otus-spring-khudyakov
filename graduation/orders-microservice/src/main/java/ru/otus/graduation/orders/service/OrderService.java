@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface OrderService {
 
-    Order findById(String id);
+    Order findById(String id) throws Exception;
 
     Order findByOrderNumber(long orderNumber);
 

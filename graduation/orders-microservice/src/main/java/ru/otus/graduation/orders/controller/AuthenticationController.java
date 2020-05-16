@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.otus.graduation.model.User;
 import ru.otus.graduation.orders.dto.AuthenticationRequestDto;
 import ru.otus.graduation.orders.security.JwtTokenProvider;
-import ru.otus.graduation.service.UserService;
+import ru.otus.graduation.service.user.UserService;
 
 import java.util.HashMap;
 import java.util.Map;

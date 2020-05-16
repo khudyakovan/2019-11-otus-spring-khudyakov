@@ -21,8 +21,8 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public Order findByOrderNumber(long orderNumber) {
         return (Order) rabbitTemplate.convertSendAndReceive(
-                config.getExchanges().get(MAIN_EXCHANGE),
-                config.getQueues().get(QUEUES_GROUP).get(FIND_BY_ORDER_NUMBER),
+                config.getExchangeByPropertyName(MAIN_EXCHANGE),
+                config.getQueueNameByGroupNameAndPropertyName(QUEUES_GROUP, FIND_BY_ORDER_NUMBER),
                 orderNumber);
     }
 }

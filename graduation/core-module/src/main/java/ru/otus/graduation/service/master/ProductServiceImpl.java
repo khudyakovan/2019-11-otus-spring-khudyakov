@@ -19,4 +19,19 @@ public class ProductServiceImpl implements ProductService{
     public List<Product> findByIdIsIn(List<String> ids) {
         return productRepository.findByIdIsIn(ids);
     }
+
+    @Override
+    public List<Product> findByParentId(String parentId) {
+        return productRepository.findByParentId(parentId);
+    }
+
+    @Override
+    public List<Product> findByParentIdStartingWith(String level) {
+        return productRepository.findByParentIdStartingWith(level);
+    }
+
+    @Override
+    public List<Product> getRandomProducts() {
+        return productRepository.getRandomProducts();
+    }
 }

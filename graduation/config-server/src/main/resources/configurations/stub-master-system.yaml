@@ -44,4 +44,6 @@ application:
         main: "users"
         name: "order.user.name"
       sales:
+        sales-to-orders: "sales.orders"
+        sales-to-catalog: "sales.catalog"
         sales-to-master: "sales.master"

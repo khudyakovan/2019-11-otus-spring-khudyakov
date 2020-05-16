@@ -4,30 +4,37 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.otus.graduation.catalogue.service.CheckoutEmitterService;
 import ru.otus.graduation.config.ApplicationConfig;
-import ru.otus.graduation.repository.master.LevelRepository;
-import ru.otus.graduation.repository.master.ProductRepository;
 import ru.otus.graduation.service.HelperService;
+import ru.otus.graduation.service.master.LevelService;
+import ru.otus.graduation.service.master.ProductService;
+import ru.otus.graduation.service.proposal.ProposalService;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(value = {CatalogController.class, ApplicationConfig.class})
+@WebMvcTest
+@Import({CatalogController.class})
 class CatalogControllerTest {
 
-    private static final String BASE_URL = "/api/v1";
+    private static final String BASE_URL = "/api/v1/catalog";
 
     @Autowired
     private MockMvc mvc;
     @MockBean
-    private LevelRepository levelRepository;
+    private LevelService levelService;
     @MockBean
-    private ProductRepository productRepository;
+    private  ApplicationConfig applicationConfig;
     @MockBean
-    private MongoTemplate mongoTemplate;
+    private ProductService productService;
+    @MockBean
+    private ProposalService proposalService;
+    @MockBean
+    private CheckoutEmitterService checkoutEmitterService;
     @MockBean
     private HelperService helperService;
 

@@ -28,9 +28,6 @@ public class RabbitMqListenerService {
     private static final String PROPOSAL_HANDLED = "Proposal #%s was handled. Order #%s was created";
     private static final String ORDER_NOT_FOUND = "Order #%s not found!";
     private static final String STATUS_CHANGED_TO = "PROPOSAL/ORDER (%s/%s) status changed to: %s";
-//    private static final String MAIN_EXCHANGE = "main";
-//    private static final String PRODUCT_QUEUES = "products";
-//    private static final String ORDER_QUEUE = "order";
 
     @RabbitListener(queues = "${application.rabbit.queues.levels.orders}")
     public void processLevels(String message) throws JsonProcessingException {
