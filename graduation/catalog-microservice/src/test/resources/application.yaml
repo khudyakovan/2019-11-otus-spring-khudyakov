@@ -1,0 +1,15 @@
+server:
+  port: 8082
+
+eureka:
+  client:
+    fetch-registry: false
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      database: catalog-microservice
+logging:
+  level:
+    root: INFO

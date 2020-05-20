@@ -1,0 +1,53 @@
+<div class="container">
+    <div class="row" style="margin-top: 28px;">
+        <div class="container">
+            <h3 class="text-muted">Ваша корзина</h3>
+            <table class="table table-borderless text-muted">
+                <tbody>
+                <tr *ngFor="let item of shoppingCartItems">
+                    <td><img src="/images/{{item.product.id}}" style="height: 50%" alt="Card image cap"></td>
+                    <td>
+                        <p>{{ item.product.name }}</p>
+                        <small>Цена: {{ item.product.price }} руб</small>
+                    </td>
+                    <td>
+                        <input type="number"
+                               min="1"
+                               id="quantity"
+                               class="form-control"
+                               name="quantity"
+                               [(ngModel)]="item.quantity"
+                               (change)="itemsCountInShoppingCart()"
+                        />
+                    </td>
+                    <td>
+                        {{getItemSummary(item)}}
+                        {{summary | number:'1.2-2'}} руб
+                    </td>
+                    <td>
+                        <a class="btn btn-warning" (click)="deleteItemFromShoppingCart(item)" aria-label="Delete">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <span class="text-muted">Сумма товаров в корзине: <b>{{totalSummary | number:'1.2-2'}}</b> руб</span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="float-lg-right">
+                    <a class="btn btn-primary" routerLink="/checkout" aria-label="Checkout">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>&nbsp;Оформить заказ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

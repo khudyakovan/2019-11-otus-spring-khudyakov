@@ -1,0 +1,49 @@
+server:
+  port: 8081
+
+eureka:
+  client:
+    fetch-registry: true
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost
+      port: 27017
+      database: stub-master-system
+      username: otus
+      password: javaclub
+      host: localhost
+  rabbitmq:
+    username: otus
+    password: javaclub
+logging:
+  level:
+    root: INFO
+
+application:
+  shop-id: 1001
+  rabbit:
+    exchanges:
+      main: "main.topic"
+      status: "status.broadcast"
+    queues:
+      levels:
+        catalog: "master.levels.catalog"
+        orders: "master.levels.orders"
+      prices:
+        catalog: "master.prices.catalog"
+        orders: "master.prices.orders"
+        pos: "master.prices.pos"
+      products:
+        proposal: "proposal.order"
+        order: "order.proposal"
+        pos-get-order: "pos.order.number"
+        orders-to-mail: "mail.status"
+      users:
+        main: "users"
+        name: "order.user.name"
+      sales:
+        sales-to-orders: "sales.orders"
+        sales-to-catalog: "sales.catalog"
+        sales-to-master: "sales.master"

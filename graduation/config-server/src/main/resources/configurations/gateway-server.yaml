@@ -1,0 +1,57 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    fetch-registry: true
+
+zuul:
+  ignoredServices: '*'
+  host:
+    time-to-live: -1
+    connect-timeout-millis: 5000
+    max-per-route-connections: 10000
+    max-total-connections: 5000
+    socket-timeout-millis: 60000
+  semaphore:
+    max-semaphores: 500
+  sensitiveHeaders: Cookie,Set-Cookie
+  debug:
+    request: true
+  routes:
+    auth:
+      path: /api/v1/auth/**
+      serviceId: orders-microservice
+      strip-prefix: false
+    orders:
+      path: /api/v1/orders/**
+      serviceId: orders-microservice
+      strip-prefix: false
+    proposals:
+      path: /api/v1/proposals/**
+      serviceId: orders-microservice
+      strip-prefix: false
+    api:
+      path: /api/v1/catalog/**
+      serviceId: catalog-microservice
+      strip-prefix: false
+    images:
+      path: /images/**
+      serviceId: images-microservice
+      strip-prefix: false
+#    hystrix:
+#      path: /hystrix/**
+#      url: http://localhost:8081/hystrix
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
+#ribbon:
+#  ReadTimeout: 60000
+#  connection-timeout: 3000
+#  eureka:
+#    enabled: true

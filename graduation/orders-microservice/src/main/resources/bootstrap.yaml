@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: orders-microservice
+  cloud:
+    config:
+      fail-fast: true
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        security: INFO

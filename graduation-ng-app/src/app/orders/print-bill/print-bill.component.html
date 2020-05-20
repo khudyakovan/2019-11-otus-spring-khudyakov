@@ -1,0 +1,17 @@
+<div class="container">
+    <div class="row" style="margin-top: 28px;">
+        <div class="container">
+            <h3 class="text-muted">Состав заказа #{{orderDetails.orderNumber}}</h3>
+            <table class="table table-bordered text-muted">
+                <tbody>
+                <tr *ngFor="let item of orderDetails.orderItems">
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{item.quantity}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <h3>Всего позиций в заказе: {{itemsCount}} единиц</h3>
+        </div>
+    </div>
+</div>

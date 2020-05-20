@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="row" style="margin-top: 12px;">
+        <table class="table table-hover text-muted text-sm-center">
+            <thead>
+            <tr>
+                <th scope="col">Номер заказа</th>
+                <th scope="col">Номер телефона</th>
+                <th scope="col">Дата заказа</th>
+                <th scope="col">Время визита</th>
+                <th scope="col">Статус</th>
+                <th scope="col">&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let order of orders">
+                <td>{{ order.orderNumber }}</td>
+                <td>{{ order.mobilePhone }}</td>
+                <td>{{order.currentDate | date: 'dd.MM.yy HH:mm'}}</td>
+                <td>{{order.time}}</td>
+                <td>{{data.getStatusTranslation(order.status)}}</td>
+                <td>
+                    <a class="btn btn-warning"
+                       *ngIf="canShow(order.status)"
+                       (click)="cancelOrder(order)"
+                       aria-label="Delete">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

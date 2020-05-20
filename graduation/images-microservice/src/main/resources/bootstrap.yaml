@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: images-microservice
+  cloud:
+    config:
+      fail-fast: true
+
+logging:
+  level:
+    root: INFO

@@ -1,0 +1,49 @@
+server:
+  port: 8083
+
+eureka:
+  client:
+    fetch-registry: true
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: orders-microservice
+      username: otus
+      password: javaclub
+      authentication-database: admin
+  rabbitmq:
+    username: otus
+    password: javaclub
+logging:
+  level:
+    root: INFO
+
+application:
+  shop-id: 1001
+  rabbit:
+    exchanges:
+      main: "main.topic"
+      status: "status.broadcast"
+    queues:
+      levels:
+        orders: "master.levels.orders"
+      prices:
+        orders: "master.prices.orders"
+      products:
+        proposal: "proposal.order"
+        order: "order.proposal"
+        pos-get-order: "pos.order.number"
+        orders-to-mail: "mail.status"
+      users:
+        main: "users"
+        name: "order.user.name"
+      sales:
+        sales-to-orders: "sales.orders"
+
+jwt:
+  token:
+    secret: d05Ht304W=xoL8e
+    expired: 86400000

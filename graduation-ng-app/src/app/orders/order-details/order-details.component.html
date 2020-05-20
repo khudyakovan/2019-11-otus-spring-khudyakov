@@ -1,0 +1,49 @@
+<div class="container">
+    <div class="row" style="margin-top: 28px;">
+        <div class="container">
+            <h3 class="text-muted">Состав заказа #{{orderDetails.orderNumber}}</h3>
+            <span>Позиций в заказе: {{itemsCount}}</span>
+            <table class="table table-borderless text-muted">
+                <tbody>
+                <tr *ngFor="let item of orderDetails.orderItems">
+                    <td>
+                        <p>{{ item.id }}</p>
+                    </td>
+                    <td>
+                        <p>{{ item.name }}</p>
+                    </td>
+                    <td>
+                        <input type="number"
+                               min="1"
+                               id="quantity"
+                               class="form-control"
+                               name="quantity"
+                               [(ngModel)]="item.quantity"
+                               (change)="getItemsCount()"
+                        />
+                    </td>
+                    <td>
+                        <a class="btn btn-warning" (click)="deleteFromOrder(item)" aria-label="Delete">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <button type="buton"
+                *ngIf="orderDetails.status =='CANCELLED'"
+                (click)="deleteOrder(orderDetails)"
+                class="btn btn-danger pull-right"
+                style="margin-left:12px;"><i class="fa fa-minus"></i> Раскомплектовать заказ
+        </button>
+        <button type="buton"
+                *ngIf="orderDetails.status !='CANCELLED'"
+                (click)="closeOrder(orderDetails)"
+                class="btn btn-info pull-right"
+                style="margin-left:12px;"><i class="fa fa-pencil"></i> Скомплектовать заказ
+        </button>
+    </div>
+</div>

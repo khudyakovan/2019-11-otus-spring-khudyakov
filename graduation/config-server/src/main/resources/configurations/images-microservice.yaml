@@ -1,0 +1,19 @@
+server:
+  port: 8085
+
+eureka:
+  client:
+    fetch-registry: true
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: images-microservice
+      username: otus
+      password: javaclub
+      authentication-database: admin
+
+application:
+  shop-id: 1001

@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: orders-microservice
+  cloud:
+    config:
+      enabled: false
+
+logging:
+  level:
+    root: INFO

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ru.otus</groupId>
+    <artifactId>graduation</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <description>Graduation Work</description>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>config-server</module>
+        <module>service-discovery-server</module>
+        <module>stub-master-system</module>
+        <module>catalog-microservice</module>
+        <module>stub-point-of-sales</module>
+        <module>orders-microservice</module>
+        <module>users-microservice</module>
+        <module>core-module</module>
+        <module>images-microservice</module>
+        <module>gateway-server</module>
+        <module>mail-microservice</module>
+    </modules>
+
+</project>
